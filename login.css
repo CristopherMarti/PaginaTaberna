@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    min-height: 100vh;
+    background-image: url("https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3bnNtcWhpb3RwenJwOHZhb3FtaWE5aXJ2ancybGcyMjZuNmVmYzY0MyZlcD12MV9naWZzX3JlbGF0ZWQmY3Q9Zw/zHpzBnA1HGWQwO8dHY/giphy.gif");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+  .contenedor-principal {
+    background: #fff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 20px rgb(83, 83, 83);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+  }
+  
+  .logo-empresa {
+    width: 100px;
+    margin: 0 auto 20px;
+    display: block;
+  }
+  
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* MÁS ESPACIO entre cajas */
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+  }
+  
+  .input-contenedor {
+    position: relative;
+  }
+  
+  .input-contenedor i {
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    color: #999;
+    
+  }
+  
+  input {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 18px; /* LETRA MÁS GRANDE */
+    background: #f9f9f9;
+    outline: none;
+    transition: border 0.3s;
+
+  }
+  
+  input:focus {
+    border: 1px solid #6D4C41;
+  }
+  
+  .boton {
+    background-color: #333;
+    color: white;
+    padding: 14px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .boton:hover {
+    background-color: #555;
+  }
+  
+  .texto-legal {
+    font-size: 12px;
+    color: #777;
+    margin-top: 10px;
+  }
+  
+  .cambio-formulario {
+    font-size: 16px;
+  }
+  
+  
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .contenedor-principal {
+      padding: 25px 20px;
+    }
+  }
+  
+  

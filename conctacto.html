@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taberna del Monkey</title>
+    <link rel="stylesheet" href="contacto.css">|
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="nav-content">
+        <a href="index.html" class="logo">
+            <div class="logo">
+            <a href="main.html">
+            <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
+            </a>
+            </div>
+        </a>    
+            <ul class="nav-links">
+                <li><a href="main.html">Inicio</a></li>
+                <li><a href="publicidad.html">Publicidad</a></li>
+                <li><a href="lista.html">Lista de Categoria</a></li>
+                <li><a href="conctacto.html">Contacto</a></li>
+                <li><a href="gestion.html">Gestión</a></li>
+                <li><a href="Login.html">Iniciar Sesion</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </div>
+    </nav>
+
+     <!-- Contact -->
+    <section id="contacto" class="contact">
+        <div class="contact-content">
+            <h2>¡Vive la Experiencia Completa!</h2>
+            <p class="contact-subtitle">Te esperamos para compartir los mejores momentos en el corazón de la ciudad</p>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <h4>Ubicación</h4>
+                    <p>Av. Principal 123<br>Centro Histórico, Huancayo</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <h4>Teléfono</h4>
+                    <p>+51 987 654 321<br>Reservas y consultas</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"></div>
+                    <h4>Horarios</h4>
+                    <p>Lunes a Domingo<br>6:00 PM - 2:00 AM</p>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" id="finalCtaBtn">¡Reservar Ahora!</button>
+        </div>
+    </section>
+
+    <!-- Sección con Imágenes y Botón a Contacto -->
+    <section class="imagenes-contacto">
+        <div class="container">
+            <h2 class="section-title">Conoce Nuestra Taberna</h2>
+            <div class="imagenes-grid">
+                <div class="imagen-item">
+                    <!-- Aquí va imagen 1 -->
+                </div>
+                <div class="imagen-item">
+                    <!-- Aquí va imagen 2 -->
+                </div>
+                <div class="imagen-item">
+                    <!-- Aquí va imagen 3 -->
+                </div>
+            </div>
+            
+            <div class="contacto-cta">
+                <h3>¿Listo para visitarnos?</h3>
+                <p>Conoce nuestra ubicación, horarios y haz tu reserva</p>
+                <a href="contacto.html" class="btn btn-primary">Ir a Contacto</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Simple -->
+    <div class="modal" id="reservaModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <h3>¡Reserva tu Mesa!</h3>
+            <p>Para hacer tu reserva, contáctanos:</p>
+            <p><strong> +51 986 336 812</strong></p>
+            <p>O visítanos en:</p>
+            <p><strong> Av. Principal 123, Centro Histórico</strong></p>
+            <button class="btn btn-primary" id="modalCloseBtn">Entendido</button>
+        </div>
+    </div>
+    

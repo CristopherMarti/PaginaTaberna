@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taberna del Monkey</title>
+    <link rel="stylesheet" href="lista.css">|
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar">
+        <div class="nav-content">
+        <a href="index.html" class="logo">
+            <div class="logo">
+            <a href="main.html">
+            <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
+            </a>
+            </div>
+        </a>    
+            <ul class="nav-links">
+                <li><a href="main.html">Inicio</a></li>
+                <li><a href="publicidad.html">Publicidad</a></li>
+                <li><a href="lista.html">Lista de Categoria</a></li>
+                <li><a href="conctacto.html">Contacto</a></li>
+                <li><a href="gestion.html">Gestión</a></li>
+                <li><a href="Login.html">Iniciar Sesion</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </div>
+    </nav>
+
+    <body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="monkey-emoji">🐵</div>
+            <h1>Taberna del Monkey</h1>
+            <p class="subtitle">Sistema de Inventario</p>
+        </div>
+
+        <!-- Título de categorías -->
+        <h2 class="categories-title">Selecciona una categoría:</h2>
+
+        <!-- Grid de categorías -->
+        <div class="categories-grid">
+            <!-- Licores -->
+            <div class="category-item" onclick="openModal('licores')">
+                <div class="category-circle licores">
+                    🥃
+                </div>
+                <span class="category-text">Licores</span>
+            </div>
+
+            <!-- Gaseosas -->
+            <div class="category-item" onclick="openModal('gaseosas')">
+                <div class="category-circle gaseosas">
+                    🥤
+                </div>
+                <span class="category-text">Gaseosas</span>
+            </div>
+
+            <!-- Frutas -->
+            <div class="category-item" onclick="openModal('frutas')">
+                <div class="category-circle frutas">
+                    🍊
+                </div>
+                <span class="category-text">Frutas</span>
+            </div>
+
+            <!-- Insumos -->
+            <div class="category-item" onclick="openModal('insumos')">
+                <div class="category-circle insumos">
+                    🍯
+                </div>
+                <span class="category-text">Insumos</span>
+            </div>
+
+            <!-- Vasos y Jarras -->
+            <div class="category-item" onclick="openModal('vasos')">
+                <div class="category-circle vasos">
+                    🍺
+                </div>
+                <span class="category-text">Vasos y Jarras</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Título</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modal-body" class="modal-body">
+                <!-- El contenido se llenará dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <script src="lista.js"></script>
+</body>
+</html>

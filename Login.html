@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Taberna del monkey</title>
+  <link rel="stylesheet" href="login.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <div class="contenedor-principal">
+
+    <img src="LogosTabernas/Logo-negro.png" alt="Logo Panadería taberna" class="logo-empresa">
+
+    <!-- Formulario LOGIN -->
+    <div class="formulario" id="formLogin">
+      <h2>Login</h2>
+      <form id="login-form">
+        <div class="input-contenedor">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" placeholder="Correo Electrónico" required>
+        </div>
+
+        <div class="input-contenedor">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Contraseña" required>
+        </div>
+
+        <button type="submit" class="boton">Login</button>
+
+        <p class="texto-legal">Al registrarte, aceptas nuestras Condiciones de uso y Política de privacidad.</p>
+        
+      </form>
+    </div>
+
+    
+
+    <a href="main.html" class="volver-inicio" style="display: block; margin-top: 20px; text-align: center; color: black; text-decoration: none;">Volver al inicio</a>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
