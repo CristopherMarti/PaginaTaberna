@@ -355,28 +355,7 @@ body {
 }
 
 
-/* 
-====================================
-10. FOOTER
-====================================
-*/
-.footer {
-    background-color: #333;
-    color: white;
-    padding: 20px;
-}
-  
-.footer-content {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-  
-.copy {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-}
+
 
 /* 
 ====================================

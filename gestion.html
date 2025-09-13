@@ -3,28 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taberna del Monkey</title>
-    <link rel="stylesheet" href="main.css">|
+    <title>Gestión - Taberna del Monkey</title>
+    <link rel="stylesheet" href="gestion.css">
 </head>
 <body>
     <!-- Barra de navegación -->
     <nav class="navbar">
         <div class="nav-content">
-        <a href="index.html" class="logo">
-            <div class="logo">
-            <a href="main.html">
-            <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
-            </a>
-            </div>
-        </a>    
+            <a href="index.html" class="logo">
+                <div class="logo">
+                    <a href="main.html">
+                        <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
+                    </a>
+                </div>
+            </a>    
             <ul class="nav-links">
                 <li><a href="main.html">Inicio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="lista.html">Lista de Categoria</a></li>
-                <li><a href="conctacto.html">Contacto</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
                 <li><a href="gestion.html">Gestión</a></li>
-                <li><a href="Login.html">Iniciar Sesion</a></li>
+                <li><a href="Login.html">Iniciar Sesión</a></li>
             </ul>
             <button class="mobile-menu" id="mobileMenu">☰</button>
         </div>
     </nav>
+
+    <div class="container">
+        <!-- Header de Gestión -->
+        <div class="header">
+            <h1>Panel de Gestión</h1>
+            <p class="subtitle">Control de Productos y Ventas</p>
+        </div>
+
+        <!-- Tarjetas de Gestión Principal -->
+        <div class="gestion-grid">
+            <!-- Control de Productos -->
+            <div class="gestion-card productos" onclick="showSection('productos')">
+                <div class="card-icon">📦</div>
+                <h3>Control de Productos</h3>
+                <p>Gestiona inventario, stock y productos</p>
+                <div class="card-stats">
+                    <span>120 Productos</span>
+                </div>
+            </div>
+
+            <!-- Control de Ventas -->
+            <div class="gestion-card ventas" onclick="showSection('ventas')">
+                <div class="card-icon">💰</div>
+                <h3>Control de Ventas</h3>
+                <p>Registra y consulta ventas diarias</p>
+                <div class="card-stats">
+                    <span>S/. 2,450 Hoy</span>
+                </div>
+            </div>
+
+            <!-- Reportes -->
+            <div class="gestion-card reportes" onclick="showSection('reportes')">
+                <div class="card-icon">📊</div>
+                <h3>Reportes</h3>
+                <p>Análisis y estadísticas de negocio</p>
+                <div class="card-stats">
+                    <span>Ver Reportes</span>
+                </div>
+            </div>
+
+            <!-- Configuración -->
+            <div class="gestion-card configuracion" onclick="showSection('configuracion')">
+                <div class="card-icon">⚙️</div>
+                <h3>Configuración</h3>
+                <p>Ajustes del sistema y usuarios</p>
+                <div class="card-stats">
+                    <span>3 Usuarios</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de Control de Productos -->
+        <div id="productos-section" class="section-content">
+            <h2 class="section-title">Control de Productos</h2>
+            
+            <!-- Botones de Acción -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openModal('add-product')">Agregar Producto</button>
+                <button class="btn btn-secondary">Actualizar Stock</button>
+                <button class="btn btn-secondary">Exportar Lista</button>
+            </div>
+
+            <!-- Tabla de Productos -->
+            <div class="table-container">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Pisco Quebranta</td>
+                            <td>Licores</td>
+                            <td>25</td>
+                            <td>S/. 45.00</td>
+                            <td><span class="status disponible">Disponible</span></td>
+                            <td>
+                                <button class="btn-action edit">Editar</button>
+                                <button class="btn-action delete">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Coca Cola</td>
+                            <td>Gaseosas</td>
+                            <td>5</td>
+                            <td>S/. 3.50</td>
+                            <td><span class="status bajo-stock">Bajo Stock</span></td>
+                            <td>
+                                <button class="btn-action edit">Editar</button>
+                                <button class="btn-action delete">Eliminar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Vaso Cervecero</td>
+                            <td>Vasos</td>
+                            <td>50</td>
+                            <td>S/. 8.00</td>
+                            <td><span class="status disponible">Disponible</span></td>
+                            <td>
+                                <button class="btn-action edit">Editar</button>
+                                <button class="btn-action delete">Eliminar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Sección de Control de Ventas -->
+        <div id="ventas-section" class="section-content" style="display: none;">
+            <h2 class="section-title">Control de Ventas</h2>
+            
+            <!-- Resumen de Ventas del Día -->
+            <div class="sales-summary">
+                <div class="summary-card">
+                    <h4>Ventas de Hoy</h4>
+                    <div class="summary-amount">S/. 2,450.00</div>
+                    <span class="summary-detail">32 transacciones</span>
+                </div>
+                <div class="summary-card">
+                    <h4>Promedio por Venta</h4>
+                    <div class="summary-amount">S/. 76.56</div>
+                    <span class="summary-detail">+12% vs ayer</span>
+                </div>
+                <div class="summary-card">
+                    <h4>Producto más Vendido</h4>
+                    <div class="summary-amount">Pisco Sour</div>
+                    <span class="summary-detail">18 unidades</span>
+                </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openModal('new-sale')">Nueva Venta</button>
+                <button class="btn btn-secondary">Ver Historial</button>
+                <button class="btn btn-secondary">Imprimir Reporte</button>
+            </div>
+
+            <!-- Lista de Ventas Recientes -->
+            <div class="table-container">
+                <table class="sales-table">
+                    <thead>
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Hora</th>
+                            <th>Productos</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                            <th>Método Pago</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>V001</td>
+                            <td>18:30</td>
+                            <td>Pisco Sour, Nachos</td>
+                            <td>3</td>
+                            <td>S/. 85.00</td>
+                            <td>Efectivo</td>
+                            <td><span class="status completado">Completado</span></td>
+                        </tr>
+                        <tr>
+                            <td>V002</td>
+                            <td>18:45</td>
+                            <td>Cerveza Pilsen</td>
+                            <td>2</td>
+                            <td>S/. 14.00</td>
+                            <td>Tarjeta</td>
+                            <td><span class="status completado">Completado</span></td>
+                        </tr>
+                        <tr>
+                            <td>V003</td>
+                            <td>19:15</td>
+                            <td>Monkey Special</td>
+                            <td>1</td>
+                            <td>S/. 35.00</td>
+                            <td>Efectivo</td>
+                            <td><span class="status pendiente">Pendiente</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar Producto -->
+    <div id="add-product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agregar Nuevo Producto</h3>
+                <span class="close" onclick="closeModal('add-product')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form class="product-form">
+                    <div class="form-group">
+                        <label>Nombre del Producto</label>
+                        <input type="text" placeholder="Ej: Pisco Acholado">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select>
+                            <option>Licores</option>
+                            <option>Gaseosas</option>
+                            <option>Insumos</option>
+                            <option>Vasos y Jarras</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Stock Inicial</label>
+                            <input type="number" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Precio (S/.)</label>
+                            <input type="number" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('add-product')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Nueva Venta -->
+    <div id="new-sale-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Registrar Nueva Venta</h3>
+                <span class="close" onclick="closeModal('new-sale')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form class="sale-form">
+                    <div class="form-group">
+                        <label>Seleccionar Productos</label>
+                        <div class="product-selector">
+                            <input type="text" placeholder="Buscar producto...">
+                            <div class="selected-products">
+                                <!-- Productos seleccionados aparecerán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Método de Pago</label>
+                            <select>
+                                <option>Efectivo</option>
+                                <option>Tarjeta</option>
+                                <option>Yape</option>
+                                <option>Plin</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Total</label>
+                            <input type="text" readonly placeholder="S/. 0.00">
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('new-sale')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Registrar Venta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="gestion.js"></script>
+</body>
+</html>

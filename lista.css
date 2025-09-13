@@ -1,4 +1,4 @@
-/* Reset y estilos base */
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
@@ -6,41 +6,28 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    padding: 20px;
-    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #444444;
+    background: #f8f8f8;
 }
 
 /* Contenedor principal */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
+    padding: 100px 20px 40px;
 }
 
-/* barra de navegacion */
+/* Navegación (igual que la taberna) */
 .navbar {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 0;
+    width: 100%;
+    background: white;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 1000;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.navbar.scrolled {
-    background: rgba(255, 255, 255, 0.98);
-    padding: 0.5rem 0;
 }
 
 .nav-content {
@@ -49,412 +36,236 @@ body {
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 20px;
 }
 
+/* Logo */
 .logo {
-    font-weight: 700;
-    text-decoration: none;
-    color: #1d3039;
-    font-size: 20px;
-    line-height: 1.2;
-    border-radius: 50%;
-    width: 100px;
+    display: block;
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
 }
 
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 25px;
 }
 
 .nav-links a {
     text-decoration: none;
     color: #444444;
     font-weight: 500;
+    font-size: 14px;
     transition: color 0.3s ease;
-    position: relative;
-}
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #720008;
-    transition: width 0.3s ease;
-}
-
-.nav-links a:hover::after {
-    width: 100%;
 }
 
 .nav-links a:hover {
     color: #720008;
 }
 
+/* Menú móvil */
 .mobile-menu {
     display: none;
     background: #720008;
     color: white;
     border: none;
-    padding: 0.5rem;
+    padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
+    font-size: 16px;
 }
 
-.mobile-menu:hover {
-    background: #444444;
-}
-
-/* Header */
+/* Header del sistema */
 .header {
     text-align: center;
-    margin-bottom: 40px;
-}
-
-.header h1 {
-    color: #2c3e50;
-    font-size: 2.5em;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    animation: slideDown 0.6s ease;
-}
-
-.header .subtitle {
-    color: #7f8c8d;
-    font-size: 1.2em;
-    animation: fadeIn 0.8s ease;
+    margin-bottom: 60px;
+    padding: 40px;
+    background: linear-gradient(135deg, #444444 0%, #720008 100%);
+    border-radius: 20px;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 .monkey-emoji {
-    font-size: 3em;
+    font-size: 60px;
     margin-bottom: 20px;
-    animation: bounce 2s infinite;
+    display: block;
 }
 
-/* Animaciones */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+.header h1 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    font-weight: bold;
 }
 
-@keyframes slideDown {
-    from {
-        transform: translateY(-20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.subtitle {
+    font-size: 20px;
+    opacity: 0.9;
+    font-weight: 300;
 }
 
 /* Título de categorías */
 .categories-title {
     text-align: center;
-    color: #34495e;
-    font-size: 1.8em;
-    margin-bottom: 30px;
-    font-weight: 600;
+    font-size: 32px;
+    color: #444444;
+    margin-bottom: 50px;
+    font-weight: bold;
+    position: relative;
+}
+
+.categories-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: #720008;
+    border-radius: 2px;
 }
 
 /* Grid de categorías */
 .categories-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Item de categoría */
+.category-item {
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
     padding: 20px;
 }
 
-/* Items de categoría */
-.category-item {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: transform 0.3s ease, filter 0.3s ease;
-    padding: 10px;
-    border-radius: 15px;
-    animation: fadeInUp 0.6s ease backwards;
-}
-
-.category-item:nth-child(1) { animation-delay: 0.1s; }
-.category-item:nth-child(2) { animation-delay: 0.2s; }
-.category-item:nth-child(3) { animation-delay: 0.3s; }
-.category-item:nth-child(4) { animation-delay: 0.4s; }
-.category-item:nth-child(5) { animation-delay: 0.5s; }
-
-@keyframes fadeInUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 .category-item:hover {
-    transform: translateY(-5px) scale(1.05);
-    filter: brightness(1.1);
+    transform: translateY(-10px);
 }
 
-/* Círculos de categoría */
+/* Círculo de categoría */
 .category-circle {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5em;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    font-size: 50px;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
+    border: 4px solid transparent;
 }
 
-.category-circle::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.1);
-    transform: rotate(45deg);
-    transition: all 0.3s ease;
+.category-circle:hover {
+    box-shadow: 0 15px 35px rgba(114, 0, 8, 0.25);
+    border-color: #720008;
 }
 
-.category-item:hover .category-circle {
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-    transform: rotate(10deg);
+/* Colores específicos para cada categoría */
+.category-circle.licores {
+    background: linear-gradient(135deg, #720008 0%, #444444 100%);
 }
 
-.category-item:hover .category-circle::before {
-    left: 100%;
+.category-circle.gaseosas {
+    background: linear-gradient(135deg, #444444 0%, #720008 100%);
 }
 
+.category-circle.insumos {
+    background: linear-gradient(135deg, #444444 30%, #720008 100%);
+}
+
+.category-circle.vasos {
+    background: linear-gradient(135deg, #720008 0%, #444444 70%);
+}
+
+/* Texto de categoría */
 .category-text {
-    margin-left: 20px;
-    font-size: 1.3em;
-    color: #2c3e50;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #444444;
+    margin-top: 10px;
 }
 
 .category-item:hover .category-text {
-    color: #764ba2;
-}
-
-/* Colores para cada categoría */
-.licores { 
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); 
-}
-
-.gaseosas { 
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); 
-}
-
-.frutas { 
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); 
-}
-
-.insumos { 
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); 
-}
-
-.vasos { 
-    background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); 
+    color: #720008;
 }
 
 /* Modal */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1000;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    animation: fadeIn 0.3s ease;
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    background: white;
     margin: 5% auto;
-    padding: 30px;
-    border-radius: 20px;
+    padding: 0;
+    border-radius: 15px;
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
     max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    animation: slideIn 0.3s ease;
-    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
 }
 
-@keyframes slideIn {
-    from {
-        transform: translateY(-50px) scale(0.9);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-}
-
-/* Header del modal */
 .modal-header {
+    background: linear-gradient(135deg, #720008 0%, #444444 100%);
+    color: white;
+    padding: 25px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e0e0e0;
 }
 
 .modal-header h2 {
-    color: #2c3e50;
-    font-size: 1.8em;
+    font-size: 24px;
     margin: 0;
 }
 
-/* Botón cerrar */
 .close {
-    color: #aaa;
-    font-size: 35px;
-    font-weight: bold;
+    font-size: 28px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    line-height: 20px;
-    padding: 5px;
+    color: white;
+    transition: color 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
-    color: #f5576c;
-    transform: rotate(90deg);
+.close:hover {
+    color: rgba(255, 255, 255, 0.7);
 }
 
-/* Cuerpo del modal */
 .modal-body {
-    padding: 10px 0;
+    padding: 30px;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
-/* Items del inventario */
-.inventory-item {
-    background: white;
-    padding: 15px 20px;
-    margin-bottom: 12px;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    border-left: 4px solid transparent;
-}
-
-.inventory-item:hover {
-    transform: translateX(10px);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(to right, #f8f9fa, #ffffff);
-}
-
-.inventory-item-icon {
-    font-size: 1.8em;
-    margin-right: 15px;
-}
-
-.inventory-item-text {
-    font-size: 1.1em;
-    color: #34495e;
-    font-weight: 500;
-}
-
-/* Colores del borde izquierdo según categoría */
-.modal[data-category="licores"] .inventory-item {
-    border-left-color: #f5576c;
-}
-
-.modal[data-category="gaseosas"] .inventory-item {
-    border-left-color: #00f2fe;
-}
-
-.modal[data-category="frutas"] .inventory-item {
-    border-left-color: #43e97b;
-}
-
-.modal[data-category="insumos"] .inventory-item {
-    border-left-color: #fee140;
-}
-
-.modal[data-category="vasos"] .inventory-item {
-    border-left-color: #330867;
-}
-
-/* Scrollbar personalizado */
-.modal-content::-webkit-scrollbar {
-    width: 10px;
-}
-
-.modal-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-.modal-content::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 10px;
-}
-
-.modal-content::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .container {
-        padding: 20px;
+/* Animación del modal */
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
     }
-    
-    .header h1 {
-        font-size: 2em;
-    }
-    
-    .categories-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .category-circle {
-        width: 60px;
-        height: 60px;
-        font-size: 2em;
-    }
-    
-    .category-text {
-        font-size: 1.1em;
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 10% auto;
-        padding: 20px;
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
     }
 }
