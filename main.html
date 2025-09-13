@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Taberna del Monkey</title>
-    <link rel="stylesheet" href="main.css">|
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <!-- Barra de navegación -->
     <nav class="navbar">
         <div class="nav-content">
-        <a href="index.html" class="logo">
-            <div class="logo">
-            <a href="main.html">
-            <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
-            </a>
-            </div>
-        </a>    
+            <a href="index.html" class="logo">
+                <div class="logo">
+                    <a href="main.html">
+                        <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo zoom-in">
+                    </a>
+                </div>
+            </a>    
             <ul class="nav-links">
                 <li><a href="main.html">Inicio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
@@ -30,129 +30,89 @@
     </nav>
 
     <!-- Contenido principal -->
-    <main id= "inicio" class="inicio">
+    <main id="inicio" class="inicio">
         <section class="info-section">
-            <p class="greeting">Hola, Bienvenido a la Taberna del Monkey <span class="highlight">✌️</span></p>
-            <h1 class="title">Tradicion </h1>
-            <p class="tagline">Memorias</p>
-            <p class="description">
+            <p class="greeting fade-in">Hola, Bienvenido a la Taberna del Monkey <span class="highlight">✌️</span></p>
+            <h1 class="title slide-left">Tradición</h1>
+            <p class="tagline slide-right">Memorias</p>
+            <p class="description fade-in">
                 Somos una empresa “Taberna del Monkey", un lugar donde la tradición y la modernidad se encuentran para ofrecerte una experiencia única. Ubicado en el corazón de la hermosa “Ciudad Incontrastable", nuestro bar es un homenaje a la rica herencia cultural de los Andes, presentando una selección exclusiva de bebidas tradicionales y contemporáneas elaboradas con ingredientes autóctonos.
-
-
-
             </p>
         </section>
 
         <section class="image-section">
-            <img src="img/Taberna.jpg" alt="taberna" class="perfil-imagen">
+            <img src="img/Taberna.jpg" alt="taberna" class="perfil-imagen zoom-in">
         </section>
     </main>
 
     <!-- servicio -->
-<section id="servicios" class="servicio">
-    <div class="container">
-        <!-- Collage de imágenes en lugar del título simple -->
-        <div class="collage-header" >
-            <!-- Imagen principal grande -->
-            <div class="collage-div">
-                <img src="" 
-                     alt="Equipo creativo trabajando" 
-                     style="width: 100%; height: 100%; object-fit: cover;">
-                <!-- Overlay con título -->
-                <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%); display: flex; align-items: center; justify-content: center;">
-                    <h2 class="text_01" style="color: white; font-size: 3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin: 0;">Cómo puedo ayudarte</h2>
-                </div>
-            </div>
-            
-            <!-- Columna de imágenes pequeñas a la derecha -->
-            <div style="position: absolute; top: 0; right: 0; width: 39%; height: 100%; display: flex; flex-direction: column; gap: 2%;"> <!-- lo pueden adaptar para para ima ágia de css estaria bien  --> 
-                <!-- Imagen superior derecha -->
-                <div style="height: 49%; overflow: hidden; position: relative;">
+    <section id="servicios" class="servicio fade-in">
+        <div class="container">
+            <!-- Collage de imágenes en lugar del título simple -->
+            <div class="collage-header zoom-in">
+                <!-- Imagen principal grande -->
+                <div class="collage-div">
                     <img src="" 
-                         alt="Automatización digital" 
+                         alt="Equipo creativo trabajando" 
                          style="width: 100%; height: 100%; object-fit: cover;">
-                    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3);"></div>
-                </div>
-                
-                <!-- Imagen inferior derecha -->
-                <div style="height: 49%; overflow: hidden; position: relative;">
-                    <img src="" 
-                         alt="Tecnología y creatividad" 
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3);"></div>
+                    <!-- Overlay con título -->
+                    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%); display: flex; align-items: center; justify-content: center;">
+                        <h2 class="text_01">Cómo puedo ayudarte</h2>
+                    </div>
                 </div>
             </div>
             
-            <!-- Imágenes flotantes decorativas -->
-            <div style="position: absolute; bottom: 20px; left: 20px; width: 120px; height: 120px; border-radius: 10px; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                <img src="" 
-                     alt="Innovación" 
-                     style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-            
-            <div style="position: absolute; top: 20px; right: 20px; width: 100px; height: 100px; border-radius: 50%; overflow: hidden; border: 3px solid white; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
-                <img src="" 
-                     alt="Tecnología" 
-                     style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
+            <p class="description_01 slide-right">
+                Servicios especializados en la creación del cocteles.
+            </p>
         </div>
-        
-        <p class="description_01">
-            Servicios especializados en la creación del cocteles.
-        </p>
-        
-        
-    </div>
-</section>
+    </section>
 
     <!-- Historia -->
     <section class="vision">
         <div class="container">
-        <div>
-            <h2 class="text_02"> Historia </h2>
-            <div class="divider"></div>
-        </div>
-        <div class="mi-grid">
-            <div class="image-section">
-                <img src="img/debfest.jpg" alt="Perfil " class="mi-imagen">
+            <div>
+                <h2 class="text_02 fade-in"> Historia </h2>
+                <div class="divider"></div>
             </div>
-            <div class="vision-content">
-                <p class="mb-6">Nuestra empresa se fundó hace 25 años, comienza con el amor y la pasión compartida por las tradiciones andinas de Martin y Yesenia una pareja casada que desde el primer momento, supieron que compartían un sueño: crear un espacio donde las personas pudieran disfrutar de las auténticas bebidas andinas en un ambiente moderno y acogedor.</p>
-                <p class="mb-6">El éxito de la taberna no tardó en llegar. Sus cócteles de chicha morada y bebidas a base de frutas exóticas se convirtieron en los favoritos de los clientes. Además, la taberna ofrecía música y una gran temática relacionada a los Andes junto a sus costumbres, creando una atmósfera vibrante y acogedora. Con el tiempo, se consolidó como un referente en la escena nocturna de la ciudad.</p>
-                <p class="mb-8">Martin y Yesenia continuaron innovando, siempre fieles a su misión de preservar y compartir la cultura andina. Como empresa tenemos los valores de autenticidad ofreciendo bebidas que capturan fielmente las tradiciones y sabores de los Andes. Como empresa somos un equipo. Por ello, está compuesto por nuestro guardia de seguridad, recepcionista, mozos(as) y bartenders. </p>
-            </div>
-
+            <div class="mi-grid">
+                <div class="image-section">
+                    <img src="img/debfest.jpg" alt="Perfil " class="mi-imagen slide-left">
+                </div>
+                <div class="vision-content slide-right">
+                    <p class="mb-6">Nuestra empresa se fundó hace 25 años, comienza con el amor y la pasión compartida por las tradiciones andinas de Martin y Yesenia...</p>
+                    <p class="mb-6">El éxito de la taberna no tardó en llegar. Sus cócteles de chicha morada y bebidas a base de frutas exóticas se convirtieron en los favoritos...</p>
+                    <p class="mb-8">Martin y Yesenia continuaron innovando, siempre fieles a su misión de preservar y compartir la cultura andina...</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div>
-        <h3>Taberna del Monkey </h3>
-        <p>un lugar donde los recuerdos se quedan </p>
-      </div>
-      
-      <div>
-        <h3>Redes</h3>
-        <a href="https://www.instagram.com/yadara._/" class="mi-flex">Instagram</a>
-        <a href="https://www.linkedin.com/in/cristopher-marti-mendez-herrera-41308331b/"class="mi-flex">Linkedin</a>
-        <a href="https://www.tiktok.com/@yadara_m"class="mi-flex">Tiktok</a>
-      </div>
-      <div>
-        <h3>Explora</h3>
-            <a href="#inicio" class="mi-flex">Inicio</a>
-            <a href="#servicios"class="mi-flex">Servicios</a>
-            <a href="#vision" class="mi-flex">Visión</a>
-            <a href="#proyectos" class="mi-flex">Proyectos</a>
-      </div>
-    </div>
-    <p class="copy">&copy; 2025 Taberna del Monkey. Todos los derechos reservados.</p>
-  </footer>
-   
+    <footer class="footer fade-in">
+        <div class="footer-content">
+            <div>
+                <h3>Taberna del Monkey </h3>
+                <p>un lugar donde los recuerdos se quedan </p>
+            </div>
+            
+            <div>
+                <h3>Redes</h3>
+                <a href="https://www.instagram.com/yadara._/" class="mi-flex">Instagram</a>
+                <a href="https://www.linkedin.com/in/cristopher-marti-mendez-herrera-41308331b/" class="mi-flex">Linkedin</a>
+                <a href="https://www.tiktok.com/@yadara_m" class="mi-flex">Tiktok</a>
+            </div>
+            <div>
+                <h3>Explora</h3>
+                <a href="#inicio" class="mi-flex">Inicio</a>
+                <a href="#servicios" class="mi-flex">Servicios</a>
+                <a href="#vision" class="mi-flex">Visión</a>
+                <a href="#proyectos" class="mi-flex">Proyectos</a>
+            </div>
+        </div>
+        <p class="copy">&copy; 2025 Taberna del Monkey. Todos los derechos reservados.</p>
+    </footer>
 
-    
-<script src="script.js"></script>
+    <script src="mian.js"></script>
 </body>
 </html>

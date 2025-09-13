@@ -162,3 +162,38 @@ document.addEventListener('DOMContentLoaded', function() {
     // Iniciar la aplicación
     inicializarAplicacion();
 });
+
+// script.js
+document.addEventListener("DOMContentLoaded", () => {
+  // Animaciones con IntersectionObserver
+  const elements = document.querySelectorAll(".fade-in, .slide-left, .slide-right, .zoom-in");
+
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target); // Ejecuta solo una vez
+      }
+    });
+  }, { threshold: 0.2 });
+
+  elements.forEach(el => observer.observe(el));
+
+  // Navbar efecto al hacer scroll
+  const navbar = document.querySelector(".navbar");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add("scrolled");
+    } else {
+      navbar.classList.remove("scrolled");
+    }
+  });
+
+  // Animación menú móvil
+  const mobileMenu = document.getElementById("mobileMenu");
+  const navLinks = document.querySelector(".nav-links");
+
+  mobileMenu.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+});

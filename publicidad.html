@@ -1,159 +1,209 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Taberna del Monkey - Tradición desde 1990</title>
-    <link rel="stylesheet" href="publicidad.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Taberna del Monkey - Tradición desde 1990</title>
+  <link rel="stylesheet" href="publicidad.css">
+  <style>
+    /* === Animaciones generales === */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* === Estilo Modal === */
+    .modal {
+      display: none; 
+      position: fixed;
+      z-index: 999;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.5s ease;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      animation: scaleIn 0.4s ease;
+    }
+    .modal-content h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+    .modal-content form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-content input, .modal-content select {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .modal-content button {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-close {
+      background: #d9534f;
+      color: white;
+    }
+    .btn-submit {
+      background: #28a745;
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;} to {opacity: 1;}
+    }
+    @keyframes scaleIn {
+      from {transform: scale(0.8);} to {transform: scale(1);}
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-content">
-        <a href="index.html" class="logo">
-            <div class="logo">
-            <a href="main.html">
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <a href="index.html" class="logo">
+        <div class="logo">
+          <a href="main.html">
             <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
-            </a>
-            </div>
-        </a>
-            <ul class="nav-links">
-                <li><a href="main.html">Inicio</a></li>
-                <li><a href="publicidad.html">Publicidad</a></li>
-                <li><a href="lista.html">Lista de Categoria</a></li>
-                <li><a href="conctacto.html">Contacto</a></li>
-                <li><a href="gestion.html">Gestión</a></li>
-                <li><a href="Login.html">Iniciar Sesion</a></li>
-            </ul>
-            <button class="mobile-menu" id="mobileMenu">☰</button>
+          </a>
         </div>
-    </nav>
+      </a>
+      <ul class="nav-links">
+        <li><a href="main.html">Inicio</a></li>
+        <li><a href="publicidad.html">Publicidad</a></li>
+        <li><a href="lista.html">Lista de Categoria</a></li>
+        <li><a href="conctacto.html">Contacto</a></li>
+        <li><a href="gestion.html">Gestión</a></li>
+        <li><a href="Login.html">Iniciar Sesion</a></li>
+      </ul>
+      <button class="mobile-menu" id="mobileMenu">☰</button>
+    </div>
+  </nav>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">DESDE 2000</div>
-            <h1 class="hero-title">La Taberna del Monkey</h1>
-            <p class="hero-subtitle">Tradición, sabor y cultura en cada sorbo</p>
-            <div class="hero-cta">
-                <button class="btn btn-primary" id="reservaBtn">Reservar Mesa</button>
-                <button class="btn btn-secondary">Ver Especialidades</button>
-            </div>
+  <!-- Hero Section -->
+  <section id="inicio" class="hero">
+    <div class="hero-content fade-in">
+      <div class="hero-badge">DESDE 2000</div>
+      <h1 class="hero-title">La Taberna del Monkey</h1>
+      <p class="hero-subtitle">Tradición, sabor y cultura en cada sorbo</p>
+      <div class="hero-cta">
+        <button class="btn btn-primary" id="reservaBtn">Reservar Mesa</button>
+        <button class="btn btn-secondary" id="especialidadesBtn">Ver Especialidades</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="nosotros" class="about fade-in">
+    <div class="container">
+      <div class="about-container">
+        <div class="about-image">
+          <div class="about-img"></div>
         </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="nosotros" class="about">
-        <div class="container">
-            <div class="about-container">
-                <div class="about-image">
-                    <div class="about-img"></div>
-                </div>
-                <div class="about-content">
-                    <h2 class="section-title">¡Hola! Somos La Taberna</h2>
-                    <p class="about-text highlight">
-                        Somos un establecimiento tradicional con más de 30 años de experiencia, especializados en crear momentos memorables a través de bebidas excepcionales y un ambiente acogedor.
-                    </p>
-                    <p class="about-text">
-                        Nuestra pasión por la mixología y la tradición peruana nos impulsa a ofrecer las mejores experiencias gastronómicas. Cada cóctel es preparado con ingredientes seleccionados y recetas que han pasado de generación en generación.
-                    </p>
-                    <p class="about-text">
-                        Ubicados en el corazón del centro histórico, hemos sido testigos de miles de celebraciones, encuentros y momentos especiales.
-                    </p>
-                    
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <div class="stat-number">20+</div>
-                            <div class="stat-label">Años de Experiencia</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">500+</div>
-                            <div class="stat-label">Clientes Satisfechos</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">50+</div>
-                            <div class="stat-label">Especialidades Únicas</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="about-content">
+          <h2 class="section-title">¡Hola! Somos La Taberna</h2>
+          <p class="about-text highlight">
+            Somos un establecimiento tradicional con más de 30 años de experiencia, especializados en crear momentos memorables a través de bebidas excepcionales y un ambiente acogedor.
+          </p>
+          <p class="about-text">
+            Nuestra pasión por la mixología y la tradición peruana nos impulsa a ofrecer las mejores experiencias gastronómicas. Cada cóctel es preparado con ingredientes seleccionados y recetas que han pasado de generación en generación.
+          </p>
+          <p class="about-text">
+            Ubicados en el corazón del centro histórico, hemos sido testigos de miles de celebraciones, encuentros y momentos especiales.
+          </p>
+          <div class="about-stats">
+            <div class="stat-item">
+              <div class="stat-number">20+</div>
+              <div class="stat-label">Años de Experiencia</div>
             </div>
-        </div>
-    </section>
-
-    <!-- Promociones -->
-    <section id="promociones" class="promociones">
-        <div class="container">
-            <h2 class="section-title">Promociones Especiales</h2>
-            <div class="promociones-grid">
-                <div class="promo-card">
-                    <div class="promo-imagen">
-                        <img src="happy-hour.jpg" alt="Happy Hour">
-                    </div>
-                    <h3>Happy Hour</h3>
-                    <p class="promo-desc">Disfruta de nuestros cócteles de autor con una promoción especial 3x2</p>
-                    <p class="promo-time">Todos los viernes de 7:00 PM - 9:00 PM</p>
-                    <div class="promo-price">Desde S/. 20</div>
-                </div>
-                
-                <div class="promo-card">
-                    <div class="promo-imagen">
-                        <img src="cumpleanos.jpg" alt="Celebración de Cumpleaños">
-                    </div>
-                    <h3>Celebración Especial</h3>
-                    <p class="promo-desc">El cumpleañero recibe un trago especial de la casa completamente gratis</p>
-                    <p class="promo-time">Todos los días (presentar DNI)</p>
-                    <div class="promo-price">¡GRATIS!</div>
-                </div>
-                
-                <div class="promo-card">
-                    <div class="promo-imagen">
-                        <img src="mesa-romantica.jpg" alt="Mesa Romántica">
-                    </div>
-                    <h3>Mesa Romántica</h3>
-                    <p class="promo-desc">Ambiente especial para parejas con descuento en nuestra selección premium</p>
-                    <p class="promo-time">Viernes y Sábados</p>
-                    <div class="promo-price">30% OFF</div>
-                </div>
+            <div class="stat-item">
+              <div class="stat-number">500+</div>
+              <div class="stat-label">Clientes Satisfechos</div>
             </div>
-        </div>
-    </section>
-
-    <!-- Especialidades -->
-    <section id="especialidades" class="especialidades">
-        <div class="container">
-            <h2 class="section-title">Nuestras Especialidades</h2>
-            <div class="especialidades-showcase">
-                <div class="especialidad-item">
-                    <div class="especialidad-imagen">
-                        <img src=".jpg" alt="Pisco Sour Artesanal">
-                    </div>
-                    <h3>Pisco Sour Artesanal</h3>
-                    <p>Preparado con pisco peruano premium, clara de huevo fresca y nuestra receta tradicional familiar</p>
-                    <div class="especialidad-price">S/. 28</div>
-                </div>
-                
-                <div class="especialidad-item featured">
-                    <div class="featured-badge">MÁS POPULAR</div>
-                    <div class="especialidad-imagen">
-                        <img src=".jpg" alt="Monkey Special">
-                    </div>
-                    <h3>Monkey Special</h3>
-                    <p>Nuestra creación exclusiva con ingredientes secretos, desarrollada por nuestro maestro mixólogo desde 1990</p>
-                    <div class="especialidad-price">S/. 35</div>
-                </div>
-                
-                <div class="especialidad-item">
-                    <div class="especialidad-imagen">
-                        <img src=".jpg" alt="Chicha Morada Premium">
-                    </div>
-                    <h3>Chicha Morada Premium</h3>
-                    <p>Versión gourmet de la bebida tradicional peruana, endulzada con miel de abeja natural</p>
-                    <div class="especialidad-price">S/. 22</div>
-                </div>
+            <div class="stat-item">
+              <div class="stat-number">50+</div>
+              <div class="stat-label">Especialidades Únicas</div>
             </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <script src="publicidad.js"></script>
+  <!-- Especialidades -->
+  <section id="especialidades" class="especialidades fade-in">
+    <div class="container">
+      <h2 class="section-title">Nuestras Especialidades</h2>
+      <div class="especialidades-showcase">
+        <div class="especialidad-item">
+          <div class="especialidad-imagen">
+            <img src=".jpg" alt="Pisco Sour Artesanal">
+          </div>
+          <h3>Pisco Sour Artesanal</h3>
+          <p>Preparado con pisco peruano premium, clara de huevo fresca y nuestra receta tradicional familiar</p>
+          <div class="especialidad-price">S/. 28</div>
+        </div>
+        <div class="especialidad-item featured">
+          <div class="featured-badge">MÁS POPULAR</div>
+          <div class="especialidad-imagen">
+            <img src=".jpg" alt="Monkey Special">
+          </div>
+          <h3>Monkey Special</h3>
+          <p>Nuestra creación exclusiva con ingredientes secretos, desarrollada por nuestro maestro mixólogo desde 1990</p>
+          <div class="especialidad-price">S/. 35</div>
+        </div>
+        <div class="especialidad-item">
+          <div class="especialidad-imagen">
+            <img src=".jpg" alt="Chicha Morada Premium">
+          </div>
+          <h3>Chicha Morada Premium</h3>
+          <p>Versión gourmet de la bebida tradicional peruana, endulzada con miel de abeja natural</p>
+          <div class="especialidad-price">S/. 22</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Reservas -->
+  <div class="modal" id="modalReserva">
+    <div class="modal-content">
+      <h2>Reservar Mesa</h2>
+      <form id="formReserva">
+        <input type="text" name="nombre" placeholder="Tu nombre" required>
+        <input type="email" name="email" placeholder="Correo electrónico" required>
+        <input type="tel" name="telefono" placeholder="Teléfono" required>
+        <input type="date" name="fecha" required>
+        <select name="personas" required>
+          <option value="">Número de personas</option>
+          <option value="2">2 personas</option>
+          <option value="4">4 personas</option>
+          <option value="6">6 personas</option>
+          <option value="8">8 personas</option>
+        </select>
+        <button type="submit" class="btn-submit">Confirmar Reserva</button>
+        <button type="button" class="btn-close" id="closeModal">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Script externo -->
+  <script src="publicidad.js"></script>
 </body>
 </html>
