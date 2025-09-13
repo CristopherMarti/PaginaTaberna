@@ -1,199 +1,72 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Elementos del DOM
-    const navItems = document.querySelectorAll('.nav-item');
-    const proyectoCards = document.querySelectorAll('.proyecto-card');
-    const modales = document.querySelectorAll('.modal-container');
-    const modalCerrar = document.querySelectorAll('.modal-close');
-    const modalBackdrops = document.querySelectorAll('.modal-backdrop');
-    
-    // FUNCIONES PRINCIPALES
-    
-    // Navegación
-  function inicializarNavegacion() {
-    const navItems = document.querySelectorAll('.nav-item');
-    navItems.forEach(item => {
-      item.addEventListener('click', function() {
-        navItems.forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
-  }
-    
-    // Modales
-    function abrirModal(id) {
-        const modal = document.getElementById(`modal-${id}`);
-        if (!modal) return;
-        
-        // Prevenir scroll en el body
-        document.body.style.overflow = 'hidden';
-        
-        // Mostrar el modal con animación
-        modal.classList.add('active');
-        
-        // Enfoque para accesibilidad
-        const primerElementoEnfocable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        if (primerElementoEnfocable) {
-            primerElementoEnfocable.focus();
-        }
-    }
-    
-    function cerrarModales() {
-        // Restaurar scroll en el body
-        document.body.style.overflow = '';
-        
-        // Ocultar todos los modales
-        modales.forEach(modal => {
-            modal.classList.remove('active');
-        });
-    }
-    
-    function scrollToCard(id) {
-        const card = document.querySelector(`[data-id="${id}"]`);
-        if (card) {
-            setTimeout(() => {
-                card.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center'
-                });
-            }, 300);
-        }
-    }
-    
-    // Animaciones
-    function animarTarjetas() {
-        proyectoCards.forEach((tarjeta, index) => {
-            setTimeout(() => {
-                tarjeta.style.opacity = '0';
-                tarjeta.style.transform = 'translateY(20px)';
-                tarjeta.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+// Optimized JavaScript
+        class TabernaApp {
+            constructor() {
+                this.navbar = document.getElementById('navbar');
+                this.mobileMenu = document.getElementById('mobileMenu');
+                this.navLinks = document.getElementById('navLinks');
+                this.animatedElements = document.querySelectorAll('.fade-in, .slide-left, .slide-right, .zoom-in');
                 
-                setTimeout(() => {
-                    tarjeta.style.opacity = '1';
-                    tarjeta.style.transform = 'translateY(0)';
-                }, 50);
-            }, index * 150); // Escalonar la animación para cada tarjeta
-        });
-    }
-    
-    // EVENTOS
-    
-    // Configurar eventos para tarjetas de proyectos
-    function configurarEventosTarjetas() {
-        proyectoCards.forEach(card => {
-            // Hacer las tarjetas enfocables
-            card.setAttribute('tabindex', '0');
-            
-            // Evento de clic
-            card.addEventListener('click', function() {
-                const proyectoId = this.getAttribute('data-id');
-                abrirModal(proyectoId);
-            });
-            
-            // Navegación con teclado para accesibilidad
-            card.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const proyectoId = this.getAttribute('data-id');
-                    abrirModal(proyectoId);
-                }
-            });
-        });
-    }
-    
-    // Configurar eventos para cerrar modales
-    function configurarEventosCierre() {
-        // Botones de cierre
-        modalCerrar.forEach(boton => {
-            boton.addEventListener('click', function() {
-                const modalId = this.closest('.modal-container').id;
-                const proyectoId = modalId.replace('modal-', '');
-                cerrarModales();
-                scrollToCard(proyectoId);
-            });
-        });
-        
-        // Backdrop (fondo oscuro)
-        modalBackdrops.forEach(backdrop => {
-            backdrop.addEventListener('click', cerrarModales);
-        });
-        
-        // Cerrar con tecla Escape
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                cerrarModales();
+                this.init();
             }
-        });
-    }
-    
-    // Configurar trampa de foco para accesibilidad
-    function configurarTrampaFoco() {
-        modales.forEach(modal => {
-            modal.addEventListener('keydown', function(e) {
-                if (e.key === 'Tab') {
-                    const focusables = modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-                    const firstFocusable = focusables[0];
-                    const lastFocusable = focusables[focusables.length - 1];
-                    
-                    if (e.shiftKey) { // Shift + Tab
-                        if (document.activeElement === firstFocusable) {
-                            e.preventDefault();
-                            lastFocusable.focus();
-                        }
-                    } else { // Tab
-                        if (document.activeElement === lastFocusable) {
-                            e.preventDefault();
-                            firstFocusable.focus();
-                        }
+
+            init() {
+                this.setupScrollEffects();
+                this.setupMobileMenu();
+                this.setupAnimations();
+            }
+
+            setupScrollEffects() {
+                let ticking = false;
+                
+                const handleScroll = () => {
+                    if (!ticking) {
+                        requestAnimationFrame(() => {
+                            this.navbar.classList.toggle('scrolled', window.scrollY > 50);
+                            ticking = false;
+                        });
+                        ticking = true;
                     }
-                }
-            });
-        });
-    }
-    
-    // INICIALIZACIÓN
-    function inicializarAplicacion() {
-        inicializarNavegacion();
-        configurarEventosTarjetas();
-        configurarEventosCierre();
-        configurarTrampaFoco();
-        animarTarjetas();
-    }
-    
-    // Iniciar la aplicación
-    inicializarAplicacion();
-});
+                };
 
-// script.js
-document.addEventListener("DOMContentLoaded", () => {
-  // Animaciones con IntersectionObserver
-  const elements = document.querySelectorAll(".fade-in, .slide-left, .slide-right, .zoom-in");
+                window.addEventListener('scroll', handleScroll, { passive: true });
+            }
 
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-        observer.unobserve(entry.target); // Ejecuta solo una vez
-      }
-    });
-  }, { threshold: 0.2 });
+            setupMobileMenu() {
+                this.mobileMenu.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.navLinks.classList.toggle('active');
+                });
 
-  elements.forEach(el => observer.observe(el));
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!this.mobileMenu.contains(e.target) && !this.navLinks.contains(e.target)) {
+                        this.navLinks.classList.remove('active');
+                    }
+                });
+            }
 
-  // Navbar efecto al hacer scroll
-  const navbar = document.querySelector(".navbar");
-  window.addEventListener("scroll", () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add("scrolled");
-    } else {
-      navbar.classList.remove("scrolled");
-    }
-  });
+            setupAnimations() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('show');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.2,
+                    rootMargin: '0px 0px -50px 0px'
+                });
 
-  // Animación menú móvil
-  const mobileMenu = document.getElementById("mobileMenu");
-  const navLinks = document.querySelector(".nav-links");
+                this.animatedElements.forEach(element => {
+                    observer.observe(element);
+                });
+            }
+        }
 
-  mobileMenu.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-  });
-});
+        // Initialize app when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => new TabernaApp());
+        } else {
+            new TabernaApp();
+        }

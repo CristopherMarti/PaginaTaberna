@@ -7,88 +7,72 @@
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <!-- Barra de navegación -->
-    <nav class="navbar">
-        <div class="nav-content">
-            <a href="index.html" class="logo">
-                <div class="logo">
-                    <a href="main.html">
-                        <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo zoom-in">
-                    </a>
-                </div>
-            </a>    
-            <ul class="nav-links">
-                <li><a href="main.html">Inicio</a></li>
-                <li><a href="publicidad.html">Publicidad</a></li>
-                <li><a href="lista.html">Lista de Categoria</a></li>
-                <li><a href="conctacto.html">Contacto</a></li>
-                <li><a href="gestion.html">Gestión</a></li>
-                <li><a href="Login.html">Iniciar Sesion</a></li>
-            </ul>
-            <button class="mobile-menu" id="mobileMenu">☰</button>
+     <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <a href="#" class="logo">
+                    <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+                </a>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="main.html">Inicio</a></li>
+                    <li><a href="publicidad.html">Publicidad</a></li>
+                    <li><a href="lista.html">Lista de Categoría</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="gestion.html">Gestión</a></li>
+                    <li><a href="Login.html">Iniciar Sesión</a></li>
+                </ul>
+                <button class="mobile-menu" id="mobileMenu" aria-label="Menú móvil">☰</button>
+            </div>
         </div>
     </nav>
 
-    <!-- Contenido principal -->
-    <main id="inicio" class="inicio">
-        <section class="info-section">
-            <p class="greeting fade-in">Hola, Bienvenido a la Taberna del Monkey <span class="highlight">✌️</span></p>
-            <h1 class="title slide-left">Tradición</h1>
-            <p class="tagline slide-right">Memorias</p>
-            <p class="description fade-in">
-                Somos una empresa “Taberna del Monkey", un lugar donde la tradición y la modernidad se encuentran para ofrecerte una experiencia única. Ubicado en el corazón de la hermosa “Ciudad Incontrastable", nuestro bar es un homenaje a la rica herencia cultural de los Andes, presentando una selección exclusiva de bebidas tradicionales y contemporáneas elaboradas con ingredientes autóctonos.
-            </p>
-        </section>
-
-        <section class="image-section">
-            <img src="img/Taberna.jpg" alt="taberna" class="perfil-imagen zoom-in">
+    <!-- Main Content -->
+    <main class="container">
+        <section class="inicio" id="inicio">
+            <div class="info-section">
+                <p class="greeting fade-in">Hola, Bienvenido a la Taberna del Monkey <span class="highlight">✌️</span></p>
+                <h1 class="title slide-left">Tradición</h1>
+                <p class="tagline slide-right">Memorias</p>
+                <p class="description fade-in">
+                    Somos una empresa "Taberna del Monkey", un lugar donde la tradición y la modernidad se encuentran para ofrecerte una experiencia única. Ubicado en el corazón de la hermosa "Ciudad Incontrastable", nuestro bar es un homenaje a la rica herencia cultural de los Andes, presentando una selección exclusiva de bebidas tradicionales y contemporáneas elaboradas con ingredientes autóctonos.
+                </p>
+            </div>
+            <div class="image-section">
+                <img src="img/Taberna.jpg" alt="Interior de la Taberna del Monkey" class="perfil-imagen zoom-in" loading="lazy">
+            </div>
         </section>
     </main>
 
-    <!-- servicio -->
-    <section id="servicios" class="servicio fade-in">
+    <!-- Services Section -->
+    <section class="servicio fade-in">
         <div class="container">
-            <!-- Collage de imágenes en lugar del título simple -->
-            <div class="collage-header zoom-in">
-                <!-- Imagen principal grande -->
-                <div class="collage-div">
-                    <img src="" 
-                         alt="Equipo creativo trabajando" 
-                         style="width: 100%; height: 100%; object-fit: cover;">
-                    <!-- Overlay con título -->
-                    <div style="position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%); display: flex; align-items: center; justify-content: center;">
-                        <h2 class="text_01">Cómo puedo ayudarte</h2>
-                    </div>
-                </div>
+            <div class="collage-div zoom-in">
+                <h2 class="text_01">Cómo puedo ayudarte</h2>
             </div>
-            
             <p class="description_01 slide-right">
-                Servicios especializados en la creación del cocteles.
+                Servicios especializados en la creación de cócteles.
             </p>
         </div>
     </section>
 
-    <!-- Historia -->
+    <!-- History Section -->
     <section class="vision">
         <div class="container">
-            <div>
-                <h2 class="text_02 fade-in"> Historia </h2>
-                <div class="divider"></div>
-            </div>
+            <h2 class="text_02 fade-in">Historia</h2>
+            <div class="divider"></div>
             <div class="mi-grid">
                 <div class="image-section">
-                    <img src="LogosTabernas/Logo-negro.png" alt="sitio " class="mi-imagen slide-left">
+                    <img src="LogosTabernas/Logo-negro.png" alt="Logo histórico de la Taberna del Monkey" class="mi-imagen slide-left" loading="lazy">
                 </div>
                 <div class="vision-content slide-right">
-                    <p class="mb-6">Nuestra empresa se fundó hace 25 años, comienza con el amor y la pasión compartida por las tradiciones andinas de Martin y Yesenia...</p>
-                    <p class="mb-6">El éxito de la taberna no tardó en llegar. Sus cócteles de chicha morada y bebidas a base de frutas exóticas se convirtieron en los favoritos...</p>
-                    <p class="mb-8">Martin y Yesenia continuaron innovando, siempre fieles a su misión de preservar y compartir la cultura andina...</p>
+                    <p>Nuestra empresa se fundó hace 25 años, comienza con el amor y la pasión compartida por las tradiciones andinas de Martin y Yesenia...</p>
+                    <p>El éxito de la taberna no tardó en llegar. Sus cócteles de chicha morada y bebidas a base de frutas exóticas se convirtieron en los favoritos...</p>
+                    <p>Martin y Yesenia continuaron innovando, siempre fieles a su misión de preservar y compartir la cultura andina...</p>
                 </div>
             </div>
         </div>
     </section>
-
-    
 
     <script src="mian.js"></script>
 </body>
