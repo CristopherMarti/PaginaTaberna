@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión - Taberna del Monkey</title>
     <link rel="stylesheet" href="gestion.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </head>
 <body>
     <!-- Navegación -->
@@ -31,14 +32,13 @@
             <p class="subtitle">Control de Productos y Ventas</p>
         </div>
 
-        <!-- Navegación por pestañas usando radio buttons -->
+        <!-- Navegación por pestañas (SIN CONFIGURACIÓN) -->
         <div class="tabs-container">
             <input type="radio" name="tab" id="tab-productos" checked>
             <input type="radio" name="tab" id="tab-ventas">
             <input type="radio" name="tab" id="tab-reportes">
-            <input type="radio" name="tab" id="tab-config">
 
-            <!-- Labels como pestañas -->
+            <!-- Labels como pestañas - Solo 3 -->
             <div class="tabs-nav">
                 <label for="tab-productos" class="tab-label">
                     <span class="tab-icon">📦</span>
@@ -51,10 +51,6 @@
                 <label for="tab-reportes" class="tab-label">
                     <span class="tab-icon">📊</span>
                     <span>Reportes</span>
-                </label>
-                <label for="tab-config" class="tab-label">
-                    <span class="tab-icon">⚙️</span>
-                    <span>Configuración</span>
                 </label>
             </div>
 
@@ -248,24 +244,179 @@
                 </div>
             </div>
 
-            <!-- Contenido de Reportes -->
+            <!-- Contenido de Reportes CON GRÁFICAS -->
             <div class="tab-content" id="content-reportes">
                 <h2 class="section-title">Reportes y Estadísticas</h2>
-                <div class="report-placeholder">
-                    <p>📊 Sección de reportes en desarrollo</p>
-                    <p>Aquí podrás ver gráficos y estadísticas detalladas</p>
-                </div>
-            </div>
+                
+                <div class="charts-grid">
+                    <!-- Gráfica de Ventas por Mes -->
+                    <div class="chart-card">
+                        <h3>📈 Ventas Mensuales</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="ventasMensuales"></canvas>
+                        </div>
+                    </div>
 
-            <!-- Contenido de Configuración -->
-            <div class="tab-content" id="content-config">
-                <h2 class="section-title">Configuración del Sistema</h2>
-                <div class="report-placeholder">
-                    <p>⚙️ Configuración del sistema</p>
-                    <p>Gestión de usuarios y ajustes generales</p>
+                    <!-- Gráfica de Stock por Categoría -->
+                    <div class="chart-card">
+                        <h3>📦 Stock por Categoría</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="stockCategoria"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica de Productos más Vendidos -->
+                    <div class="chart-card">
+                        <h3>🏆 Productos más Vendidos</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="productosMasVendidos"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica de Métodos de Pago -->
+                    <div class="chart-card">
+                        <h3>💳 Métodos de Pago</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="metodosPago"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        // Gráfica de Ventas Mensuales
+        const ctxVentas = document.getElementById('ventasMensuales').getContext('2d');
+        new Chart(ctxVentas, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'],
+                datasets: [{
+                    label: 'Ventas (S/.)',
+                    data: [12500, 15200, 18700, 16300, 19800, 22400, 21000, 24500, 23200, 26800],
+                    borderColor: '#720008',
+                    backgroundColor: 'rgba(114, 0, 8, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'S/. ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Stock por Categoría
+        const ctxStock = document.getElementById('stockCategoria').getContext('2d');
+        new Chart(ctxStock, {
+            type: 'bar',
+            data: {
+                labels: ['Licores', 'Gaseosas', 'Insumos', 'Vasos y Jarras'],
+                datasets: [{
+                    label: 'Unidades en Stock',
+                    data: [145, 89, 234, 156],
+                    backgroundColor: [
+                        'rgba(114, 0, 8, 0.8)',
+                        'rgba(68, 68, 68, 0.8)',
+                        'rgba(114, 0, 8, 0.6)',
+                        'rgba(68, 68, 68, 0.6)'
+                    ],
+                    borderColor: [
+                        '#720008',
+                        '#444444',
+                        '#720008',
+                        '#444444'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Productos más Vendidos
+        const ctxProductos = document.getElementById('productosMasVendidos').getContext('2d');
+        new Chart(ctxProductos, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pisco Sour', 'Cerveza Pilsen', 'Monkey Special', 'Chicha Morada', 'Otros'],
+                datasets: [{
+                    data: [285, 198, 167, 142, 208],
+                    backgroundColor: [
+                        '#720008',
+                        '#8B0010',
+                        '#A50018',
+                        '#C00020',
+                        '#444444'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Métodos de Pago
+        const ctxPago = document.getElementById('metodosPago').getContext('2d');
+        new Chart(ctxPago, {
+            type: 'pie',
+            data: {
+                labels: ['Efectivo', 'Tarjeta', 'Yape', 'Plin'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: [
+                        '#720008',
+                        '#444444',
+                        '#8B0010',
+                        '#666666'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
