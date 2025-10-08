@@ -8,20 +8,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </head>
 <body>
-    <!-- Navegación -->
     <nav class="navbar">
         <div class="nav-content">
-            <a href="index.html" class="logo">
-                <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna">
-            </a>    
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+            </a>
             <ul class="nav-links">
                 <li><a href="main.html">Inicio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
-                <li><a href="lista.html">Lista de Categoria</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="lista.html">Lista de Categoría</a></li>
+                <li><a href="conctacto.html">Contacto</a></li>
                 <li><a href="gestion.html">Gestión</a></li>
                 <li><a href="Login.html">Iniciar Sesión</a></li>
             </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
         </div>
     </nav>
 
@@ -285,7 +285,138 @@
         </div>
     </div>
 
-    <!-- Script externo de JavaScript -->
-    <script src="gestion.js"></script>
+    <script>
+        // Gráfica de Ventas Mensuales
+        const ctxVentas = document.getElementById('ventasMensuales').getContext('2d');
+        new Chart(ctxVentas, {
+            type: 'line',
+            data: {
+                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'],
+                datasets: [{
+                    label: 'Ventas (S/.)',
+                    data: [12500, 15200, 18700, 16300, 19800, 22400, 21000, 24500, 23200, 26800],
+                    borderColor: '#720008',
+                    backgroundColor: 'rgba(114, 0, 8, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'S/. ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Stock por Categoría
+        const ctxStock = document.getElementById('stockCategoria').getContext('2d');
+        new Chart(ctxStock, {
+            type: 'bar',
+            data: {
+                labels: ['Licores', 'Gaseosas', 'Insumos', 'Vasos y Jarras'],
+                datasets: [{
+                    label: 'Unidades en Stock',
+                    data: [145, 89, 234, 156],
+                    backgroundColor: [
+                        'rgba(114, 0, 8, 0.8)',
+                        'rgba(68, 68, 68, 0.8)',
+                        'rgba(114, 0, 8, 0.6)',
+                        'rgba(68, 68, 68, 0.6)'
+                    ],
+                    borderColor: [
+                        '#720008',
+                        '#444444',
+                        '#720008',
+                        '#444444'
+                    ],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Productos más Vendidos
+        const ctxProductos = document.getElementById('productosMasVendidos').getContext('2d');
+        new Chart(ctxProductos, {
+            type: 'doughnut',
+            data: {
+                labels: ['Pisco Sour', 'Cerveza Pilsen', 'Monkey Special', 'Chicha Morada', 'Otros'],
+                datasets: [{
+                    data: [285, 198, 167, 142, 208],
+                    backgroundColor: [
+                        '#720008',
+                        '#8B0010',
+                        '#A50018',
+                        '#C00020',
+                        '#444444'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right'
+                    }
+                }
+            }
+        });
+
+        // Gráfica de Métodos de Pago
+        const ctxPago = document.getElementById('metodosPago').getContext('2d');
+        new Chart(ctxPago, {
+            type: 'pie',
+            data: {
+                labels: ['Efectivo', 'Tarjeta', 'Yape', 'Plin'],
+                datasets: [{
+                    data: [45, 25, 20, 10],
+                    backgroundColor: [
+                        '#720008',
+                        '#444444',
+                        '#8B0010',
+                        '#666666'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

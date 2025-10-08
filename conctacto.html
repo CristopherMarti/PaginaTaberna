@@ -3,33 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taberna del Monkey</title>
-    <link rel="stylesheet" href="contacto.css">|
+    <title>Contacto - Taberna del Monkey</title>
+    <link rel="stylesheet" href="contacto.css">
 </head>
 <body>
-    <!-- Barra de navegación -->
+    <!-- Navbar -->
     <nav class="navbar">
         <div class="nav-content">
-        <a href="index.html" class="logo">
-            <div class="logo">
-            <a href="main.html">
-            <img src="LogosTabernas/Logo-color-rojo.png" alt="logo de taberna" class="logo">
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
             </a>
-            </div>
-        </a>    
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="mobile-menu-label">☰</label>
             <ul class="nav-links">
                 <li><a href="main.html">Inicio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
-                <li><a href="lista.html">Lista de Categoria</a></li>
+                <li><a href="lista.html">Lista de Categoría</a></li>
                 <li><a href="conctacto.html">Contacto</a></li>
                 <li><a href="gestion.html">Gestión</a></li>
-                <li><a href="Login.html">Iniciar Sesion</a></li>
+                <li><a href="Login.html">Iniciar Sesión</a></li>
             </ul>
-            <button class="mobile-menu" id="mobileMenu">☰</button>
         </div>
     </nav>
 
-     <!-- Contact -->
+    <!-- Contact -->
     <section id="contacto" class="contact">
         <div class="contact-content">
             <h2>¡Vive la Experiencia Completa!</h2>
@@ -53,44 +50,40 @@
                 </div>
             </div>
             
-            <button class="btn btn-primary" id="finalCtaBtn">¡Reservar Ahora!</button>
+            <a href="#reservaModal" class="btn btn-primary">¡Reservar Ahora!</a>
         </div>
     </section>
 
-    <!-- Sección con Imágenes y Botón a Contacto -->
+    <!-- Imágenes -->
     <section class="imagenes-contacto">
         <div class="container">
             <h2 class="section-title">Conoce Nuestra Taberna</h2>
             <div class="imagenes-grid">
-                <div class="imagen-item">
-                    <!-- Aquí va imagen 1 -->
-                </div>
-                <div class="imagen-item">
-                    <!-- Aquí va imagen 2 -->
-                </div>
-                <div class="imagen-item">
-                    <!-- Aquí va imagen 3 -->
-                </div>
+                <div class="imagen-item"></div>
+                <div class="imagen-item"></div>
+                <div class="imagen-item"></div>
             </div>
             
             <div class="contacto-cta">
                 <h3>¿Listo para visitarnos?</h3>
                 <p>Conoce nuestra ubicación, horarios y haz tu reserva</p>
-                <a href="conctacto.html" class="btn btn-primary">Ir a Contacto</a>
+                <a href="#reservaModal" class="btn btn-primary">Hacer Reserva</a>
             </div>
         </div>
     </section>
 
-    <!-- Modal Simple -->
+    <!-- Modal (se abre con :target) -->
     <div class="modal" id="reservaModal">
         <div class="modal-content">
-            <span class="close-modal" id="closeModal">&times;</span>
+            <a href="#" class="close-modal">&times;</a>
             <h3>¡Reserva tu Mesa!</h3>
             <p>Para hacer tu reserva, contáctanos:</p>
-            <p><strong> +51 986 336 812</strong></p>
+            <p><strong>+51 986 336 812</strong></p>
             <p>O visítanos en:</p>
-            <p><strong> Av. Principal 123, Centro Histórico</strong></p>
-            <button class="btn btn-primary" id="modalCloseBtn">Entendido</button>
+            <p><strong>Av. Principal 123, Centro Histórico</strong></p>
+            <a href="#" class="btn btn-primary">Entendido</a>
         </div>
     </div>
+</body>
+</html>
     
