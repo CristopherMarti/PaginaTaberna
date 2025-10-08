@@ -14,7 +14,7 @@
     <img src="LogosTabernas/Logo-negro.png" alt="Logo taberna" class="logo-empresa">
 
     <!-- Formulario LOGIN -->
-    <div class="formulario" >
+    <div class="formulario">
       <h2>Login</h2>
       <form id="login-form">
         <div class="input-contenedor">
@@ -27,18 +27,32 @@
           <input type="password" id="password" placeholder="Contraseña" required>
         </div>
 
-        <button type="submit" class="boton">Login</button>
+        <button type="submit" class="boton">Ingresar</button>
 
-        <p class="texto-legal">Al registrarte, aceptas nuestras Condiciones de uso y Política de privacidad.</p>
+        <p class="texto-legal">Al ingresar, aceptas nuestras Condiciones de uso y Política de privacidad.</p>
         
       </form>
     </div>
 
-    
-
     <a href="main.html" class="volver-inicio">Volver al inicio</a>
   </div>
-
+  
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      // Validación simple - verifica que los campos no estén vacíos
+      if (email && password) {
+        // Redirige a la página de lista de categorías
+        window.location.href = 'lista.html';
+      } else {
+        alert('Por favor completa todos los campos');
+      }
+    });
+  </script>
   
 </body>
 </html>
