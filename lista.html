@@ -1,108 +1,316 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gestión de Categorías - Taberna del Monkey</title>
-  <link rel="stylesheet" href="lista.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - Taberna del Monkey</title>
+    <link rel="stylesheet" href="lista.css">
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="nav-content">
-        <a href="main.html" class="logo">
-            <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
-        </a>
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="mobile-menu-label">☰</label>
-        <ul class="nav-links">
-            <li><a href="lista.html">Lista de Categoría</a></li>
-            <li><a href="gestion.html">Gestión</a></li>
-            <li><a href="CreacionProducto.html">Creación Producto</a></li>
-            <li><a href="Login.html">Iniciar Sesión</a></li>
-        </ul>
-    </div>
-  </nav>
-
-  <main class="container">
-    <header class="header">
-      <div class="monkey-emoji">🐵</div>
-      <h1>Gestión de Categorías</h1>
-      <p class="subtitle">Administra las categorías del inventario</p>
-    </header>
-
-    <!-- Botón para ir a Creación de Productos -->
-    <div class="action-buttons">
-      <button class="btn-create-product" onclick="window.location.href='CreacionProducto.html'">
-        📦 Ir a Creación de Productos
-      </button>
-      <button class="btn-primary" onclick="openCreateModal()">
-        ➕ Nueva Categoría
-      </button>
+    <div class="header">
+        <h1>Gestión de Categorías y Productos</h1>
+        <p>Administra el inventario por categoría</p>
     </div>
 
-    <!-- Lista de Categorías -->
-    <section class="categories-section">
-      <h2>Categorías Actuales</h2>
-      <div id="categories-list" class="categories-list">
-        <!-- Las categorías se cargarán dinámicamente -->
-      </div>
-    </section>
-  </main>
-
-  <!-- Modal para Crear/Editar Categoría -->
-  <div id="categoryModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modalTitle">Nueva Categoría</h2>
-        <button class="close" onclick="closeModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form id="categoryForm">
-          <input type="hidden" id="categoryId">
-          
-          <div class="form-group">
-            <label for="categoryName">Nombre de la Categoría *</label>
-            <input type="text" id="categoryName" placeholder="Ej: Licores" required>
-          </div>
-
-          <div class="form-group">
-            <label for="categoryIcon">Ícono (Emoji) *</label>
-            <input type="text" id="categoryIcon" placeholder="Ej: 🥃" maxlength="2" required>
-          </div>
-
-          <div class="form-group">
-            <label for="categoryDescription">Descripción</label>
-            <textarea id="categoryDescription" rows="3" placeholder="Descripción de la categoría"></textarea>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
-            <button type="submit" class="btn-primary" id="submitBtn">Guardar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal de Confirmación -->
-  <div id="confirmModal" class="modal">
-    <div class="modal-content modal-small">
-      <div class="modal-header">
-        <h2>Confirmar Eliminación</h2>
-        <button class="close" onclick="closeConfirmModal()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <p>¿Estás seguro de eliminar esta categoría?</p>
-        <p class="warning">⚠️ Esta acción no se puede deshacer.</p>
-        <div class="form-actions">
-          <button class="btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
-          <button class="btn-danger" onclick="confirmDelete()">Eliminar</button>
+    <div class="container">
+        <!-- Filtros de Categorías -->
+        <div class="filter-section">
+            <div class="filter-title">
+                <span>🔍</span>
+                <span>Filtrar por Categoría</span>
+            </div>
+            <div class="categories-grid">
+                <button class="category-btn active" onclick="filterCategory(null)">
+                    <div class="category-icon">📦</div>
+                    <div class="category-name">Todas</div>
+                    <div class="category-count" id="count-all">12 productos</div>
+                </button>
+                <button class="category-btn" onclick="filterCategory(1)">
+                    <div class="category-icon">🥃</div>
+                    <div class="category-name">Licores</div>
+                    <div class="category-count" id="count-1">4 productos</div>
+                </button>
+                <button class="category-btn" onclick="filterCategory(2)">
+                    <div class="category-icon">🥤</div>
+                    <div class="category-name">Gaseosas</div>
+                    <div class="category-count" id="count-2">4 productos</div>
+                </button>
+                <button class="category-btn" onclick="filterCategory(3)">
+                    <div class="category-icon">🍺</div>
+                    <div class="category-name">Vasos y Jarras</div>
+                    <div class="category-count" id="count-3">4 productos</div>
+                </button>
+            </div>
         </div>
-      </div>
-    </div>
-  </div>
 
-  <script src="lista.js"></script>
+        <!-- Sección de Productos -->
+        <div class="products-section">
+            <div class="products-header">
+                <div class="products-info">
+                    <h2 id="section-title">Todos los Productos</h2>
+                    <p id="products-count">12 productos encontrados</p>
+                </div>
+                <button class="btn-new" id="btn-new-product" onclick="openCreateModal()">
+                    <span>➕</span>
+                    <span>Nuevo Producto</span>
+                </button>
+            </div>
+
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-state-icon">📦</div>
+                <p>Selecciona una categoría para gestionar sus productos</p>
+            </div>
+
+            <div id="table-container" class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Unidad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-tbody">
+                        <!-- Los productos se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Producto -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Nuevo Producto</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Categoría</label>
+                    <input type="text" id="form-category" disabled>
+                </div>
+                <div class="form-group">
+                    <label>Nombre del Producto *</label>
+                    <input type="text" id="form-name" placeholder="Ej: Pisco Acholado">
+                </div>
+                <div class="form-group">
+                    <label>Precio (S/.) *</label>
+                    <input type="number" step="0.01" id="form-price" placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label>Stock *</label>
+                    <input type="number" id="form-stock" placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Unidad de Medida *</label>
+                    <select id="form-unit">
+                        <option value="">Seleccionar...</option>
+                        <option value="Botella">Botella</option>
+                        <option value="Vaso">Vaso</option>
+                        <option value="Jarra">Jarra</option>
+                        <option value="Unidad">Unidad</option>
+                        <option value="Caja">Caja</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                    <button class="btn-save" onclick="saveProduct()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const categories = {
+            1: { name: 'Licores', icon: '🥃' },
+            2: { name: 'Gaseosas', icon: '🥤' },
+            3: { name: 'Vasos y Jarras', icon: '🍺' }
+        };
+
+        let products = [
+            { id: 1, name: 'Pisco Quebranta', categoryId: 1, price: 45.00, stock: 25, unit: 'Botella' },
+            { id: 2, name: 'Pisco Sour', categoryId: 1, price: 28.00, stock: 30, unit: 'Vaso' },
+            { id: 3, name: 'Cerveza Pilsen', categoryId: 1, price: 14.00, stock: 40, unit: 'Botella' },
+            { id: 4, name: 'Ron Cartavio', categoryId: 1, price: 55.00, stock: 15, unit: 'Botella' },
+            { id: 5, name: 'Coca Cola', categoryId: 2, price: 3.50, stock: 50, unit: 'Botella' },
+            { id: 6, name: 'Inca Kola', categoryId: 2, price: 3.50, stock: 45, unit: 'Botella' },
+            { id: 7, name: 'Sprite', categoryId: 2, price: 3.00, stock: 35, unit: 'Botella' },
+            { id: 8, name: 'Chicha Morada', categoryId: 2, price: 22.00, stock: 15, unit: 'Jarra' },
+            { id: 9, name: 'Vaso Cervecero', categoryId: 3, price: 8.00, stock: 50, unit: 'Unidad' },
+            { id: 10, name: 'Copa de Vino', categoryId: 3, price: 12.00, stock: 30, unit: 'Unidad' },
+            { id: 11, name: 'Jarra 1L', categoryId: 3, price: 15.00, stock: 20, unit: 'Unidad' },
+            { id: 12, name: 'Vaso Shot', categoryId: 3, price: 5.00, stock: 60, unit: 'Unidad' }
+        ];
+
+        let selectedCategory = null;
+        let editingProduct = null;
+
+        function filterCategory(categoryId) {
+            selectedCategory = categoryId;
+            
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.closest('.category-btn').classList.add('active');
+            
+            updateProductsList();
+            updateUI();
+        }
+
+        function updateProductsList() {
+            const tbody = document.getElementById('products-tbody');
+            const filteredProducts = selectedCategory 
+                ? products.filter(p => p.categoryId === selectedCategory)
+                : products;
+
+            if (filteredProducts.length === 0 && selectedCategory) {
+                tbody.innerHTML = '';
+                return;
+            }
+
+            tbody.innerHTML = filteredProducts.map(product => `
+                <tr>
+                    <td>${product.id}</td>
+                    <td><strong>${product.name}</strong></td>
+                    <td>${categories[product.categoryId].name}</td>
+                    <td>S/. ${product.price.toFixed(2)}</td>
+                    <td>${product.stock}</td>
+                    <td>${product.unit}</td>
+                    <td>
+                        <span class="status-badge ${
+                            product.stock > 20 ? 'status-disponible' : 
+                            product.stock > 10 ? 'status-medio' : 
+                            'status-bajo'
+                        }">
+                            ${product.stock > 20 ? 'DISPONIBLE' : product.stock > 10 ? 'MEDIO' : 'BAJO'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-edit" onclick="openEditModal(${product.id})">✏️ Editar</button>
+                            <button class="btn-action btn-delete" onclick="deleteProduct(${product.id})">🗑️ Eliminar</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateUI() {
+            const filteredProducts = selectedCategory 
+                ? products.filter(p => p.categoryId === selectedCategory)
+                : products;
+
+            document.getElementById('section-title').textContent = 
+                selectedCategory ? categories[selectedCategory].name : 'Todos los Productos';
+            
+            document.getElementById('products-count').textContent = 
+                `${filteredProducts.length} productos encontrados`;
+
+            document.getElementById('btn-new-product').disabled = !selectedCategory;
+
+            if (!selectedCategory) {
+                document.getElementById('empty-state').style.display = 'block';
+                document.getElementById('table-container').style.display = 'none';
+            } else {
+                document.getElementById('empty-state').style.display = 'none';
+                document.getElementById('table-container').style.display = 'block';
+            }
+
+            updateCategoryCounts();
+        }
+
+        function updateCategoryCounts() {
+            document.getElementById('count-all').textContent = `${products.length} productos`;
+            for (let catId in categories) {
+                const count = products.filter(p => p.categoryId == catId).length;
+                document.getElementById(`count-${catId}`).textContent = `${count} productos`;
+            }
+        }
+
+        function openCreateModal() {
+            if (!selectedCategory) {
+                alert('Selecciona una categoría primero');
+                return;
+            }
+            
+            editingProduct = null;
+            document.getElementById('modal-title').textContent = 'Nuevo Producto';
+            document.getElementById('form-category').value = categories[selectedCategory].name;
+            document.getElementById('form-name').value = '';
+            document.getElementById('form-price').value = '';
+            document.getElementById('form-stock').value = '';
+            document.getElementById('form-unit').value = '';
+            document.getElementById('product-modal').classList.add('show');
+        }
+
+        function openEditModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            editingProduct = product;
+            document.getElementById('modal-title').textContent = 'Editar Producto';
+            document.getElementById('form-category').value = categories[product.categoryId].name;
+            document.getElementById('form-name').value = product.name;
+            document.getElementById('form-price').value = product.price;
+            document.getElementById('form-stock').value = product.stock;
+            document.getElementById('form-unit').value = product.unit;
+            document.getElementById('product-modal').classList.add('show');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.remove('show');
+        }
+
+        function saveProduct() {
+            const name = document.getElementById('form-name').value.trim();
+            const price = parseFloat(document.getElementById('form-price').value);
+            const stock = parseInt(document.getElementById('form-stock').value);
+            const unit = document.getElementById('form-unit').value;
+
+            if (!name || !price || !stock || !unit) {
+                alert('Por favor completa todos los campos');
+                return;
+            }
+
+            if (editingProduct) {
+                const index = products.findIndex(p => p.id === editingProduct.id);
+                products[index] = { ...products[index], name, price, stock, unit };
+                alert('Producto actualizado exitosamente');
+            } else {
+                const newProduct = {
+                    id: Math.max(...products.map(p => p.id)) + 1,
+                    name,
+                    categoryId: selectedCategory,
+                    price,
+                    stock,
+                    unit
+                };
+                products.push(newProduct);
+                alert('Producto creado exitosamente');
+            }
+
+            closeModal();
+            updateProductsList();
+            updateUI();
+        }
+
+        function deleteProduct(productId) {
+            if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+            
+            products = products.filter(p => p.id !== productId);
+            alert('Producto eliminado exitosamente');
+            updateProductsList();
+            updateUI();
+        }
+
+        // Inicializar
+        updateUI();
+    </script>
 </body>
 </html>
