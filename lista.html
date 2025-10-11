@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Taberna del Monkey - Lista</title>
+  <title>Gestión de Categorías - Taberna del Monkey</title>
   <link rel="stylesheet" href="lista.css">
 </head>
 <body>
+  <!-- Navbar -->
   <nav class="navbar">
     <div class="nav-content">
         <a href="main.html" class="logo">
@@ -17,52 +18,87 @@
         <ul class="nav-links">
             <li><a href="lista.html">Lista de Categoría</a></li>
             <li><a href="gestion.html">Gestión</a></li>
-            <li><a href="CreacionProducto.html">Creacion Producto</a></li>
+            <li><a href="CreacionProducto.html">Creación Producto</a></li>
             <li><a href="Login.html">Iniciar Sesión</a></li>
         </ul>
     </div>
   </nav>
 
-      <button class="mobile-menu" id="mobileMenu" aria-expanded="false">☰</button>
-    </div>
-  </nav>
-
-  <main class="container" role="main">
-    <header class="header" aria-labelledby="titulo-sistema">
+  <main class="container">
+    <header class="header">
       <div class="monkey-emoji">🐵</div>
-      <h1 id="titulo-sistema">Taberna del Monkey</h1>
-      <p class="subtitle">Sistema de Inventario — Catálogos</p>
+      <h1>Gestión de Categorías</h1>
+      <p class="subtitle">Administra las categorías del inventario</p>
     </header>
 
-    <h2 class="categories-title">Selecciona una categoría:</h2>
+    <!-- Botón para ir a Creación de Productos -->
+    <div class="action-buttons">
+      <button class="btn-create-product" onclick="window.location.href='CreacionProducto.html'">
+        📦 Ir a Creación de Productos
+      </button>
+      <button class="btn-primary" onclick="openCreateModal()">
+        ➕ Nueva Categoría
+      </button>
+    </div>
 
-    <section class="categories-grid" aria-label="Categorías de productos">
-      <div class="category-item" role="button" tabindex="0" onclick="openModal('licores')" onkeydown="if(event.key==='Enter') openModal('licores')">
-        <div class="category-circle licores">🥃</div>
-        <span class="category-text">Licores</span>
-      </div>
-
-      <div class="category-item" role="button" tabindex="0" onclick="openModal('gaseosas')" onkeydown="if(event.key==='Enter') openModal('gaseosas')">
-        <div class="category-circle gaseosas">🥤</div>
-        <span class="category-text">Gaseosas</span>
-      </div>
-
-      <div class="category-item" role="button" tabindex="0" onclick="openModal('vasos')" onkeydown="if(event.key==='Enter') openModal('vasos')">
-        <div class="category-circle vasos">🍺</div>
-        <span class="category-text">Vasos y Jarras</span>
+    <!-- Lista de Categorías -->
+    <section class="categories-section">
+      <h2>Categorías Actuales</h2>
+      <div id="categories-list" class="categories-list">
+        <!-- Las categorías se cargarán dinámicamente -->
       </div>
     </section>
   </main>
 
-  <!-- MODAL -->
-  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-content" role="document">
+  <!-- Modal para Crear/Editar Categoría -->
+  <div id="categoryModal" class="modal">
+    <div class="modal-content">
       <div class="modal-header">
-        <h2 id="modal-title">Catálogo</h2>
-        <button class="close" aria-label="Cerrar" onclick="closeModal()">&times;</button>
+        <h2 id="modalTitle">Nueva Categoría</h2>
+        <button class="close" onclick="closeModal()">&times;</button>
       </div>
-      <div id="modal-body" class="modal-body">
-        <!-- Contenido dinámico -->
+      <div class="modal-body">
+        <form id="categoryForm">
+          <input type="hidden" id="categoryId">
+          
+          <div class="form-group">
+            <label for="categoryName">Nombre de la Categoría *</label>
+            <input type="text" id="categoryName" placeholder="Ej: Licores" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categoryIcon">Ícono (Emoji) *</label>
+            <input type="text" id="categoryIcon" placeholder="Ej: 🥃" maxlength="2" required>
+          </div>
+
+          <div class="form-group">
+            <label for="categoryDescription">Descripción</label>
+            <textarea id="categoryDescription" rows="3" placeholder="Descripción de la categoría"></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeModal()">Cancelar</button>
+            <button type="submit" class="btn-primary" id="submitBtn">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Confirmación -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h2>Confirmar Eliminación</h2>
+        <button class="close" onclick="closeConfirmModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás seguro de eliminar esta categoría?</p>
+        <p class="warning">⚠️ Esta acción no se puede deshacer.</p>
+        <div class="form-actions">
+          <button class="btn-secondary" onclick="closeConfirmModal()">Cancelar</button>
+          <button class="btn-danger" onclick="confirmDelete()">Eliminar</button>
+        </div>
       </div>
     </div>
   </div>

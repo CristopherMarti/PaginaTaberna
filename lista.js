@@ -1,104 +1,222 @@
-/* ======= Datos de ejemplo por categoría ======= */
-const catalogos = {
-  licores: {
-    title: 'Licores',
-    description: 'Lista de licores disponibles en la taberna.',
-    items: [
-      { id: 'vodka_1', name: 'Vodka Absolute 700ml', desc: 'Vodka premium, 40% alc.', price: 45.00 },
-      { id: 'whisky_1', name: 'Whisky Glen 700ml', desc: 'Single malt, 12 años.', price: 68.50 },
-      { id: 'ron_1', name: 'Ron Havana 750ml', desc: 'Reposado, cuerpo suave.', price: 34.75 },
-      { id: 'tequila_1', name: 'Tequila Oro 700ml', desc: 'Reposado, 38% alc.', price: 52.00 }
-    ]
-  },
-  gaseosas: {
-    title: 'Gaseosas',
-    description: 'Gaseosas y refrescos más vendidos.',
-    items: [
-      { id: 'coca_1', name: 'Coca-Cola 1.5L', desc: 'Refresco clásico', price: 2.50 },
-      { id: 'inca_1', name: 'Inca Kola 1.5L', desc: 'Sabor peruano', price: 2.30 },
-      { id: 'sprite_1', name: 'Sprite 1.5L', desc: 'Lima-limón', price: 2.20 },
-      { id: 'fanta_1', name: 'Fanta Naranja 1.5L', desc: 'Sabor naranja', price: 2.20 }
-    ]
-  },
+// Base de datos simulada (en memoria)
+let categories = [
+  { id: 1, name: 'Licores', icon: '🥃', description: 'Lista de licores disponibles en la taberna.' },
+  { id: 2, name: 'Gaseosas', icon: '🥤', description: 'Gaseosas y refrescos más vendidos.' },
+  { id: 3, name: 'Vasos y Jarras', icon: '🍺', description: 'Vasos, copas y jarras para servicio.' }
+];
 
-  vasos: {
-    title: 'Vasos y Jarras',
-    description: 'Vasos, copas y jarras para servicio.',
-    items: [
-      { id: 'vaso_1', name: 'Vaso Pinta 500ml (x12)', desc: 'Cristal resistente', price: 18.00 },
-      { id: 'copa_1', name: 'Copa Vino (x6)', desc: 'Elegante', price: 22.50 },
-      { id: 'jarra_1', name: 'Jarra Cerámica 1L', desc: 'Para cervezas', price: 12.00 },
-      { id: 'vaso_plast_1', name: 'Vaso plástico 300ml (x50)', desc: 'Desechable', price: 5.00 }
-    ]
-  }
-};
+let nextId = 4;
+let categoryToDelete = null;
+let editingCategoryId = null;
 
-const modal = document.getElementById('modal');
-const modalTitle = document.getElementById('modal-title');
-const modalBody = document.getElementById('modal-body');
+// Referencias del DOM
+const categoryModal = document.getElementById('categoryModal');
+const confirmModal = document.getElementById('confirmModal');
+const categoryForm = document.getElementById('categoryForm');
+const modalTitle = document.getElementById('modalTitle');
+const submitBtn = document.getElementById('submitBtn');
 
-function openModal(catKey){
-  const cat = catalogos[catKey];
-  if(!cat) return;
-  modalTitle.textContent = cat.title;
-  modalBody.innerHTML = buildCatalogView(cat);
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden','false');
-
-  // Close on escape
-  document.addEventListener('keydown', escClose);
-}
-
-function closeModal(){
-  modal.classList.remove('show');
-  modal.setAttribute('aria-hidden','true');
-  modalBody.innerHTML = '';
-  document.removeEventListener('keydown', escClose);
-}
-
-function escClose(e){
-  if(e.key === 'Escape') closeModal();
-}
-
-// Click fuera para cerrar
-modal.addEventListener('click', function(e){
-  if(e.target === modal) closeModal();
+// Inicializar
+document.addEventListener('DOMContentLoaded', () => {
+  renderCategories();
 });
 
-// Construir vista del catálogo (solo mostrar productos y precio)
-function buildCatalogView(cat){
-  const itemsHtml = cat.items.map(item => {
-    return `
-      <div class="product-item" data-id="${item.id}">
-        <div class="product-info">
-          <div class="product-name">${item.name}</div>
-          <div class="product-desc">${item.desc}</div>
-        </div>
-        <div class="product-price">S/ ${Number(item.price).toFixed(2)}</div>
+// Renderizar lista de categorías
+function renderCategories() {
+  const categoriesList = document.getElementById('categories-list');
+  
+  if (categories.length === 0) {
+    categoriesList.innerHTML = `
+      <div class="empty-state">
+        <p>📦 No hay categorías registradas</p>
+        <p>Crea tu primera categoría usando el botón de arriba</p>
       </div>
     `;
-  }).join('');
+    return;
+  }
 
-  return `
-    <div class="catalog-header">
-      <div>
-        <strong style="font-size:16px;color:var(--dark-gray)">${cat.title}</strong>
-        <div class="info">${cat.description}</div>
+  categoriesList.innerHTML = categories.map(category => `
+    <div class="category-card">
+      <div class="category-info">
+        <div class="category-icon">${category.icon}</div>
+        <div class="category-details">
+          <h3>${category.name}</h3>
+          <p>${category.description || 'Sin descripción'}</p>
+        </div>
       </div>
-      <div class="info">Productos: ${cat.items.length}</div>
+      <div class="category-actions">
+        <button class="btn-edit" onclick="editCategory(${category.id})">✏️ Editar</button>
+        <button class="btn-delete" onclick="prepareDelete(${category.id})">🗑️ Eliminar</button>
+      </div>
     </div>
-
-    <div class="product-list">
-      ${itemsHtml}
-    </div>
-  `;
+  `).join('');
 }
 
-// Mobile menu toggle (simple)
-const mobileBtn = document.getElementById('mobileMenu');
-const navLinks = document.querySelector('.nav-links');
-mobileBtn && mobileBtn.addEventListener('click', () => {
-  const expanded = mobileBtn.getAttribute('aria-expanded') === 'true';
-  mobileBtn.setAttribute('aria-expanded', String(!expanded));
-  navLinks.classList.toggle('active');
+// Abrir modal para crear
+function openCreateModal() {
+  editingCategoryId = null;
+  modalTitle.textContent = 'Nueva Categoría';
+  submitBtn.textContent = 'Crear Categoría';
+  categoryForm.reset();
+  categoryModal.classList.add('show');
+}
+
+// Editar categoría
+function editCategory(id) {
+  const category = categories.find(c => c.id === id);
+  if (!category) return;
+
+  editingCategoryId = id;
+  modalTitle.textContent = 'Editar Categoría';
+  submitBtn.textContent = 'Guardar Cambios';
+  
+  document.getElementById('categoryName').value = category.name;
+  document.getElementById('categoryIcon').value = category.icon;
+  document.getElementById('categoryDescription').value = category.description || '';
+  
+  categoryModal.classList.add('show');
+}
+
+// Cerrar modal de categoría
+function closeModal() {
+  categoryModal.classList.remove('show');
+  categoryForm.reset();
+  editingCategoryId = null;
+}
+
+// Preparar eliminación
+function prepareDelete(id) {
+  categoryToDelete = id;
+  confirmModal.classList.add('show');
+}
+
+// Confirmar eliminación
+function confirmDelete() {
+  if (categoryToDelete !== null) {
+    categories = categories.filter(c => c.id !== categoryToDelete);
+    renderCategories();
+    showNotification('Categoría eliminada exitosamente', 'success');
+    categoryToDelete = null;
+  }
+  closeConfirmModal();
+}
+
+// Cerrar modal de confirmación
+function closeConfirmModal() {
+  confirmModal.classList.remove('show');
+  categoryToDelete = null;
+}
+
+// Manejar envío del formulario
+categoryForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const name = document.getElementById('categoryName').value.trim();
+  const icon = document.getElementById('categoryIcon').value.trim();
+  const description = document.getElementById('categoryDescription').value.trim();
+
+  if (!name || !icon) {
+    showNotification('Por favor completa todos los campos requeridos', 'error');
+    return;
+  }
+
+  if (editingCategoryId) {
+    // Actualizar categoría existente
+    const index = categories.findIndex(c => c.id === editingCategoryId);
+    if (index !== -1) {
+      categories[index] = {
+        ...categories[index],
+        name,
+        icon,
+        description
+      };
+      showNotification('Categoría actualizada exitosamente', 'success');
+    }
+  } else {
+    // Crear nueva categoría
+    const newCategory = {
+      id: nextId++,
+      name,
+      icon,
+      description
+    };
+    categories.push(newCategory);
+    showNotification('Categoría creada exitosamente', 'success');
+  }
+
+  renderCategories();
+  closeModal();
 });
+
+// Sistema de notificaciones
+function showNotification(message, type = 'success') {
+  // Crear elemento de notificación
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  
+  notification.style.cssText = `
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: ${type === 'success' ? '#28a745' : '#dc3545'};
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 3000;
+    animation: slideInRight 0.3s ease;
+  `;
+
+  document.body.appendChild(notification);
+
+  // Remover después de 3 segundos
+  setTimeout(() => {
+    notification.style.animation = 'slideOutRight 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Cerrar modales al hacer clic fuera
+categoryModal.addEventListener('click', (e) => {
+  if (e.target === categoryModal) closeModal();
+});
+
+confirmModal.addEventListener('click', (e) => {
+  if (e.target === confirmModal) closeConfirmModal();
+});
+
+// Cerrar con tecla ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (categoryModal.classList.contains('show')) closeModal();
+    if (confirmModal.classList.contains('show')) closeConfirmModal();
+  }
+});
+
+// Agregar estilos de animación
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
