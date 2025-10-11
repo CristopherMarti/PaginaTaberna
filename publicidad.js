@@ -1,27 +1,3 @@
-// === Modal de Reservas ===
-const reservaBtn = document.getElementById('reservaBtn');
-const modal = document.getElementById('modalReserva');
-const closeModal = document.getElementById('closeModal');
-const formReserva = document.getElementById('formReserva');
-
-if (reservaBtn && modal && closeModal && formReserva) {
-  reservaBtn.addEventListener('click', () => {
-    modal.style.display = 'flex';
-  });
-
-  closeModal.addEventListener('click', () => {
-    modal.style.display = 'none';
-  });
-
-  // Cerrar modal al enviar formulario
-  formReserva.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('¡Reserva confirmada! Nos pondremos en contacto contigo.');
-    modal.style.display = 'none';
-    formReserva.reset();
-  });
-}
-
 // === Scroll animado a Especialidades ===
 const especialidadesBtn = document.getElementById('especialidadesBtn');
 const especialidadesSec = document.getElementById('especialidades');

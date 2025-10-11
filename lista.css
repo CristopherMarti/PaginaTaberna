@@ -160,7 +160,6 @@ body {
 
 .category-circle.licores { background: linear-gradient(135deg, #7f000a 0%, #333333 100%); }
 .category-circle.gaseosas { background: linear-gradient(135deg, #333333 0%, #7f000a 100%); }
-.category-circle.insumos { background: linear-gradient(135deg, #333333 30%, #7f000a 100%); }
 .category-circle.vasos { background: linear-gradient(135deg, #7f000a 0%, #333333 70%); }
 
 /* MODAL */

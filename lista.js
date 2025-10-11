@@ -20,16 +20,7 @@ const catalogos = {
       { id: 'fanta_1', name: 'Fanta Naranja 1.5L', desc: 'Sabor naranja', price: 2.20 }
     ]
   },
-  insumos: {
-    title: 'Insumos',
-    description: 'Azúcar, limón, jarabes y otros insumos de bar.',
-    items: [
-      { id: 'azucar_1', name: 'Azúcar 5kg', desc: 'Paquete estándar', price: 8.50 },
-      { id: 'limon_1', name: 'Limón x kg', desc: 'Fresco', price: 1.20 },
-      { id: 'jarabe_1', name: 'Jarabe de Granadina 1L', desc: 'Sabor intenso', price: 6.00 },
-      { id: 'hielo_1', name: 'Hielo 10kg', desc: 'Bolsa para eventos', price: 3.80 }
-    ]
-  },
+
   vasos: {
     title: 'Vasos y Jarras',
     description: 'Vasos, copas y jarras para servicio.',
