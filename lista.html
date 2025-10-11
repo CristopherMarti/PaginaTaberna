@@ -7,310 +7,322 @@
     <link rel="stylesheet" href="lista.css">
 </head>
 <body>
-    <div class="header">
-        <h1>Gestión de Categorías y Productos</h1>
-        <p>Administra el inventario por categoría</p>
-    </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+            </a>
+            <label class="mobile-menu-label">☰</label>
+            <ul class="nav-links">
+                <li><a href="lista.html">Lista de Categoría</a></li>
+                <li><a href="gestion.html">Gestión</a></li>
+                <li><a href="CreacionProducto.html">Creación Producto</a></li>
+                <li><a href="Login.html">Iniciar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <div class="container">
-        <!-- Filtros de Categorías -->
-        <div class="filter-section">
-            <div class="filter-title">
-                <span>🔍</span>
-                <span>Filtrar por Categoría</span>
-            </div>
-            <div class="categories-grid">
-                <button class="category-btn active" onclick="filterCategory(null)">
-                    <div class="category-icon">📦</div>
-                    <div class="category-name">Todas</div>
-                    <div class="category-count" id="count-all">12 productos</div>
-                </button>
-                <button class="category-btn" onclick="filterCategory(1)">
-                    <div class="category-icon">🥃</div>
-                    <div class="category-name">Licores</div>
-                    <div class="category-count" id="count-1">4 productos</div>
-                </button>
-                <button class="category-btn" onclick="filterCategory(2)">
-                    <div class="category-icon">🥤</div>
-                    <div class="category-name">Gaseosas</div>
-                    <div class="category-count" id="count-2">4 productos</div>
-                </button>
-                <button class="category-btn" onclick="filterCategory(3)">
-                    <div class="category-icon">🍺</div>
-                    <div class="category-name">Vasos y Jarras</div>
-                    <div class="category-count" id="count-3">4 productos</div>
-                </button>
-            </div>
+    <main class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="monkey-emoji">🐵</div>
+            <h1>Gestión de Categorías</h1>
+            <p class="subtitle">Administra las categorías del inventario</p>
+        </header>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="CreacionProducto.html" class="btn btn-secondary">
+                📦 Ir a Creación de Categoría
+            </a>
+            <a href="gestion.html" class="btn btn-primary">
+                📊 Ver Gestión Completa (CRUD)
+            </a>
         </div>
 
-        <!-- Sección de Productos -->
-        <div class="products-section">
-            <div class="products-header">
-                <div class="products-info">
-                    <h2 id="section-title">Todos los Productos</h2>
-                    <p id="products-count">12 productos encontrados</p>
-                </div>
-                <button class="btn-new" id="btn-new-product" onclick="openCreateModal()">
-                    <span>➕</span>
-                    <span>Nuevo Producto</span>
-                </button>
+        <!-- Categories List -->
+        <section class="categories-section">
+            <h2>Categorías Actuales</h2>
+            <div id="categories-list" class="categories-list">
+                <!-- Las categorías se cargarán aquí -->
             </div>
+        </section>
+    </main>
 
-            <div id="empty-state" class="empty-state" style="display: none;">
-                <div class="empty-state-icon">📦</div>
-                <p>Selecciona una categoría para gestionar sus productos</p>
-            </div>
-
-            <div id="table-container" class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Producto</th>
-                            <th>Categoría</th>
-                            <th>Precio</th>
-                            <th>Stock</th>
-                            <th>Unidad</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-tbody">
-                        <!-- Los productos se cargarán aquí -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Producto -->
-    <div id="product-modal" class="modal">
+    <!-- Modal de Productos -->
+    <div id="products-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-title">Nuevo Producto</h3>
+                <h3 id="modal-title">
+                    <span id="modal-icon">🥃</span>
+                    <span id="modal-category-name">Licores</span>
+                </h3>
                 <button class="close-modal" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Categoría</label>
-                    <input type="text" id="form-category" disabled>
-                </div>
-                <div class="form-group">
-                    <label>Nombre del Producto *</label>
-                    <input type="text" id="form-name" placeholder="Ej: Pisco Acholado">
-                </div>
-                <div class="form-group">
-                    <label>Precio (S/.) *</label>
-                    <input type="number" step="0.01" id="form-price" placeholder="0.00">
-                </div>
-                <div class="form-group">
-                    <label>Stock *</label>
-                    <input type="number" id="form-stock" placeholder="0">
-                </div>
-                <div class="form-group">
-                    <label>Unidad de Medida *</label>
-                    <select id="form-unit">
-                        <option value="">Seleccionar...</option>
-                        <option value="Botella">Botella</option>
-                        <option value="Vaso">Vaso</option>
-                        <option value="Jarra">Jarra</option>
-                        <option value="Unidad">Unidad</option>
-                        <option value="Caja">Caja</option>
-                    </select>
-                </div>
-                <div class="form-actions">
-                    <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
-                    <button class="btn-save" onclick="saveProduct()">Guardar</button>
+                <div id="products-container" class="products-grid">
+                    <!-- Los productos se cargarán aquí -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const categories = {
-            1: { name: 'Licores', icon: '🥃' },
-            2: { name: 'Gaseosas', icon: '🥤' },
-            3: { name: 'Vasos y Jarras', icon: '🍺' }
-        };
-
-        let products = [
-            { id: 1, name: 'Pisco Quebranta', categoryId: 1, price: 45.00, stock: 25, unit: 'Botella' },
-            { id: 2, name: 'Pisco Sour', categoryId: 1, price: 28.00, stock: 30, unit: 'Vaso' },
-            { id: 3, name: 'Cerveza Pilsen', categoryId: 1, price: 14.00, stock: 40, unit: 'Botella' },
-            { id: 4, name: 'Ron Cartavio', categoryId: 1, price: 55.00, stock: 15, unit: 'Botella' },
-            { id: 5, name: 'Coca Cola', categoryId: 2, price: 3.50, stock: 50, unit: 'Botella' },
-            { id: 6, name: 'Inca Kola', categoryId: 2, price: 3.50, stock: 45, unit: 'Botella' },
-            { id: 7, name: 'Sprite', categoryId: 2, price: 3.00, stock: 35, unit: 'Botella' },
-            { id: 8, name: 'Chicha Morada', categoryId: 2, price: 22.00, stock: 15, unit: 'Jarra' },
-            { id: 9, name: 'Vaso Cervecero', categoryId: 3, price: 8.00, stock: 50, unit: 'Unidad' },
-            { id: 10, name: 'Copa de Vino', categoryId: 3, price: 12.00, stock: 30, unit: 'Unidad' },
-            { id: 11, name: 'Jarra 1L', categoryId: 3, price: 15.00, stock: 20, unit: 'Unidad' },
-            { id: 12, name: 'Vaso Shot', categoryId: 3, price: 5.00, stock: 60, unit: 'Unidad' }
+        const categories = [
+            { 
+                id: 1, 
+                name: 'Licores', 
+                icon: '🥃', 
+                description: 'Bebidas alcohólicas premium y cócteles especiales'
+            },
+            { 
+                id: 2, 
+                name: 'Gaseosas', 
+                icon: '🥤', 
+                description: 'Refrescos, bebidas sin alcohol y jugos naturales'
+            },
+            { 
+                id: 3, 
+                name: 'Vasos y Jarras', 
+                icon: '🍺', 
+                description: 'Utensilios de servicio, vasos, copas y jarras'
+            }
         ];
 
-        let selectedCategory = null;
-        let editingProduct = null;
-
-        function filterCategory(categoryId) {
-            selectedCategory = categoryId;
-            
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.closest('.category-btn').classList.add('active');
-            
-            updateProductsList();
-            updateUI();
-        }
-
-        function updateProductsList() {
-            const tbody = document.getElementById('products-tbody');
-            const filteredProducts = selectedCategory 
-                ? products.filter(p => p.categoryId === selectedCategory)
-                : products;
-
-            if (filteredProducts.length === 0 && selectedCategory) {
-                tbody.innerHTML = '';
-                return;
+        const products = [
+            { 
+                id: 1, 
+                name: 'Pisco Quebranta', 
+                categoryId: 1, 
+                price: 45.00, 
+                stock: 25, 
+                unit: 'Botella',
+                description: 'Pisco puro de uva Quebranta, ideal para preparar el clásico Pisco Sour. Producción artesanal con uvas seleccionadas.'
+            },
+            { 
+                id: 2, 
+                name: 'Pisco Sour', 
+                categoryId: 1, 
+                price: 28.00, 
+                stock: 30, 
+                unit: 'Vaso',
+                description: 'Nuestro cóctel insignia preparado con pisco peruano, limón, jarabe y clara de huevo. Una experiencia única.'
+            },
+            { 
+                id: 3, 
+                name: 'Cerveza Pilsen', 
+                categoryId: 1, 
+                price: 14.00, 
+                stock: 40, 
+                unit: 'Botella',
+                description: 'Cerveza rubia tipo Pilsen, refrescante y con cuerpo. Perfecta para acompañar momentos especiales.'
+            },
+            { 
+                id: 4, 
+                name: 'Ron Cartavio', 
+                categoryId: 1, 
+                price: 55.00, 
+                stock: 8, 
+                unit: 'Botella',
+                description: 'Ron peruano añejado, suave y aromático. Ideal para disfrutar solo o en cócteles tropicales.'
+            },
+            { 
+                id: 5, 
+                name: 'Coca Cola', 
+                categoryId: 2, 
+                price: 3.50, 
+                stock: 50, 
+                unit: 'Botella',
+                description: 'Refresco clásico de cola, burbujeante y refrescante. La bebida perfecta para cualquier ocasión.'
+            },
+            { 
+                id: 6, 
+                name: 'Inca Kola', 
+                categoryId: 2, 
+                price: 3.50, 
+                stock: 45, 
+                unit: 'Botella',
+                description: 'La bebida del Perú, con su sabor único y característico. Tradición en cada sorbo.'
+            },
+            { 
+                id: 7, 
+                name: 'Sprite', 
+                categoryId: 2, 
+                price: 3.00, 
+                stock: 12, 
+                unit: 'Botella',
+                description: 'Refresco de lima-limón, transparente y refrescante. Sabor cítrico que no falla.'
+            },
+            { 
+                id: 8, 
+                name: 'Chicha Morada', 
+                categoryId: 2, 
+                price: 22.00, 
+                stock: 15, 
+                unit: 'Jarra',
+                description: 'Bebida tradicional peruana preparada con maíz morado, piña, canela y clavo de olor. Dulce y nutritiva.'
+            },
+            { 
+                id: 9, 
+                name: 'Vaso Cervecero', 
+                categoryId: 3, 
+                price: 8.00, 
+                stock: 50, 
+                unit: 'Unidad',
+                description: 'Vaso de vidrio templado de 500ml, diseño clásico para servir cerveza bien fría con espuma perfecta.'
+            },
+            { 
+                id: 10, 
+                name: 'Copa de Vino', 
+                categoryId: 3, 
+                price: 12.00, 
+                stock: 30, 
+                unit: 'Unidad',
+                description: 'Copa elegante de cristal para vino tinto o blanco. Diseño que realza el aroma y sabor del vino.'
+            },
+            { 
+                id: 11, 
+                name: 'Jarra 1L', 
+                categoryId: 3, 
+                price: 15.00, 
+                stock: 9, 
+                unit: 'Unidad',
+                description: 'Jarra de vidrio con capacidad de 1 litro, ideal para servir bebidas compartidas como chicha o jugos.'
+            },
+            { 
+                id: 12, 
+                name: 'Vaso Shot', 
+                categoryId: 3, 
+                price: 5.00, 
+                stock: 60, 
+                unit: 'Unidad',
+                description: 'Vaso pequeño de 50ml para shots y tragos cortos. Resistente y con medida exacta.'
             }
+        ];
 
-            tbody.innerHTML = filteredProducts.map(product => `
-                <tr>
-                    <td>${product.id}</td>
-                    <td><strong>${product.name}</strong></td>
-                    <td>${categories[product.categoryId].name}</td>
-                    <td>S/. ${product.price.toFixed(2)}</td>
-                    <td>${product.stock}</td>
-                    <td>${product.unit}</td>
-                    <td>
-                        <span class="status-badge ${
-                            product.stock > 20 ? 'status-disponible' : 
-                            product.stock > 10 ? 'status-medio' : 
-                            'status-bajo'
-                        }">
-                            ${product.stock > 20 ? 'DISPONIBLE' : product.stock > 10 ? 'MEDIO' : 'BAJO'}
-                        </span>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-action btn-edit" onclick="openEditModal(${product.id})">✏️ Editar</button>
-                            <button class="btn-action btn-delete" onclick="deleteProduct(${product.id})">🗑️ Eliminar</button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
+        function getProductsCountByCategory(categoryId) {
+            return products.filter(p => p.categoryId === categoryId).length;
         }
 
-        function updateUI() {
-            const filteredProducts = selectedCategory 
-                ? products.filter(p => p.categoryId === selectedCategory)
-                : products;
+        function getTotalStockByCategory(categoryId) {
+            return products
+                .filter(p => p.categoryId === categoryId)
+                .reduce((sum, p) => sum + p.stock, 0);
+        }
 
-            document.getElementById('section-title').textContent = 
-                selectedCategory ? categories[selectedCategory].name : 'Todos los Productos';
-            
-            document.getElementById('products-count').textContent = 
-                `${filteredProducts.length} productos encontrados`;
+        function getAveragePriceByCategory(categoryId) {
+            const categoryProducts = products.filter(p => p.categoryId === categoryId);
+            if (categoryProducts.length === 0) return 0;
+            const total = categoryProducts.reduce((sum, p) => sum + p.price, 0);
+            return (total / categoryProducts.length).toFixed(2);
+        }
 
-            document.getElementById('btn-new-product').disabled = !selectedCategory;
+        function getStockClass(stock) {
+            if (stock > 20) return 'stock-disponible';
+            if (stock > 10) return 'stock-medio';
+            return 'stock-bajo';
+        }
 
-            if (!selectedCategory) {
-                document.getElementById('empty-state').style.display = 'block';
-                document.getElementById('table-container').style.display = 'none';
+        function getStockText(stock) {
+            if (stock > 20) return 'DISPONIBLE';
+            if (stock > 10) return 'STOCK MEDIO';
+            return 'BAJO STOCK';
+        }
+
+        function showProducts(categoryId) {
+            const category = categories.find(c => c.id === categoryId);
+            const categoryProducts = products.filter(p => p.categoryId === categoryId);
+
+            document.getElementById('modal-icon').textContent = category.icon;
+            document.getElementById('modal-category-name').textContent = category.name;
+
+            const container = document.getElementById('products-container');
+
+            if (categoryProducts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-products">
+                        <div class="empty-products-icon">📦</div>
+                        <p>No hay productos en esta categoría</p>
+                    </div>
+                `;
             } else {
-                document.getElementById('empty-state').style.display = 'none';
-                document.getElementById('table-container').style.display = 'block';
+                container.innerHTML = categoryProducts.map(product => `
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">${product.name}</div>
+                            </div>
+                            <div class="product-price">S/. ${product.price.toFixed(2)}</div>
+                        </div>
+                        <div class="product-description">
+                            ${product.description}
+                        </div>
+                        <div class="product-meta">
+                            <div class="product-stock">
+                                📦 <strong>${product.stock}</strong> ${product.unit}${product.stock !== 1 ? 's' : ''}
+                            </div>
+                            <span class="stock-badge ${getStockClass(product.stock)}">
+                                ${getStockText(product.stock)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
             }
 
-            updateCategoryCounts();
-        }
-
-        function updateCategoryCounts() {
-            document.getElementById('count-all').textContent = `${products.length} productos`;
-            for (let catId in categories) {
-                const count = products.filter(p => p.categoryId == catId).length;
-                document.getElementById(`count-${catId}`).textContent = `${count} productos`;
-            }
-        }
-
-        function openCreateModal() {
-            if (!selectedCategory) {
-                alert('Selecciona una categoría primero');
-                return;
-            }
-            
-            editingProduct = null;
-            document.getElementById('modal-title').textContent = 'Nuevo Producto';
-            document.getElementById('form-category').value = categories[selectedCategory].name;
-            document.getElementById('form-name').value = '';
-            document.getElementById('form-price').value = '';
-            document.getElementById('form-stock').value = '';
-            document.getElementById('form-unit').value = '';
-            document.getElementById('product-modal').classList.add('show');
-        }
-
-        function openEditModal(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product) return;
-            
-            editingProduct = product;
-            document.getElementById('modal-title').textContent = 'Editar Producto';
-            document.getElementById('form-category').value = categories[product.categoryId].name;
-            document.getElementById('form-name').value = product.name;
-            document.getElementById('form-price').value = product.price;
-            document.getElementById('form-stock').value = product.stock;
-            document.getElementById('form-unit').value = product.unit;
-            document.getElementById('product-modal').classList.add('show');
+            document.getElementById('products-modal').classList.add('show');
         }
 
         function closeModal() {
-            document.getElementById('product-modal').classList.remove('show');
+            document.getElementById('products-modal').classList.remove('show');
         }
 
-        function saveProduct() {
-            const name = document.getElementById('form-name').value.trim();
-            const price = parseFloat(document.getElementById('form-price').value);
-            const stock = parseInt(document.getElementById('form-stock').value);
-            const unit = document.getElementById('form-unit').value;
-
-            if (!name || !price || !stock || !unit) {
-                alert('Por favor completa todos los campos');
-                return;
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('products-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'products-modal') {
+                closeModal();
             }
+        });
 
-            if (editingProduct) {
-                const index = products.findIndex(p => p.id === editingProduct.id);
-                products[index] = { ...products[index], name, price, stock, unit };
-                alert('Producto actualizado exitosamente');
-            } else {
-                const newProduct = {
-                    id: Math.max(...products.map(p => p.id)) + 1,
-                    name,
-                    categoryId: selectedCategory,
-                    price,
-                    stock,
-                    unit
-                };
-                products.push(newProduct);
-                alert('Producto creado exitosamente');
-            }
-
-            closeModal();
-            updateProductsList();
-            updateUI();
-        }
-
-        function deleteProduct(productId) {
-            if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+        function renderCategories() {
+            const container = document.getElementById('categories-list');
             
-            products = products.filter(p => p.id !== productId);
-            alert('Producto eliminado exitosamente');
-            updateProductsList();
-            updateUI();
+            container.innerHTML = categories.map(category => {
+                const productCount = getProductsCountByCategory(category.id);
+                const totalStock = getTotalStockByCategory(category.id);
+                const avgPrice = getAveragePriceByCategory(category.id);
+
+                return `
+                    <div class="category-card">
+                        <div class="category-info">
+                            <div class="category-icon">${category.icon}</div>
+                            <div class="category-details">
+                                <h3>${category.name}</h3>
+                                <p>${category.description}</p>
+                                <div class="category-stats">
+                                    <div class="stat-item">
+                                        📦 <strong>${productCount}</strong> productos
+                                    </div>
+                                    <div class="stat-item">
+                                        📊 <strong>${totalStock}</strong> unidades totales
+                                    </div>
+                                    <div class="stat-item">
+                                        💰 Promedio: <strong>S/. ${avgPrice}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="category-actions">
+                            <button class="btn-view" onclick="showProducts(${category.id})">👁️ Ver Productos</button>
+                            <a href="CreacionProducto.html" class="btn-manage">➕ Agregar Producto</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Inicializar
-        updateUI();
+        renderCategories();
     </script>
 </body>
 </html>
