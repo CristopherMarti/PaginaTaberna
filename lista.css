@@ -397,7 +397,7 @@ body {
             overflow-y: auto;
         }
 
-        .modal.show {
+        .modal:target {
             display: flex;
         }
 

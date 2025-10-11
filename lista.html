@@ -34,7 +34,7 @@
         <!-- Action Buttons -->
         <div class="action-buttons">
             <a href="CreacionProducto.html" class="btn btn-secondary">
-                📦 Ir a Creación de Categoría
+                📦 Ir a Creación de Productos
             </a>
             <a href="gestion.html" class="btn btn-primary">
                 📊 Ver Gestión Completa (CRUD)
@@ -45,284 +45,292 @@
         <section class="categories-section">
             <h2>Categorías Actuales</h2>
             <div id="categories-list" class="categories-list">
-                <!-- Las categorías se cargarán aquí -->
+                <!-- Licores -->
+                <div class="category-card">
+                    <div class="category-info">
+                        <div class="category-icon">🥃</div>
+                        <div class="category-details">
+                            <h3>Licores</h3>
+                            <p>Bebidas alcohólicas premium y cócteles especiales</p>
+                            <div class="category-stats">
+                                <div class="stat-item">
+                                    📦 <strong>4</strong> productos
+                                </div>
+                                <div class="stat-item">
+                                    📊 <strong>103</strong> unidades totales
+                                </div>
+                                <div class="stat-item">
+                                    💰 Promedio: <strong>S/. 35.50</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <a href="#modal-licores" class="btn-view">👁️ Ver Productos</a>
+                        <a href="gestion.html" class="btn-manage">➕ Agregar Producto</a>
+                    </div>
+                </div>
+
+                <!-- Gaseosas -->
+                <div class="category-card">
+                    <div class="category-info">
+                        <div class="category-icon">🥤</div>
+                        <div class="category-details">
+                            <h3>Gaseosas</h3>
+                            <p>Refrescos, bebidas sin alcohol y jugos naturales</p>
+                            <div class="category-stats">
+                                <div class="stat-item">
+                                    📦 <strong>4</strong> productos
+                                </div>
+                                <div class="stat-item">
+                                    📊 <strong>122</strong> unidades totales
+                                </div>
+                                <div class="stat-item">
+                                    💰 Promedio: <strong>S/. 8.00</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <a href="#modal-gaseosas" class="btn-view">👁️ Ver Productos</a>
+                        <a href="gestion.html" class="btn-manage">➕ Agregar Producto</a>
+                    </div>
+                </div>
+
+                <!-- Vasos y Jarras -->
+                <div class="category-card">
+                    <div class="category-info">
+                        <div class="category-icon">🍺</div>
+                        <div class="category-details">
+                            <h3>Vasos y Jarras</h3>
+                            <p>Utensilios de servicio, vasos, copas y jarras</p>
+                            <div class="category-stats">
+                                <div class="stat-item">
+                                    📦 <strong>4</strong> productos
+                                </div>
+                                <div class="stat-item">
+                                    📊 <strong>149</strong> unidades totales
+                                </div>
+                                <div class="stat-item">
+                                    💰 Promedio: <strong>S/. 10.00</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="category-actions">
+                        <a href="#modal-vasos" class="btn-view">👁️ Ver Productos</a>
+                        <a href="gestion.html" class="btn-manage">➕ Agregar Producto</a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- Modal de Productos -->
-    <div id="products-modal" class="modal">
+    <!-- Modal Licores -->
+    <div id="modal-licores" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modal-title">
-                    <span id="modal-icon">🥃</span>
-                    <span id="modal-category-name">Licores</span>
-                </h3>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
+                <h3>🥃 Licores</h3>
+                <a href="#" class="close-modal">&times;</a>
             </div>
             <div class="modal-body">
-                <div id="products-container" class="products-grid">
-                    <!-- Los productos se cargarán aquí -->
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Pisco Quebranta</div>
+                            </div>
+                            <div class="product-price">S/. 45.00</div>
+                        </div>
+                        <div class="product-description">Pisco puro de uva Quebranta, ideal para preparar el clásico Pisco Sour. Producción artesanal con uvas seleccionadas.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>25</strong> Botellas</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Pisco Sour</div>
+                            </div>
+                            <div class="product-price">S/. 28.00</div>
+                        </div>
+                        <div class="product-description">Nuestro cóctel insignia preparado con pisco peruano, limón, jarabe y clara de huevo. Una experiencia única.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>30</strong> Vasos</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Cerveza Pilsen</div>
+                            </div>
+                            <div class="product-price">S/. 14.00</div>
+                        </div>
+                        <div class="product-description">Cerveza rubia tipo Pilsen, refrescante y con cuerpo. Perfecta para acompañar momentos especiales.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>40</strong> Botellas</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Ron Cartavio</div>
+                            </div>
+                            <div class="product-price">S/. 55.00</div>
+                        </div>
+                        <div class="product-description">Ron peruano añejado, suave y aromático. Ideal para disfrutar solo o en cócteles tropicales.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>8</strong> Botellas</div>
+                            <span class="stock-badge stock-bajo">BAJO STOCK</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        const categories = [
-            { 
-                id: 1, 
-                name: 'Licores', 
-                icon: '🥃', 
-                description: 'Bebidas alcohólicas premium y cócteles especiales'
-            },
-            { 
-                id: 2, 
-                name: 'Gaseosas', 
-                icon: '🥤', 
-                description: 'Refrescos, bebidas sin alcohol y jugos naturales'
-            },
-            { 
-                id: 3, 
-                name: 'Vasos y Jarras', 
-                icon: '🍺', 
-                description: 'Utensilios de servicio, vasos, copas y jarras'
-            }
-        ];
-
-        const products = [
-            { 
-                id: 1, 
-                name: 'Pisco Quebranta', 
-                categoryId: 1, 
-                price: 45.00, 
-                stock: 25, 
-                unit: 'Botella',
-                description: 'Pisco puro de uva Quebranta, ideal para preparar el clásico Pisco Sour. Producción artesanal con uvas seleccionadas.'
-            },
-            { 
-                id: 2, 
-                name: 'Pisco Sour', 
-                categoryId: 1, 
-                price: 28.00, 
-                stock: 30, 
-                unit: 'Vaso',
-                description: 'Nuestro cóctel insignia preparado con pisco peruano, limón, jarabe y clara de huevo. Una experiencia única.'
-            },
-            { 
-                id: 3, 
-                name: 'Cerveza Pilsen', 
-                categoryId: 1, 
-                price: 14.00, 
-                stock: 40, 
-                unit: 'Botella',
-                description: 'Cerveza rubia tipo Pilsen, refrescante y con cuerpo. Perfecta para acompañar momentos especiales.'
-            },
-            { 
-                id: 4, 
-                name: 'Ron Cartavio', 
-                categoryId: 1, 
-                price: 55.00, 
-                stock: 8, 
-                unit: 'Botella',
-                description: 'Ron peruano añejado, suave y aromático. Ideal para disfrutar solo o en cócteles tropicales.'
-            },
-            { 
-                id: 5, 
-                name: 'Coca Cola', 
-                categoryId: 2, 
-                price: 3.50, 
-                stock: 50, 
-                unit: 'Botella',
-                description: 'Refresco clásico de cola, burbujeante y refrescante. La bebida perfecta para cualquier ocasión.'
-            },
-            { 
-                id: 6, 
-                name: 'Inca Kola', 
-                categoryId: 2, 
-                price: 3.50, 
-                stock: 45, 
-                unit: 'Botella',
-                description: 'La bebida del Perú, con su sabor único y característico. Tradición en cada sorbo.'
-            },
-            { 
-                id: 7, 
-                name: 'Sprite', 
-                categoryId: 2, 
-                price: 3.00, 
-                stock: 12, 
-                unit: 'Botella',
-                description: 'Refresco de lima-limón, transparente y refrescante. Sabor cítrico que no falla.'
-            },
-            { 
-                id: 8, 
-                name: 'Chicha Morada', 
-                categoryId: 2, 
-                price: 22.00, 
-                stock: 15, 
-                unit: 'Jarra',
-                description: 'Bebida tradicional peruana preparada con maíz morado, piña, canela y clavo de olor. Dulce y nutritiva.'
-            },
-            { 
-                id: 9, 
-                name: 'Vaso Cervecero', 
-                categoryId: 3, 
-                price: 8.00, 
-                stock: 50, 
-                unit: 'Unidad',
-                description: 'Vaso de vidrio templado de 500ml, diseño clásico para servir cerveza bien fría con espuma perfecta.'
-            },
-            { 
-                id: 10, 
-                name: 'Copa de Vino', 
-                categoryId: 3, 
-                price: 12.00, 
-                stock: 30, 
-                unit: 'Unidad',
-                description: 'Copa elegante de cristal para vino tinto o blanco. Diseño que realza el aroma y sabor del vino.'
-            },
-            { 
-                id: 11, 
-                name: 'Jarra 1L', 
-                categoryId: 3, 
-                price: 15.00, 
-                stock: 9, 
-                unit: 'Unidad',
-                description: 'Jarra de vidrio con capacidad de 1 litro, ideal para servir bebidas compartidas como chicha o jugos.'
-            },
-            { 
-                id: 12, 
-                name: 'Vaso Shot', 
-                categoryId: 3, 
-                price: 5.00, 
-                stock: 60, 
-                unit: 'Unidad',
-                description: 'Vaso pequeño de 50ml para shots y tragos cortos. Resistente y con medida exacta.'
-            }
-        ];
-
-        function getProductsCountByCategory(categoryId) {
-            return products.filter(p => p.categoryId === categoryId).length;
-        }
-
-        function getTotalStockByCategory(categoryId) {
-            return products
-                .filter(p => p.categoryId === categoryId)
-                .reduce((sum, p) => sum + p.stock, 0);
-        }
-
-        function getAveragePriceByCategory(categoryId) {
-            const categoryProducts = products.filter(p => p.categoryId === categoryId);
-            if (categoryProducts.length === 0) return 0;
-            const total = categoryProducts.reduce((sum, p) => sum + p.price, 0);
-            return (total / categoryProducts.length).toFixed(2);
-        }
-
-        function getStockClass(stock) {
-            if (stock > 20) return 'stock-disponible';
-            if (stock > 10) return 'stock-medio';
-            return 'stock-bajo';
-        }
-
-        function getStockText(stock) {
-            if (stock > 20) return 'DISPONIBLE';
-            if (stock > 10) return 'STOCK MEDIO';
-            return 'BAJO STOCK';
-        }
-
-        function showProducts(categoryId) {
-            const category = categories.find(c => c.id === categoryId);
-            const categoryProducts = products.filter(p => p.categoryId === categoryId);
-
-            document.getElementById('modal-icon').textContent = category.icon;
-            document.getElementById('modal-category-name').textContent = category.name;
-
-            const container = document.getElementById('products-container');
-
-            if (categoryProducts.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-products">
-                        <div class="empty-products-icon">📦</div>
-                        <p>No hay productos en esta categoría</p>
-                    </div>
-                `;
-            } else {
-                container.innerHTML = categoryProducts.map(product => `
+    <!-- Modal Gaseosas -->
+    <div id="modal-gaseosas" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🥤 Gaseosas</h3>
+                <a href="#" class="close-modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="products-grid">
                     <div class="product-card">
                         <div class="product-header">
                             <div>
-                                <div class="product-name">${product.name}</div>
+                                <div class="product-name">Coca Cola</div>
                             </div>
-                            <div class="product-price">S/. ${product.price.toFixed(2)}</div>
+                            <div class="product-price">S/. 3.50</div>
                         </div>
-                        <div class="product-description">
-                            ${product.description}
-                        </div>
+                        <div class="product-description">Refresco clásico de cola, burbujeante y refrescante. La bebida perfecta para cualquier ocasión.</div>
                         <div class="product-meta">
-                            <div class="product-stock">
-                                📦 <strong>${product.stock}</strong> ${product.unit}${product.stock !== 1 ? 's' : ''}
-                            </div>
-                            <span class="stock-badge ${getStockClass(product.stock)}">
-                                ${getStockText(product.stock)}
-                            </span>
+                            <div class="product-stock">📦 <strong>50</strong> Botellas</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
                         </div>
                     </div>
-                `).join('');
-            }
 
-            document.getElementById('products-modal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('products-modal').classList.remove('show');
-        }
-
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('products-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'products-modal') {
-                closeModal();
-            }
-        });
-
-        function renderCategories() {
-            const container = document.getElementById('categories-list');
-            
-            container.innerHTML = categories.map(category => {
-                const productCount = getProductsCountByCategory(category.id);
-                const totalStock = getTotalStockByCategory(category.id);
-                const avgPrice = getAveragePriceByCategory(category.id);
-
-                return `
-                    <div class="category-card">
-                        <div class="category-info">
-                            <div class="category-icon">${category.icon}</div>
-                            <div class="category-details">
-                                <h3>${category.name}</h3>
-                                <p>${category.description}</p>
-                                <div class="category-stats">
-                                    <div class="stat-item">
-                                        📦 <strong>${productCount}</strong> productos
-                                    </div>
-                                    <div class="stat-item">
-                                        📊 <strong>${totalStock}</strong> unidades totales
-                                    </div>
-                                    <div class="stat-item">
-                                        💰 Promedio: <strong>S/. ${avgPrice}</strong>
-                                    </div>
-                                </div>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Inca Kola</div>
                             </div>
+                            <div class="product-price">S/. 3.50</div>
                         </div>
-                        <div class="category-actions">
-                            <button class="btn-view" onclick="showProducts(${category.id})">👁️ Ver Productos</button>
-                            <a href="CreacionProducto.html" class="btn-manage">➕ Agregar Producto</a>
+                        <div class="product-description">La bebida del Perú, con su sabor único y característico. Tradición en cada sorbo.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>45</strong> Botellas</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
                         </div>
                     </div>
-                `;
-            }).join('');
-        }
 
-        // Inicializar
-        renderCategories();
-    </script>
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Sprite</div>
+                            </div>
+                            <div class="product-price">S/. 3.00</div>
+                        </div>
+                        <div class="product-description">Refresco de lima-limón, transparente y refrescante. Sabor cítrico que no falla.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>12</strong> Botellas</div>
+                            <span class="stock-badge stock-medio">STOCK MEDIO</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Chicha Morada</div>
+                            </div>
+                            <div class="product-price">S/. 22.00</div>
+                        </div>
+                        <div class="product-description">Bebida tradicional peruana preparada con maíz morado, piña, canela y clavo de olor. Dulce y nutritiva.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>15</strong> Jarras</div>
+                            <span class="stock-badge stock-medio">STOCK MEDIO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Vasos y Jarras -->
+    <div id="modal-vasos" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🍺 Vasos y Jarras</h3>
+                <a href="#" class="close-modal">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Vaso Cervecero</div>
+                            </div>
+                            <div class="product-price">S/. 8.00</div>
+                        </div>
+                        <div class="product-description">Vaso de vidrio templado de 500ml, diseño clásico para servir cerveza bien fría con espuma perfecta.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>50</strong> Unidades</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Copa de Vino</div>
+                            </div>
+                            <div class="product-price">S/. 12.00</div>
+                        </div>
+                        <div class="product-description">Copa elegante de cristal para vino tinto o blanco. Diseño que realza el aroma y sabor del vino.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>30</strong> Unidades</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Jarra 1L</div>
+                            </div>
+                            <div class="product-price">S/. 15.00</div>
+                        </div>
+                        <div class="product-description">Jarra de vidrio con capacidad de 1 litro, ideal para servir bebidas compartidas como chicha o jugos.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>9</strong> Unidades</div>
+                            <span class="stock-badge stock-bajo">BAJO STOCK</span>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div>
+                                <div class="product-name">Vaso Shot</div>
+                            </div>
+                            <div class="product-price">S/. 5.00</div>
+                        </div>
+                        <div class="product-description">Vaso pequeño de 50ml para shots y tragos cortos. Resistente y con medida exacta.</div>
+                        <div class="product-meta">
+                            <div class="product-stock">📦 <strong>60</strong> Unidades</div>
+                            <span class="stock-badge stock-disponible">DISPONIBLE</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
