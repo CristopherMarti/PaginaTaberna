@@ -1,524 +1,712 @@
-import React, { useState } from 'react';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// ============================================
+// CONFIGURACIÓN Y ESTADO GLOBAL
+// ============================================
 
-const GestionTaberna = () => {
-  const [activeTab, setActiveTab] = useState('productos');
-  const [productos, setProductos] = useState([
-    { id: '001', nombre: 'Pisco Quebranta', categoria: 'Licores', stock: 25, precio: 45.00 },
-    { id: '002', nombre: 'Coca Cola', categoria: 'Gaseosas', stock: 5, precio: 3.50 },
-    { id: '003', nombre: 'Vaso Cervecero', categoria: 'Vasos', stock: 50, precio: 8.00 },
-    { id: '004', nombre: 'Pisco Sour', categoria: 'Licores', stock: 30, precio: 28.00 },
-    { id: '005', nombre: 'Monkey Special', categoria: 'Licores', stock: 20, precio: 35.00 },
-    { id: '006', nombre: 'Chicha Morada', categoria: 'Gaseosas', stock: 15, precio: 22.00 },
-    { id: '007', nombre: 'Cerveza Pilsen', categoria: 'Licores', stock: 40, precio: 14.00 }
-  ]);
-
-  const [ventas, setVentas] = useState([
-    { id: 'V001', hora: '18:30', producto: 'Pisco Sour', cantidad: 3, total: 84.00, metodoPago: 'Efectivo', estado: 'Completado' },
-    { id: 'V002', hora: '18:45', producto: 'Cerveza Pilsen', cantidad: 1, total: 14.00, metodoPago: 'Tarjeta', estado: 'Completado' },
-    { id: 'V003', hora: '19:15', producto: 'Monkey Special', cantidad: 1, total: 35.00, metodoPago: 'Efectivo', estado: 'Pendiente' }
-  ]);
-
-  const [nuevoProducto, setNuevoProducto] = useState({
-    nombre: '', categoria: '', stock: 0, precio: 0
-  });
-
-  const [nuevaVenta, setNuevaVenta] = useState({
-    producto: '', cantidad: 1, metodoPago: 'Efectivo'
-  });
-
-  const [showProductForm, setShowProductForm] = useState(false);
-  const [showVentaForm, setShowVentaForm] = useState(false);
-
-  const agregarProducto = () => {
-    if (!nuevoProducto.nombre || !nuevoProducto.categoria || nuevoProducto.stock < 0 || nuevoProducto.precio <= 0) {
-      alert('Por favor completa todos los campos correctamente');
-      return;
-    }
-    const id = String(productos.length + 1).padStart(3, '0');
-    setProductos([...productos, { id, ...nuevoProducto }]);
-    setNuevoProducto({ nombre: '', categoria: '', stock: 0, precio: 0 });
-    setShowProductForm(false);
-    alert('Producto agregado exitosamente');
-  };
-
-  const eliminarProducto = (id) => {
-    if (window.confirm('¿Estás seguro de eliminar este producto?')) {
-      setProductos(productos.filter(p => p.id !== id));
-    }
-  };
-
-  const registrarVenta = () => {
-    const producto = productos.find(p => p.nombre === nuevaVenta.producto);
-    
-    if (!producto) {
-      alert('Selecciona un producto válido');
-      return;
-    }
-
-    if (producto.stock < nuevaVenta.cantidad) {
-      alert('Stock insuficiente');
-      return;
-    }
-
-    setProductos(productos.map(p => 
-      p.nombre === nuevaVenta.producto 
-        ? { ...p, stock: p.stock - nuevaVenta.cantidad }
-        : p
-    ));
-
-    const now = new Date();
-    const hora = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
-    const id = `V${String(ventas.length + 1).padStart(3, '0')}`;
-    const total = producto.precio * nuevaVenta.cantidad;
-
-    setVentas([...ventas, {
-      id,
-      hora,
-      producto: nuevaVenta.producto,
-      cantidad: nuevaVenta.cantidad,
-      total,
-      metodoPago: nuevaVenta.metodoPago,
-      estado: 'Completado'
-    }]);
-
-    setNuevaVenta({ producto: '', cantidad: 1, metodoPago: 'Efectivo' });
-    setShowVentaForm(false);
-    alert('Venta registrada exitosamente');
-  };
-
-  const ventasCompletadas = ventas.filter(v => v.estado === 'Completado');
-  const ventasHoy = ventasCompletadas.reduce((sum, v) => sum + v.total, 0);
-  const promedioVenta = ventasCompletadas.length > 0 ? ventasHoy / ventasCompletadas.length : 0;
-
-  const ventasPorProducto = {};
-  ventasCompletadas.forEach(v => {
-    ventasPorProducto[v.producto] = (ventasPorProducto[v.producto] || 0) + v.cantidad;
-  });
-  const productoMasVendido = Object.keys(ventasPorProducto).length > 0
-    ? Object.keys(ventasPorProducto).reduce((a, b) => 
-        ventasPorProducto[a] > ventasPorProducto[b] ? a : b
-      )
-    : 'N/A';
-
-  const stockPorCategoria = {};
-  productos.forEach(p => {
-    stockPorCategoria[p.categoria] = (stockPorCategoria[p.categoria] || 0) + p.stock;
-  });
-
-  const dataStockCategoria = Object.keys(stockPorCategoria).map(cat => ({
-    name: cat,
-    stock: stockPorCategoria[cat]
-  }));
-
-  const metodosPagoData = {};
-  ventasCompletadas.forEach(v => {
-    metodosPagoData[v.metodoPago] = (metodosPagoData[v.metodoPago] || 0) + 1;
-  });
-
-  const dataMetodosPago = Object.keys(metodosPagoData).map(metodo => ({
-    name: metodo,
-    value: metodosPagoData[metodo]
-  }));
-
-  const dataProductosVendidos = Object.keys(ventasPorProducto).map(prod => ({
-    name: prod,
-    cantidad: ventasPorProducto[prod]
-  })).sort((a, b) => b.cantidad - a.cantidad).slice(0, 5);
-
-  const dataVentasMensuales = [
-    { mes: 'Ene', ventas: 12500 },
-    { mes: 'Feb', ventas: 15200 },
-    { mes: 'Mar', ventas: 18700 },
-    { mes: 'Abr', ventas: 16300 },
-    { mes: 'May', ventas: 19800 },
-    { mes: 'Jun', ventas: 22400 },
-    { mes: 'Jul', ventas: 21000 },
-    { mes: 'Ago', ventas: 24500 },
-    { mes: 'Sep', ventas: 23200 },
-    { mes: 'Oct', ventas: Math.round(ventasHoy) }
-  ];
-
-  const COLORS = ['#720008', '#8B0010', '#A50018', '#C00020', '#444444'];
-
-  return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-gray-700 to-red-900 text-white p-8 mb-8 rounded-lg shadow-xl">
-          <h1 className="text-4xl font-bold mb-2">Panel de Gestión</h1>
-          <p className="text-lg opacity-90">Control de Productos y Ventas</p>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-8">
-          <div className="grid grid-cols-3 border-b-2">
-            <button
-              onClick={() => setActiveTab('productos')}
-              className={`p-4 text-center transition-all ${
-                activeTab === 'productos'
-                  ? 'bg-white text-red-900 border-b-4 border-red-900 font-bold'
-                  : 'bg-gray-50 text-gray-600 hover:bg-white'
-              }`}
-            >
-              <div className="text-2xl mb-1">📦</div>
-              <div>Productos</div>
-            </button>
-            <button
-              onClick={() => setActiveTab('ventas')}
-              className={`p-4 text-center transition-all ${
-                activeTab === 'ventas'
-                  ? 'bg-white text-red-900 border-b-4 border-red-900 font-bold'
-                  : 'bg-gray-50 text-gray-600 hover:bg-white'
-              }`}
-            >
-              <div className="text-2xl mb-1">💰</div>
-              <div>Ventas</div>
-            </button>
-            <button
-              onClick={() => setActiveTab('reportes')}
-              className={`p-4 text-center transition-all ${
-                activeTab === 'reportes'
-                  ? 'bg-white text-red-900 border-b-4 border-red-900 font-bold'
-                  : 'bg-gray-50 text-gray-600 hover:bg-white'
-              }`}
-            >
-              <div className="text-2xl mb-1">📊</div>
-              <div>Reportes</div>
-            </button>
-          </div>
-
-          {activeTab === 'productos' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-4 border-red-900 pb-2 inline-block">
-                Control de Productos
-              </h2>
-
-              <button
-                onClick={() => setShowProductForm(!showProductForm)}
-                className="bg-red-900 text-white px-6 py-3 rounded-lg mb-6 hover:bg-red-800 transition-all font-bold"
-              >
-                ➕ {showProductForm ? 'Cancelar' : 'Agregar Nuevo Producto'}
-              </button>
-
-              {showProductForm && (
-                <div className="bg-gray-50 p-6 rounded-lg mb-6 border-2 border-gray-200">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Nombre del Producto</label>
-                      <input
-                        type="text"
-                        value={nuevoProducto.nombre}
-                        onChange={(e) => setNuevoProducto({...nuevoProducto, nombre: e.target.value})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                        placeholder="Ej: Pisco Acholado"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Categoría</label>
-                      <select
-                        value={nuevoProducto.categoria}
-                        onChange={(e) => setNuevoProducto({...nuevoProducto, categoria: e.target.value})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                      >
-                        <option value="">Seleccionar...</option>
-                        <option>Licores</option>
-                        <option>Gaseosas</option>
-                        <option>Insumos</option>
-                        <option>Vasos</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Stock Inicial</label>
-                      <input
-                        type="number"
-                        value={nuevoProducto.stock}
-                        onChange={(e) => setNuevoProducto({...nuevoProducto, stock: parseInt(e.target.value) || 0})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                        placeholder="0"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Precio (S/.)</label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={nuevoProducto.precio}
-                        onChange={(e) => setNuevoProducto({...nuevoProducto, precio: parseFloat(e.target.value) || 0})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                        placeholder="0.00"
-                      />
-                    </div>
-                  </div>
-                  <button 
-                    onClick={agregarProducto}
-                    className="mt-4 bg-red-900 text-white px-6 py-3 rounded-lg hover:bg-red-800 font-bold"
-                  >
-                    Guardar Producto
-                  </button>
-                </div>
-              )}
-
-              <div className="overflow-x-auto rounded-lg border">
-                <table className="w-full">
-                  <thead className="bg-gradient-to-r from-red-900 to-gray-700 text-white">
-                    <tr>
-                      <th className="p-4 text-left">ID</th>
-                      <th className="p-4 text-left">Producto</th>
-                      <th className="p-4 text-left">Categoría</th>
-                      <th className="p-4 text-left">Stock</th>
-                      <th className="p-4 text-left">Precio</th>
-                      <th className="p-4 text-left">Estado</th>
-                      <th className="p-4 text-left">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {productos.map((producto) => (
-                      <tr key={producto.id} className="border-b hover:bg-gray-50">
-                        <td className="p-4">{producto.id}</td>
-                        <td className="p-4">{producto.nombre}</td>
-                        <td className="p-4">{producto.categoria}</td>
-                        <td className="p-4">{producto.stock}</td>
-                        <td className="p-4">S/. {producto.precio.toFixed(2)}</td>
-                        <td className="p-4">
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            producto.stock > 10 
-                              ? 'bg-green-100 text-green-800' 
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {producto.stock > 10 ? 'DISPONIBLE' : 'BAJO STOCK'}
-                          </span>
-                        </td>
-                        <td className="p-4">
-                          <button
-                            onClick={() => eliminarProducto(producto.id)}
-                            className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 text-sm"
-                          >
-                            Eliminar
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'ventas' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-4 border-red-900 pb-2 inline-block">
-                Control de Ventas
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-red-900">
-                  <h4 className="text-gray-600 text-sm mb-2">Ventas de Hoy</h4>
-                  <div className="text-3xl font-bold text-red-900">S/. {ventasHoy.toFixed(2)}</div>
-                  <span className="text-gray-500 text-sm">{ventasCompletadas.length} transacciones</span>
-                </div>
-                <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-red-900">
-                  <h4 className="text-gray-600 text-sm mb-2">Promedio por Venta</h4>
-                  <div className="text-3xl font-bold text-red-900">S/. {promedioVenta.toFixed(2)}</div>
-                  <span className="text-gray-500 text-sm">Actualizado en tiempo real</span>
-                </div>
-                <div className="bg-gray-50 p-6 rounded-lg border-l-4 border-red-900">
-                  <h4 className="text-gray-600 text-sm mb-2">Producto más Vendido</h4>
-                  <div className="text-2xl font-bold text-red-900">{productoMasVendido}</div>
-                  <span className="text-gray-500 text-sm">{ventasPorProducto[productoMasVendido] || 0} unidades</span>
-                </div>
-              </div>
-
-              <button
-                onClick={() => setShowVentaForm(!showVentaForm)}
-                className="bg-red-900 text-white px-6 py-3 rounded-lg mb-6 hover:bg-red-800 transition-all font-bold"
-              >
-                ➕ {showVentaForm ? 'Cancelar' : 'Registrar Nueva Venta'}
-              </button>
-
-              {showVentaForm && (
-                <div className="bg-gray-50 p-6 rounded-lg mb-6 border-2 border-gray-200">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Producto</label>
-                      <select
-                        value={nuevaVenta.producto}
-                        onChange={(e) => setNuevaVenta({...nuevaVenta, producto: e.target.value})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                      >
-                        <option value="">Seleccionar producto...</option>
-                        {productos.map(p => (
-                          <option key={p.id} value={p.nombre}>
-                            {p.nombre} - S/. {p.precio.toFixed(2)} (Stock: {p.stock})
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Cantidad</label>
-                      <input
-                        type="number"
-                        min="1"
-                        value={nuevaVenta.cantidad}
-                        onChange={(e) => setNuevaVenta({...nuevaVenta, cantidad: parseInt(e.target.value) || 1})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="block font-bold text-gray-700 mb-2">Método de Pago</label>
-                      <select
-                        value={nuevaVenta.metodoPago}
-                        onChange={(e) => setNuevaVenta({...nuevaVenta, metodoPago: e.target.value})}
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-900 focus:outline-none"
-                      >
-                        <option>Efectivo</option>
-                        <option>Tarjeta</option>
-                        <option>Yape</option>
-                        <option>Plin</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button 
-                    onClick={registrarVenta}
-                    className="mt-4 bg-red-900 text-white px-6 py-3 rounded-lg hover:bg-red-800 font-bold"
-                  >
-                    Registrar Venta
-                  </button>
-                </div>
-              )}
-
-              <div className="overflow-x-auto rounded-lg border">
-                <table className="w-full">
-                  <thead className="bg-gradient-to-r from-red-900 to-gray-700 text-white">
-                    <tr>
-                      <th className="p-4 text-left">ID Venta</th>
-                      <th className="p-4 text-left">Hora</th>
-                      <th className="p-4 text-left">Producto</th>
-                      <th className="p-4 text-left">Cantidad</th>
-                      <th className="p-4 text-left">Total</th>
-                      <th className="p-4 text-left">Método Pago</th>
-                      <th className="p-4 text-left">Estado</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ventas.map((venta) => (
-                      <tr key={venta.id} className="border-b hover:bg-gray-50">
-                        <td className="p-4">{venta.id}</td>
-                        <td className="p-4">{venta.hora}</td>
-                        <td className="p-4">{venta.producto}</td>
-                        <td className="p-4">{venta.cantidad}</td>
-                        <td className="p-4">S/. {venta.total.toFixed(2)}</td>
-                        <td className="p-4">{venta.metodoPago}</td>
-                        <td className="p-4">
-                          <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                            venta.estado === 'Completado'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-red-100 text-red-800'
-                          }`}>
-                            {venta.estado.toUpperCase()}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'reportes' && (
-            <div className="p-6">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b-4 border-red-900 pb-2 inline-block">
-                Reportes y Estadísticas
-              </h2>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-lg shadow-lg border">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-red-900 pb-2">
-                    📈 Ventas Mensuales
-                  </h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={dataVentasMensuales}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="mes" />
-                      <YAxis />
-                      <Tooltip formatter={(value) => `S/. ${value}`} />
-                      <Legend />
-                      <Line type="monotone" dataKey="ventas" stroke="#720008" strokeWidth={3} name="Ventas (S/.)" />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-lg border">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-red-900 pb-2">
-                    📦 Stock por Categoría
-                  </h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={dataStockCategoria}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="stock" fill="#720008" name="Unidades en Stock" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-lg border">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-red-900 pb-2">
-                    🏆 Productos más Vendidos
-                  </h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                      <Pie
-                        data={dataProductosVendidos}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={(entry) => entry.name}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="cantidad"
-                      >
-                        {dataProductosVendidos.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-lg border">
-                  <h3 className="text-lg font-bold text-gray-800 mb-4 border-b-2 border-red-900 pb-2">
-                    💳 Métodos de Pago
-                  </h3>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <PieChart>
-                      <Pie
-                        data={dataMetodosPago}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        label={(entry) => entry.name}
-                        outerRadius={80}
-                        fill="#8884d8"
-                        dataKey="value"
-                      >
-                        {dataMetodosPago.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+const AppState = {
+  productos: [
+    { id: 1, nombre: 'Pisco Quebranta', categoria: 'Licores', stock: 25, precio: 45.00 },
+    { id: 2, nombre: 'Coca Cola', categoria: 'Gaseosas', stock: 5, precio: 3.50 },
+    { id: 3, nombre: 'Vaso Cervecero', categoria: 'Vasos y Jarras', stock: 50, precio: 8.00 },
+    { id: 4, nombre: 'Pisco Sour', categoria: 'Licores', stock: 30, precio: 28.00 },
+    { id: 5, nombre: 'Chicha Morada', categoria: 'Bebidas', stock: 20, precio: 22.00 },
+    { id: 6, nombre: 'Cerveza Pilsen', categoria: 'Licores', stock: 40, precio: 14.00 }
+  ],
+  ventas: [
+    { id: 1, hora: '18:30', productoId: 4, productoNombre: 'Pisco Sour', cantidad: 3, total: 84.00, metodoPago: 'Efectivo', estado: 'Completado' },
+    { id: 2, hora: '18:45', productoId: 6, productoNombre: 'Cerveza Pilsen', cantidad: 1, total: 14.00, metodoPago: 'Tarjeta', estado: 'Completado' },
+    { id: 3, hora: '19:15', productoId: 4, productoNombre: 'Pisco Sour', cantidad: 1, total: 28.00, metodoPago: 'Efectivo', estado: 'Completado' }
+  ],
+  productosTemporales: [],
+  productoCounter: 0,
+  charts: {}
 };
 
-export default GestionTaberna;
+// ============================================
+// UTILIDADES
+// ============================================
+
+const Utils = {
+  formatId: (id, prefix = '') => `${prefix}${String(id).padStart(3, '0')}`,
+  formatPrice: (price) => `S/. ${price.toFixed(2)}`,
+  getCurrentTime: () => {
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  },
+  getNextId: (array) => Math.max(0, ...array.map(item => item.id)) + 1
+};
+
+// ============================================
+// GESTIÓN DE PRODUCTOS
+// ============================================
+
+const ProductManager = {
+  render() {
+    const tbody = document.getElementById('productosTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = AppState.productos.map(producto => {
+      const estado = producto.stock > 10 ? 'disponible' : 'bajo-stock';
+      const estadoTexto = producto.stock > 10 ? 'Disponible' : 'Bajo Stock';
+      
+      return `
+        <tr>
+          <td>${Utils.formatId(producto.id)}</td>
+          <td>${producto.nombre}</td>
+          <td>${producto.categoria}</td>
+          <td>${producto.stock}</td>
+          <td>${Utils.formatPrice(producto.precio)}</td>
+          <td><span class="status ${estado}">${estadoTexto}</span></td>
+          <td>
+            <a href="#" class="btn-action edit" data-action="edit" data-id="${producto.id}">Editar</a>
+            <a href="#" class="btn-action delete" data-action="delete" data-id="${producto.id}">Eliminar</a>
+          </td>
+        </tr>
+      `;
+    }).join('');
+    
+    this.updateSelect();
+    ChartManager.updateStock();
+  },
+
+  updateSelect() {
+    const select = document.getElementById('saleProduct');
+    if (!select) return;
+    
+    select.innerHTML = '<option value="">Seleccionar producto...</option>' +
+      AppState.productos
+        .filter(p => p.stock > 0)
+        .map(p => `<option value="${p.id}">${p.nombre} - ${Utils.formatPrice(p.precio)} (Stock: ${p.stock})</option>`)
+        .join('');
+  },
+
+  add(data) {
+    const newProduct = {
+      id: Utils.getNextId(AppState.productos),
+      ...data
+    };
+    
+    AppState.productos.push(newProduct);
+    this.render();
+    return newProduct;
+  },
+
+  update(id, data) {
+    const index = AppState.productos.findIndex(p => p.id === id);
+    if (index === -1) return false;
+    
+    AppState.productos[index] = { ...AppState.productos[index], ...data };
+    this.render();
+    return true;
+  },
+
+  delete(id) {
+    AppState.productos = AppState.productos.filter(p => p.id !== id);
+    this.render();
+  },
+
+  find(id) {
+    return AppState.productos.find(p => p.id === id);
+  }
+};
+
+// ============================================
+// GESTIÓN DE VENTAS
+// ============================================
+
+const SaleManager = {
+  render() {
+    const tbody = document.getElementById('ventasTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = AppState.ventas.map(venta => `
+      <tr>
+        <td>${Utils.formatId(venta.id, 'V')}</td>
+        <td>${venta.hora}</td>
+        <td>${venta.productoNombre}</td>
+        <td>${venta.cantidad}</td>
+        <td>${Utils.formatPrice(venta.total)}</td>
+        <td>${venta.metodoPago}</td>
+        <td><span class="status ${venta.estado.toLowerCase()}">${venta.estado}</span></td>
+      </tr>
+    `).join('');
+    
+    MetricsManager.update();
+    ChartManager.updateProductsSold();
+    ChartManager.updatePaymentMethods();
+  },
+
+  add(data) {
+    const producto = ProductManager.find(data.productoId);
+    if (!producto) {
+      throw new Error('Producto no encontrado');
+    }
+    
+    if (producto.stock < data.cantidad) {
+      throw new Error('Stock insuficiente');
+    }
+    
+    const newSale = {
+      id: Utils.getNextId(AppState.ventas),
+      hora: Utils.getCurrentTime(),
+      productoId: producto.id,
+      productoNombre: producto.nombre,
+      cantidad: data.cantidad,
+      total: producto.precio * data.cantidad,
+      metodoPago: data.metodoPago,
+      estado: 'Completado'
+    };
+    
+    AppState.ventas.push(newSale);
+    ProductManager.update(producto.id, { stock: producto.stock - data.cantidad });
+    this.render();
+    
+    return newSale;
+  }
+};
+
+// ============================================
+// GESTIÓN DE MÉTRICAS
+// ============================================
+
+const MetricsManager = {
+  update() {
+    const totalVentas = AppState.ventas.reduce((sum, v) => sum + v.total, 0);
+    const numVentas = AppState.ventas.length;
+    const promedio = numVentas > 0 ? totalVentas / numVentas : 0;
+    
+    // Calcular producto más vendido
+    const productosVendidos = AppState.ventas.reduce((acc, venta) => {
+      acc[venta.productoNombre] = (acc[venta.productoNombre] || 0) + venta.cantidad;
+      return acc;
+    }, {});
+    
+    const [productoTop, maxVendido] = Object.entries(productosVendidos)
+      .reduce((max, current) => current[1] > max[1] ? current : max, ['', 0]);
+    
+    // Actualizar DOM
+    this.updateElement('metricVentasHoy', Utils.formatPrice(totalVentas));
+    this.updateElement('metricTransacciones', `${numVentas} transacciones`);
+    this.updateElement('metricPromedio', Utils.formatPrice(promedio));
+    this.updateElement('metricProductoTop', productoTop || '-');
+    this.updateElement('metricProductoTopUnidades', `${maxVendido} unidades`);
+  },
+
+  updateElement(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = value;
+  }
+};
+
+// ============================================
+// GESTIÓN DE GRÁFICAS
+// ============================================
+
+const ChartManager = {
+  config: {
+    defaults: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            color: '#333'
+          }
+        }
+      }
+    },
+    colors: {
+      primary: '#720008',
+      secondary: '#a83e43',
+      dark: '#444444',
+      gray: '#666666',
+      lightGray: '#999999'
+    }
+  },
+
+  init() {
+    this.initMonthlySales();
+    this.updateStock();
+    this.updateProductsSold();
+    this.updatePaymentMethods();
+  },
+
+  destroyChart(name) {
+    if (AppState.charts[name]) {
+      AppState.charts[name].destroy();
+      delete AppState.charts[name];
+    }
+  },
+
+  initMonthlySales() {
+    const canvas = document.getElementById('ventasMensuales');
+    if (!canvas) return;
+    
+    this.destroyChart('ventasMensuales');
+    
+    AppState.charts.ventasMensuales = new Chart(canvas.getContext('2d'), {
+      type: 'line',
+      data: {
+        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct'],
+        datasets: [{
+          label: 'Ventas (S/.)',
+          data: [12000, 15000, 13500, 18000, 16500, 19000, 21000, 20000, 22500, 24000],
+          borderColor: this.config.colors.primary,
+          backgroundColor: 'rgba(114, 0, 8, 0.1)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        ...this.config.defaults,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: (value) => Utils.formatPrice(value)
+            }
+          }
+        }
+      }
+    });
+  },
+
+  updateStock() {
+    const canvas = document.getElementById('stockCategoria');
+    if (!canvas) return;
+    
+    const categorias = AppState.productos.reduce((acc, producto) => {
+      acc[producto.categoria] = (acc[producto.categoria] || 0) + producto.stock;
+      return acc;
+    }, {});
+    
+    this.destroyChart('stockCategoria');
+    
+    AppState.charts.stockCategoria = new Chart(canvas.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: Object.keys(categorias),
+        datasets: [{
+          label: 'Stock',
+          data: Object.values(categorias),
+          backgroundColor: [
+            this.config.colors.primary,
+            this.config.colors.dark,
+            this.config.colors.secondary,
+            this.config.colors.gray,
+            '#8b0000'
+          ],
+          borderColor: '#ffffff',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        ...this.config.defaults,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  },
+
+  updateProductsSold() {
+    const canvas = document.getElementById('productosMasVendidos');
+    if (!canvas) return;
+    
+    const productosVendidos = AppState.ventas.reduce((acc, venta) => {
+      acc[venta.productoNombre] = (acc[venta.productoNombre] || 0) + venta.cantidad;
+      return acc;
+    }, {});
+    
+    const top5 = Object.entries(productosVendidos)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+    
+    this.destroyChart('productosMasVendidos');
+    
+    AppState.charts.productosMasVendidos = new Chart(canvas.getContext('2d'), {
+      type: 'doughnut',
+      data: {
+        labels: top5.map(([name]) => name),
+        datasets: [{
+          data: top5.map(([, qty]) => qty),
+          backgroundColor: [
+            this.config.colors.primary,
+            this.config.colors.secondary,
+            this.config.colors.dark,
+            this.config.colors.gray,
+            this.config.colors.lightGray
+          ],
+          borderColor: '#ffffff',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        ...this.config.defaults,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              boxWidth: 15,
+              padding: 15
+            }
+          }
+        }
+      }
+    });
+  },
+
+  updatePaymentMethods() {
+    const canvas = document.getElementById('metodosPago');
+    if (!canvas) return;
+    
+    const metodosPago = AppState.ventas.reduce((acc, venta) => {
+      acc[venta.metodoPago] = (acc[venta.metodoPago] || 0) + venta.total;
+      return acc;
+    }, {});
+    
+    this.destroyChart('metodosPago');
+    
+    AppState.charts.metodosPago = new Chart(canvas.getContext('2d'), {
+      type: 'pie',
+      data: {
+        labels: Object.keys(metodosPago),
+        datasets: [{
+          data: Object.values(metodosPago),
+          backgroundColor: [
+            this.config.colors.primary,
+            this.config.colors.dark,
+            this.config.colors.secondary,
+            this.config.colors.gray
+          ],
+          borderColor: '#ffffff',
+          borderWidth: 3
+        }]
+      },
+      options: {
+        ...this.config.defaults,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              padding: 15
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.label}: ${Utils.formatPrice(context.parsed)}`
+            }
+          }
+        }
+      }
+    });
+  }
+};
+
+// ============================================
+// GESTIÓN DE FORMULARIOS
+// ============================================
+
+const FormManager = {
+  handleProductForm(e) {
+    e.preventDefault();
+    
+    const formData = {
+      nombre: document.getElementById('productName').value,
+      categoria: document.getElementById('productCategory').value,
+      stock: parseInt(document.getElementById('productStock').value),
+      precio: parseFloat(document.getElementById('productPrice').value)
+    };
+    
+    try {
+      ProductManager.add(formData);
+      e.target.reset();
+      alert('Producto agregado correctamente');
+    } catch (error) {
+      alert('Error al agregar producto: ' + error.message);
+    }
+  },
+
+  handleSaleForm(e) {
+    e.preventDefault();
+    
+    const formData = {
+      productoId: parseInt(document.getElementById('saleProduct').value),
+      cantidad: parseInt(document.getElementById('saleQuantity').value),
+      metodoPago: document.getElementById('salePayment').value
+    };
+    
+    if (!formData.productoId) {
+      alert('Debe seleccionar un producto');
+      return;
+    }
+    
+    try {
+      SaleManager.add(formData);
+      e.target.reset();
+      alert('Venta registrada correctamente');
+    } catch (error) {
+      alert('Error: ' + error.message);
+    }
+  },
+
+  handleProductEdit(id) {
+    const producto = ProductManager.find(id);
+    if (!producto) return;
+    
+    const nombre = prompt('Nuevo nombre:', producto.nombre);
+    if (!nombre) return;
+    
+    const stock = prompt('Nuevo stock:', producto.stock);
+    if (stock === null) return;
+    
+    const precio = prompt('Nuevo precio:', producto.precio);
+    if (precio === null) return;
+    
+    ProductManager.update(id, {
+      nombre,
+      stock: parseInt(stock),
+      precio: parseFloat(precio)
+    });
+    
+    alert('Producto actualizado correctamente');
+  },
+
+  handleProductDelete(id) {
+    if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+    
+    ProductManager.delete(id);
+    alert('Producto eliminado correctamente');
+  }
+};
+
+// ============================================
+// GESTIÓN DE PRODUCTOS MÚLTIPLES
+// ============================================
+
+const MultiProductManager = {
+  init() {
+    this.setupEventListeners();
+    this.updateState();
+    this.addProduct(); // Agregar primer producto automáticamente
+  },
+
+  setupEventListeners() {
+    const btnAdd = document.getElementById('btnAgregarProducto');
+    const btnSave = document.getElementById('btnGuardarTodos');
+    const btnCancel = document.getElementById('btnCancelar');
+    const form = document.getElementById('formProducto');
+    
+    if (btnAdd) btnAdd.addEventListener('click', () => this.addProduct());
+    if (btnSave) form?.addEventListener('submit', (e) => this.saveAll(e));
+    if (btnCancel) btnCancel.addEventListener('click', () => this.cancel());
+  },
+
+  addProduct() {
+    AppState.productoCounter++;
+    const container = document.getElementById('productosContainer');
+    if (!container) return;
+    
+    const productDiv = document.createElement('div');
+    productDiv.className = 'producto-item';
+    productDiv.dataset.numero = AppState.productoCounter;
+    productDiv.innerHTML = this.getProductHTML(AppState.productoCounter);
+    
+    container.appendChild(productDiv);
+    this.updateState();
+  },
+
+  getProductHTML(numero) {
+    return `
+      <div class="producto-header">
+        <span class="producto-numero">Producto #${numero}</span>
+        <button type="button" class="btn-remove" data-remove="${numero}">
+          🗑️ Eliminar
+        </button>
+      </div>
+      
+      <div class="form-group">
+        <label>Nombre del Producto</label>
+        <input type="text" class="product-name" data-numero="${numero}" 
+               placeholder="Ej: Pisco Acholado" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Categoría</label>
+        <select class="product-category" data-numero="${numero}" required>
+          <option value="">Seleccionar...</option>
+          <option>Licores</option>
+          <option>Gaseosas</option>
+          <option>Bebidas</option>
+          <option>Insumos</option>
+          <option>Vasos y Jarras</option>
+        </select>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Stock Inicial</label>
+          <input type="number" class="product-stock" data-numero="${numero}" 
+                 placeholder="0" min="0" required>
+        </div>
+        <div class="form-group">
+          <label>Precio (S/.)</label>
+          <input type="number" class="product-price" data-numero="${numero}" 
+                 step="0.01" placeholder="0.00" min="0" required>
+        </div>
+      </div>
+    `;
+  },
+
+  removeProduct(numero) {
+    const producto = document.querySelector(`[data-numero="${numero}"]`);
+    if (!producto) return;
+    
+    producto.style.animation = 'slideIn 0.3s ease-out reverse';
+    setTimeout(() => {
+      producto.remove();
+      this.updateState();
+    }, 300);
+  },
+
+  updateState() {
+    const container = document.getElementById('productosContainer');
+    const emptyState = document.getElementById('emptyState');
+    const productCount = document.getElementById('productCount');
+    const btnSave = document.getElementById('btnGuardarTodos');
+    
+    if (!container) return;
+    
+    const count = container.querySelectorAll('.producto-item').length;
+    
+    if (productCount) productCount.textContent = count;
+    if (emptyState) emptyState.style.display = count === 0 ? 'block' : 'none';
+    if (btnSave) {
+      btnSave.disabled = count === 0;
+      btnSave.style.opacity = count === 0 ? '0.5' : '1';
+    }
+  },
+
+  saveAll(e) {
+    e.preventDefault();
+    
+    const container = document.getElementById('productosContainer');
+    if (!container) return;
+    
+    const productos = container.querySelectorAll('.producto-item');
+    
+    if (productos.length === 0) {
+      alert('⚠️ Debe agregar al menos un producto');
+      return;
+    }
+    
+    const productosData = [];
+    let valid = true;
+    
+    productos.forEach(producto => {
+      const numero = producto.dataset.numero;
+      const data = {
+        nombre: producto.querySelector(`.product-name[data-numero="${numero}"]`).value.trim(),
+        categoria: producto.querySelector(`.product-category[data-numero="${numero}"]`).value,
+        stock: parseInt(producto.querySelector(`.product-stock[data-numero="${numero}"]`).value),
+        precio: parseFloat(producto.querySelector(`.product-price[data-numero="${numero}"]`).value)
+      };
+      
+      if (!data.nombre || !data.categoria || isNaN(data.stock) || isNaN(data.precio)) {
+        valid = false;
+        return;
+      }
+      
+      productosData.push(data);
+    });
+    
+    if (!valid) {
+      alert('⚠️ Complete todos los campos correctamente');
+      return;
+    }
+    
+    // Guardar productos
+    productosData.forEach(data => ProductManager.add(data));
+    
+    alert(`✅ ${productosData.length} producto(s) guardado(s)!\n\n` + 
+          productosData.map(p => `• ${p.nombre} - ${p.categoria}`).join('\n'));
+    
+    // Limpiar
+    container.innerHTML = '';
+    AppState.productoCounter = 0;
+    this.updateState();
+  },
+
+  cancel() {
+    const container = document.getElementById('productosContainer');
+    if (!container) return;
+    
+    if (container.querySelectorAll('.producto-item').length > 0) {
+      if (confirm('¿Cancelar? Se perderán los cambios no guardados.')) {
+        container.innerHTML = '';
+        AppState.productoCounter = 0;
+        this.updateState();
+      }
+    }
+  }
+};
+
+// ============================================
+// EVENT DELEGATION
+// ============================================
+
+const EventHandler = {
+  init() {
+    // Delegación para acciones de productos
+    document.addEventListener('click', (e) => {
+      const target = e.target;
+      
+      // Acciones de productos
+      if (target.dataset.action === 'edit') {
+        e.preventDefault();
+        FormManager.handleProductEdit(parseInt(target.dataset.id));
+      }
+      
+      if (target.dataset.action === 'delete') {
+        e.preventDefault();
+        FormManager.handleProductDelete(parseInt(target.dataset.id));
+      }
+      
+      // Eliminar producto múltiple
+      if (target.dataset.remove) {
+        MultiProductManager.removeProduct(target.dataset.remove);
+      }
+    });
+    
+    // Formularios
+    const formProducto = document.getElementById('formProducto');
+    const formVenta = document.getElementById('formVenta');
+    
+    if (formProducto) {
+      formProducto.addEventListener('submit', (e) => FormManager.handleProductForm(e));
+    }
+    
+    if (formVenta) {
+      formVenta.addEventListener('submit', (e) => FormManager.handleSaleForm(e));
+    }
+  }
+};
+
+// ============================================
+// INICIALIZACIÓN
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+  EventHandler.init();
+  ProductManager.render();
+  SaleManager.render();
+  ChartManager.init();
+  MetricsManager.update();
+  MultiProductManager.init();
+});

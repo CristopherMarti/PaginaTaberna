@@ -30,13 +30,13 @@
             <p class="subtitle">Control de Productos y Ventas</p>
         </div>
 
-        <!-- Navegación por pestañas (SIN CONFIGURACIÓN) -->
+        <!-- Navegación por pestañas -->
         <div class="tabs-container">
             <input type="radio" name="tab" id="tab-productos" checked>
             <input type="radio" name="tab" id="tab-ventas">
             <input type="radio" name="tab" id="tab-reportes">
 
-            <!-- Labels como pestañas - Solo 3 -->
+            <!-- Labels como pestañas -->
             <div class="tabs-nav">
                 <label for="tab-productos" class="tab-label">
                     <span class="tab-icon">📦</span>
@@ -56,35 +56,34 @@
             <div class="tab-content" id="content-productos">
                 <h2 class="section-title">Control de Productos</h2>
                 
-                <!-- Formulario para agregar producto -->
-                <details class="action-panel">
+                <!-- Formulario para agregar productos múltiples -->
+                <details class="action-panel" open>
                     <summary>➕ Agregar Nuevo Producto</summary>
-                    <form class="product-form">
-                        <div class="form-group">
-                            <label>Nombre del Producto</label>
-                            <input type="text" placeholder="Ej: Pisco Acholado" required>
+                    <form class="product-form" id="formProducto">
+                        <div class="products-count">
+                            Productos agregados: <span id="productCount">0</span>
                         </div>
-                        <div class="form-group">
-                            <label>Categoría</label>
-                            <select required>
-                                <option value="">Seleccionar...</option>
-                                <option>Licores</option>
-                                <option>Gaseosas</option>
-                                <option>Insumos</option>
-                                <option>Vasos y Jarras</option>
-                            </select>
+
+                        <div id="productosContainer" class="productos-container">
+                            <!-- Los productos se agregarán aquí dinámicamente -->
                         </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Stock Inicial</label>
-                                <input type="number" placeholder="0" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Precio (S/.)</label>
-                                <input type="number" step="0.01" placeholder="0.00" required>
-                            </div>
+
+                        <div class="empty-state" id="emptyState">
+                            <p>📦 No hay productos agregados</p>
+                            <p>Haz clic en "Agregar Producto" para comenzar</p>
                         </div>
-                        <button type="submit" class="btn btn-primary">Guardar Producto</button>
+
+                        <div class="form-buttons">
+                            <button type="button" class="btn btn-add" id="btnAgregarProducto">
+                                ➕ Agregar Producto
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardarTodos">
+                                💾 Guardar Todos los Productos
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="btnCancelar">
+                                ❌ Cancelar
+                            </button>
+                        </div>
                     </form>
                 </details>
 
@@ -102,43 +101,8 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>001</td>
-                                <td>Pisco Quebranta</td>
-                                <td>Licores</td>
-                                <td>25</td>
-                                <td>S/. 45.00</td>
-                                <td><span class="status disponible">Disponible</span></td>
-                                <td>
-                                    <a href="#edit-001" class="btn-action edit">Editar</a>
-                                    <a href="#delete-001" class="btn-action delete">Eliminar</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>002</td>
-                                <td>Coca Cola</td>
-                                <td>Gaseosas</td>
-                                <td>5</td>
-                                <td>S/. 3.50</td>
-                                <td><span class="status bajo-stock">Bajo Stock</span></td>
-                                <td>
-                                    <a href="#edit-002" class="btn-action edit">Editar</a>
-                                    <a href="#delete-002" class="btn-action delete">Eliminar</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>003</td>
-                                <td>Vaso Cervecero</td>
-                                <td>Vasos</td>
-                                <td>50</td>
-                                <td>S/. 8.00</td>
-                                <td><span class="status disponible">Disponible</span></td>
-                                <td>
-                                    <a href="#edit-003" class="btn-action edit">Editar</a>
-                                    <a href="#delete-003" class="btn-action delete">Eliminar</a>
-                                </td>
-                            </tr>
+                        <tbody id="productosTableBody">
+                            <!-- Los productos se cargarán aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
@@ -147,47 +111,25 @@
             <!-- Contenido de Ventas -->
             <div class="tab-content" id="content-ventas">
                 <h2 class="section-title">Control de Ventas</h2>
-                
-                <!-- Resumen -->
-                <div class="sales-summary">
-                    <div class="summary-card">
-                        <h4>Ventas de Hoy</h4>
-                        <div class="summary-amount">S/. 2,450.00</div>
-                        <span class="summary-detail">32 transacciones</span>
-                    </div>
-                    <div class="summary-card">
-                        <h4>Promedio por Venta</h4>
-                        <div class="summary-amount">S/. 76.56</div>
-                        <span class="summary-detail">+12% vs ayer</span>
-                    </div>
-                    <div class="summary-card">
-                        <h4>Producto más Vendido</h4>
-                        <div class="summary-amount">Pisco Sour</div>
-                        <span class="summary-detail">18 unidades</span>
-                    </div>
-                </div>
 
                 <!-- Formulario para nueva venta -->
                 <details class="action-panel">
                     <summary>➕ Registrar Nueva Venta</summary>
-                    <form class="sale-form">
+                    <form class="sale-form" id="formVenta">
                         <div class="form-group">
                             <label>Producto</label>
-                            <select required>
+                            <select id="saleProduct" required>
                                 <option value="">Seleccionar producto...</option>
-                                <option>Pisco Sour - S/. 28.00</option>
-                                <option>Monkey Special - S/. 35.00</option>
-                                <option>Chicha Morada - S/. 22.00</option>
                             </select>
                         </div>
                         <div class="form-row">
                             <div class="form-group">
                                 <label>Cantidad</label>
-                                <input type="number" min="1" value="1" required>
+                                <input type="number" id="saleQuantity" min="1" value="1" required>
                             </div>
                             <div class="form-group">
                                 <label>Método de Pago</label>
-                                <select required>
+                                <select id="salePayment" required>
                                     <option>Efectivo</option>
                                     <option>Tarjeta</option>
                                     <option>Yape</option>
@@ -207,45 +149,42 @@
                                 <th>ID Venta</th>
                                 <th>Hora</th>
                                 <th>Productos</th>
+                                <th>Cantidad</th>
                                 <th>Total</th>
                                 <th>Método Pago</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>V001</td>
-                                <td>18:30</td>
-                                <td>Pisco Sour</td>
-                                <td>S/. 85.00</td>
-                                <td>Efectivo</td>
-                                <td><span class="status completado">Completado</span></td>
-                            </tr>
-                            <tr>
-                                <td>V002</td>
-                                <td>18:45</td>
-                                <td>Cerveza Pilsen</td>
-                                <td>S/. 14.00</td>
-                                <td>Tarjeta</td>
-                                <td><span class="status completado">Completado</span></td>
-                            </tr>
-                            <tr>
-                                <td>V003</td>
-                                <td>19:15</td>
-                                <td>Monkey Special</td>
-                                <td>S/. 35.00</td>
-                                <td>Efectivo</td>
-                                <td><span class="status pendiente">Pendiente</span></td>
-                            </tr>
+                        <tbody id="ventasTableBody">
+                            <!-- Las ventas se cargarán aquí dinámicamente -->
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- Contenido de Reportes CON GRÁFICAS -->
+            <!-- Contenido de Reportes -->
             <div class="tab-content" id="content-reportes">
                 <h2 class="section-title">Reportes y Estadísticas</h2>
                 
+                <!-- Resumen de métricas -->
+                <div class="sales-summary">
+                    <div class="summary-card">
+                        <h4>Ventas de Hoy</h4>
+                        <div class="summary-amount" id="metricVentasHoy">S/. 0.00</div>
+                        <span class="summary-detail" id="metricTransacciones">0 transacciones</span>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Promedio por Venta</h4>
+                        <div class="summary-amount" id="metricPromedio">S/. 0.00</div>
+                        <span class="summary-detail">Calculado en tiempo real</span>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Producto más Vendido</h4>
+                        <div class="summary-amount" id="metricProductoTop">-</div>
+                        <span class="summary-detail" id="metricProductoTopUnidades">0 unidades</span>
+                    </div>
+                </div>
+
                 <div class="charts-grid">
                     <!-- Gráfica de Ventas por Mes -->
                     <div class="chart-card">
@@ -283,138 +222,6 @@
         </div>
     </div>
 
-    <script>
-        // Gráfica de Ventas Mensuales
-        const ctxVentas = document.getElementById('ventasMensuales').getContext('2d');
-        new Chart(ctxVentas, {
-            type: 'line',
-            data: {
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre'],
-                datasets: [{
-                    label: 'Ventas (S/.)',
-                    data: [12500, 15200, 18700, 16300, 19800, 22400, 21000, 24500, 23200, 26800],
-                    borderColor: '#720008',
-                    backgroundColor: 'rgba(114, 0, 8, 0.1)',
-                    tension: 0.4,
-                    fill: true
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'S/. ' + value.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Gráfica de Stock por Categoría
-        const ctxStock = document.getElementById('stockCategoria').getContext('2d');
-        new Chart(ctxStock, {
-            type: 'bar',
-            data: {
-                labels: ['Licores', 'Gaseosas', 'Insumos', 'Vasos y Jarras'],
-                datasets: [{
-                    label: 'Unidades en Stock',
-                    data: [145, 89, 234, 156],
-                    backgroundColor: [
-                        'rgba(114, 0, 8, 0.8)',
-                        'rgba(68, 68, 68, 0.8)',
-                        'rgba(114, 0, 8, 0.6)',
-                        'rgba(68, 68, 68, 0.6)'
-                    ],
-                    borderColor: [
-                        '#720008',
-                        '#444444',
-                        '#720008',
-                        '#444444'
-                    ],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        // Gráfica de Productos más Vendidos
-        const ctxProductos = document.getElementById('productosMasVendidos').getContext('2d');
-        new Chart(ctxProductos, {
-            type: 'doughnut',
-            data: {
-                labels: ['Pisco Sour', 'Cerveza Pilsen', 'Monkey Special', 'Chicha Morada', 'Otros'],
-                datasets: [{
-                    data: [285, 198, 167, 142, 208],
-                    backgroundColor: [
-                        '#720008',
-                        '#8B0010',
-                        '#A50018',
-                        '#C00020',
-                        '#444444'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'right'
-                    }
-                }
-            }
-        });
-
-        // Gráfica de Métodos de Pago
-        const ctxPago = document.getElementById('metodosPago').getContext('2d');
-        new Chart(ctxPago, {
-            type: 'pie',
-            data: {
-                labels: ['Efectivo', 'Tarjeta', 'Yape', 'Plin'],
-                datasets: [{
-                    data: [45, 25, 20, 10],
-                    backgroundColor: [
-                        '#720008',
-                        '#444444',
-                        '#8B0010',
-                        '#666666'
-                    ]
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    </script>
+    <script src="gestion.js"></script>
 </body>
 </html>
