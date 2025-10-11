@@ -223,6 +223,59 @@ const ChartManager = {
     }
   },
 
+  // Plugin para pintar porcentajes sobre cada segmento de doughnut/pie
+  segmentPercentPlugin: {
+    id: 'segmentPercentPlugin',
+    afterDraw: (chart) => {
+      // Solo dibujar para chart de tipo 'doughnut' o 'pie'
+      if (!chart || !chart.config || !chart.config.type) return;
+      const type = chart.config.type;
+      if (type !== 'doughnut' && type !== 'pie') return;
+
+      const ctx = chart.ctx;
+      const meta = chart.getDatasetMeta(0);
+      if (!meta || !meta.data) return;
+      const dataset = chart.data.datasets[0];
+      const data = dataset.data || [];
+      const total = data.reduce((s, v) => s + (typeof v === 'number' ? v : 0), 0);
+      if (total === 0) return;
+
+      ctx.save();
+      // texto con borde oscuro para mejorar lectura sobre fondos claros/oscures
+      ctx.font = '12px Arial, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      meta.data.forEach((arc, index) => {
+        const val = data[index];
+        if (!val || val <= 0) return;
+
+        // posición aproximada del centro del arco
+        let pos;
+        try {
+          pos = arc.tooltipPosition();
+        } catch (e) {
+          // fallback: usar bounding box
+          const box = arc.getProps ? arc.getProps(['x','y']) : { x: arc.x, y: arc.y };
+          pos = { x: box.x, y: box.y };
+        }
+
+        const percent = (val / total) * 100;
+        const text = percent < 1 ? '<1%' : percent.toFixed(1) + '%';
+
+        // Outline (mejora legibilidad)
+        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.fillText(text, pos.x + 1, pos.y + 1);
+
+        // Texto principal
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(text, pos.x, pos.y);
+      });
+
+      ctx.restore();
+    }
+  },
+
   init() {
     this.initMonthlySales();
     this.updateStock();
@@ -329,13 +382,17 @@ const ChartManager = {
       .slice(0, 5);
     
     this.destroyChart('productosMasVendidos');
-    
+
+    // datos del chart
+    const labels = top5.map(([name]) => name);
+    const dataValues = top5.map(([, qty]) => qty);
+
     AppState.charts.productosMasVendidos = new Chart(canvas.getContext('2d'), {
       type: 'doughnut',
       data: {
-        labels: top5.map(([name]) => name),
+        labels,
         datasets: [{
-          data: top5.map(([, qty]) => qty),
+          data: dataValues,
           backgroundColor: [
             this.config.colors.primary,
             this.config.colors.secondary,
@@ -347,6 +404,7 @@ const ChartManager = {
           borderWidth: 3
         }]
       },
+      plugins: [this.segmentPercentPlugin],
       options: {
         ...this.config.defaults,
         plugins: {
@@ -355,6 +413,17 @@ const ChartManager = {
             labels: {
               boxWidth: 15,
               padding: 15
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => {
+                const dataset = context.dataset;
+                const value = context.parsed;
+                const total = dataset.data.reduce((s, v) => s + (typeof v === 'number' ? v : 0), 0);
+                const percent = total === 0 ? 0 : (value / total) * 100;
+                return `${context.label}: ${value} unidades (${percent.toFixed(1)}%)`;
+              }
             }
           }
         }
@@ -372,13 +441,16 @@ const ChartManager = {
     }, {});
     
     this.destroyChart('metodosPago');
+
+    const labels = Object.keys(metodosPago);
+    const dataValues = Object.values(metodosPago);
     
     AppState.charts.metodosPago = new Chart(canvas.getContext('2d'), {
       type: 'pie',
       data: {
-        labels: Object.keys(metodosPago),
+        labels,
         datasets: [{
-          data: Object.values(metodosPago),
+          data: dataValues,
           backgroundColor: [
             this.config.colors.primary,
             this.config.colors.dark,
@@ -389,6 +461,7 @@ const ChartManager = {
           borderWidth: 3
         }]
       },
+      plugins: [this.segmentPercentPlugin],
       options: {
         ...this.config.defaults,
         plugins: {
@@ -400,7 +473,13 @@ const ChartManager = {
           },
           tooltip: {
             callbacks: {
-              label: (context) => `${context.label}: ${Utils.formatPrice(context.parsed)}`
+              label: (context) => {
+                const dataset = context.dataset;
+                const value = context.parsed;
+                const total = dataset.data.reduce((s, v) => s + (typeof v === 'number' ? v : 0), 0);
+                const percent = total === 0 ? 0 : (value / total) * 100;
+                return `${context.label}: ${Utils.formatPrice(value)} (${percent.toFixed(1)}%)`;
+              }
             }
           }
         }
