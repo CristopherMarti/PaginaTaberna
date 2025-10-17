@@ -7,7 +7,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
   // Validación simple - verifica que los campos no estén vacíos
   if (email && password) {
     // Redirige a la página de lista de categorías
-    window.location.href = 'lista.html';
+    window.location.href = 'Catalogo de productos.html';
   } else {
     alert('Por favor completa todos los campos');
   }
