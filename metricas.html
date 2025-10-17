@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métricas - Taberna del Monkey</title>
+    <link rel="stylesheet" href="metricas.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+            </a>
+            <ul class="nav-links">
+                <li><a href="Catalogo de productos.html">Catálogo de Productos</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="ventas.html">Registro de Ventas</a></li>
+                <li><a href="metricas.html" class="active">Métricas</a></li>
+                <li><a href="main.html" class="logout">Cerrar Sesión</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📈 Reportes y Estadísticas</h1>
+            <p class="subtitle">Análisis y métricas del negocio</p>
+        </div>
+
+        <!-- Métricas del Día -->
+        <div class="metrics-section">
+            <h2 class="section-title">📊 Métricas del Día</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <p>Ventas de Hoy</p>
+                        <h3 id="metricVentasHoy">S/. 0.00</h3>
+                        <span class="stat-detail" id="metricTransacciones">0 transacciones</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-info">
+                        <p>Promedio por Venta</p>
+                        <h3 id="metricPromedio">S/. 0.00</h3>
+                        <span class="stat-detail">Calculado en tiempo real</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <p>Producto más Vendido</p>
+                        <h3 id="metricProductoTop">-</h3>
+                        <span class="stat-detail" id="metricProductoTopUnidades">0 unidades</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-info">
+                        <p>Stock Total</p>
+                        <h3 id="metricStockTotal">0</h3>
+                        <span class="stat-detail">Unidades en inventario</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficas -->
+        <div class="charts-section">
+            <h2 class="section-title">📊 Análisis Visual</h2>
+            
+            <div class="charts-grid">
+                <!-- Gráfica de Ventas Mensuales -->
+                <div class="chart-card">
+                    <h3>📈 Ventas Mensuales</h3>
+                    <p class="chart-description">Evolución de ventas en los últimos 10 meses</p>
+                    <div class="chart-wrapper">
+                        <canvas id="ventasMensuales"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfica de Stock por Categoría -->
+                <div class="chart-card">
+                    <h3>📦 Stock por Categoría</h3>
+                    <p class="chart-description">Distribución actual del inventario</p>
+                    <div class="chart-wrapper">
+                        <canvas id="stockCategoria"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfica de Productos más Vendidos -->
+                <div class="chart-card full-width">
+                    <h3>🏆 Productos más Vendidos (Top 5)</h3>
+                    <p class="chart-description">Ranking de productos con mayor demanda</p>
+                    <div class="chart-wrapper-large">
+                        <canvas id="productosMasVendidos"></canvas>
+                    </div>
+                </div>
+
+                <!-- Gráfica de Métodos de Pago -->
+                <div class="chart-card">
+                    <h3>💳 Métodos de Pago</h3>
+                    <p class="chart-description">Distribución de métodos de pago utilizados</p>
+                    <div class="chart-wrapper">
+                        <canvas id="metodosPago"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla Resumen -->
+        <div class="summary-section">
+            <h2 class="section-title">📋 Resumen Detallado</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h4>💵 Ingresos Totales</h4>
+                    <div class="summary-value" id="ingresosTotales">S/. 0.00</div>
+                </div>
+                <div class="summary-card">
+                    <h4>📊 Total de Ventas</h4>
+                    <div class="summary-value" id="totalVentas">0</div>
+                </div>
+                <div class="summary-card">
+                    <h4>📦 Productos Activos</h4>
+                    <div class="summary-value" id="productosActivos">0</div>
+                </div>
+                <div class="summary-card">
+                    <h4>⚠️ Productos Bajo Stock</h4>
+                    <div class="summary-value warning" id="productosBajoStock">0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="metricas.js"></script>
+</body>
+</html>

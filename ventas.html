@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ventas - Taberna del Monkey</title>
+    <link rel="stylesheet" href="ventas.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+            </a>
+            <ul class="nav-links">
+                <li><a href="Catalogo de productos.html">Catálogo de Productos</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="ventas.html" class="active">Registro de Ventas</a></li>
+                <li><a href="metricas.html">Métricas</a></li>
+                <li><a href="main.html" class="logout">Cerrar Sesión</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💰 Registro de Ventas</h1>
+            <p class="subtitle">Control y seguimiento de transacciones</p>
+        </div>
+
+        <!-- Resumen del Día -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">💵</div>
+                <div class="stat-info">
+                    <h3 id="ventasHoy">S/. 0.00</h3>
+                    <p>Ventas de Hoy</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3 id="numVentas">0</h3>
+                    <p>Transacciones</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-info">
+                    <h3 id="promedioVenta">S/. 0.00</h3>
+                    <p>Promedio por Venta</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-info">
+                    <h3 id="productoTop">-</h3>
+                    <p>Más Vendido</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registrar Nueva Venta -->
+        <div class="section-card">
+            <h2 class="section-title">➕ Registrar Nueva Venta</h2>
+            <form id="formVenta" class="venta-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ventaProducto">Producto *</label>
+                        <select id="ventaProducto" required>
+                            <option value="">Seleccionar producto...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ventaCantidad">Cantidad *</label>
+                        <input type="number" id="ventaCantidad" min="1" value="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ventaPago">Método de Pago *</label>
+                        <select id="ventaPago" required>
+                            <option>Efectivo</option>
+                            <option>Tarjeta</option>
+                            <option>Yape</option>
+                            <option>Plin</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Resumen de venta -->
+                <div class="venta-resumen" id="ventaResumen" style="display: none;">
+                    <div class="resumen-item">
+                        <span>Producto:</span>
+                        <strong id="resumenProducto">-</strong>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Cantidad:</span>
+                        <strong id="resumenCantidad">-</strong>
+                    </div>
+                    <div class="resumen-item">
+                        <span>Precio Unitario:</span>
+                        <strong id="resumenPrecio">-</strong>
+                    </div>
+                    <div class="resumen-item total">
+                        <span>TOTAL:</span>
+                        <strong id="resumenTotal">S/. 0.00</strong>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-icon">💾</span>
+                    Registrar Venta
+                </button>
+            </form>
+        </div>
+
+        <!-- Filtros y Búsqueda -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">📋 Historial de Ventas</h2>
+                <div class="filter-group">
+                    <input type="text" id="searchVenta" placeholder="🔍 Buscar...">
+                    <select id="filterMetodo">
+                        <option value="">Todos los métodos</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Tarjeta">Tarjeta</option>
+                        <option value="Yape">Yape</option>
+                        <option value="Plin">Plin</option>
+                    </select>
+                    <input type="date" id="filterFecha">
+                </div>
+            </div>
+
+            <!-- Tabla de ventas -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Fecha/Hora</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Total</th>
+                            <th>Método Pago</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ventasTableBody">
+                        <!-- Las ventas se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalles de Venta -->
+    <div id="modalDetalles" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🧾 Detalles de la Venta</h2>
+                <button class="modal-close" id="btnCerrarModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="detalle-grid">
+                    <div class="detalle-item">
+                        <strong>ID Venta:</strong>
+                        <span id="detalleId">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Fecha/Hora:</strong>
+                        <span id="detalleFecha">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Producto:</strong>
+                        <span id="detalleProducto">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Cantidad:</strong>
+                        <span id="detalleCantidad">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Precio Unitario:</strong>
+                        <span id="detallePrecioUnit">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <strong>Método de Pago:</strong>
+                        <span id="detalleMetodo">-</span>
+                    </div>
+                    <div class="detalle-item total">
+                        <strong>TOTAL:</strong>
+                        <span id="detalleTotal" class="precio-grande">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCerrarFooter">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="ventas.js"></script>
+</body>
+</html>

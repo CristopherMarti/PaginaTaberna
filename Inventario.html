@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Taberna del Monkey</title>
+    <link rel="stylesheet" href="Inventario.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+            </a>
+            <ul class="nav-links">
+                <li><a href="Catalogo de productos.html">Catálogo de Productos</a></li>
+                <li><a href="inventario.html" class="active">Inventario</a></li>
+                <li><a href="ventas.html">Registro de Ventas</a></li>
+                <li><a href="metricas.html">Métricas</a></li>
+                <li><a href="main.html" class="logout">Cerrar Sesión</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Gestión de Inventario</h1>
+            <p class="subtitle">Control de Stock y Movimientos</p>
+        </div>
+
+        <!-- Alertas de Stock Bajo -->
+        <div id="alertasContainer" class="alertas-container">
+            <!-- Las alertas se cargarán aquí dinámicamente -->
+        </div>
+
+        <!-- Resumen de Stock -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <h3 id="totalProductos">0</h3>
+                    <p>Total Productos</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 id="stockDisponible">0</h3>
+                    <p>Stock Total</p>
+                </div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-info">
+                    <h3 id="stockBajo">0</h3>
+                    <p>Productos Bajo Stock</p>
+                </div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-icon">🔴</div>
+                <div class="stat-info">
+                    <h3 id="stockAgotado">0</h3>
+                    <p>Productos Agotados</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registrar Entrada de Stock -->
+        <div class="section-card">
+            <h2 class="section-title">➕ Registrar Entrada de Stock</h2>
+            <form id="formEntrada" class="entrada-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="entradaProducto">Producto *</label>
+                        <select id="entradaProducto" required>
+                            <option value="">Seleccionar producto...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="entradaCantidad">Cantidad *</label>
+                        <input type="number" id="entradaCantidad" min="1" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="entradaMotivo">Motivo</label>
+                        <select id="entradaMotivo">
+                            <option>Compra</option>
+                            <option>Reposición</option>
+                            <option>Devolución</option>
+                            <option>Ajuste</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="entradaNotas">Notas (Opcional)</label>
+                    <textarea id="entradaNotas" rows="2" placeholder="Notas adicionales..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="btn-icon">💾</span>
+                    Registrar Entrada
+                </button>
+            </form>
+        </div>
+
+        <!-- Stock Actual por Producto -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">📦 Stock Actual por Producto</h2>
+                <div class="search-box">
+                    <input type="text" id="searchStock" placeholder="🔍 Buscar producto...">
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Stock Actual</th>
+                            <th>Precio</th>
+                            <th>Valor Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockTableBody">
+                        <!-- Los productos se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Historial de Movimientos -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">📋 Historial de Movimientos</h2>
+                <div class="filter-group">
+                    <select id="filterTipo">
+                        <option value="">Todos los tipos</option>
+                        <option value="Entrada">Entradas</option>
+                        <option value="Salida">Salidas</option>
+                    </select>
+                    <input type="date" id="filterFecha">
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha/Hora</th>
+                            <th>Producto</th>
+                            <th>Tipo</th>
+                            <th>Cantidad</th>
+                            <th>Stock Anterior</th>
+                            <th>Stock Nuevo</th>
+                            <th>Motivo</th>
+                            <th>Notas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="movimientosTableBody">
+                        <!-- Los movimientos se cargarán aquí -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="Inventario.js"></script>
+</body>
+</html>

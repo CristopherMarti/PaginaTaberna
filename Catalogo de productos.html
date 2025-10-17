@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Productos - Taberna del Monkey</title>
+    <link rel="stylesheet" href="Catalogo de productos.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+                <span>Taberna del Monkey</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="productos.html" class="active">Catálogo de Productos</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="ventas.html">Registro de Ventas</a></li>
+                <li><a href="metricas.html">Métricas</a></li>
+                <li><a href="main.html" class="logout">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="page-header">
+            <h1>📦 Catalogo de productos </h1>
+            <p class="subtitle">Control completo del catálogo de productos</p>
+        </div>
+
+        <!-- Botón para agregar producto -->
+        <div class="actions-bar">
+            <button id="btnAgregarProducto" class="btn btn-primary">
+                <span class="btn-icon">➕</span>
+                Agregar Nuevo Producto
+            </button>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar producto...">
+            </div>
+        </div>
+
+        <!-- Estadísticas rápidas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <h3 id="totalProductos">0</h3>
+                    <p>Total Productos</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 id="productosDisponibles">0</h3>
+                    <p>Disponibles</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚠️</div>
+                <div class="stat-info">
+                    <h3 id="productosBajoStock">0</h3>
+                    <p>Bajo Stock</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏷️</div>
+                <div class="stat-info">
+                    <h3 id="categorias">0</h3>
+                    <p>Categorías</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div class="table-section">
+            <h2 class="section-title">Catálogo Completo</h2>
+            <div class="table-container">
+                <table id="productosTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Stock</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productosTableBody">
+                        <!-- Los productos se cargarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar/Editar Producto -->
+    <div id="modalProducto" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">➕ Agregar Nuevo Producto</h2>
+                <button class="modal-close" id="btnCerrarModal">&times;</button>
+            </div>
+            <form id="formProducto">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="productoNombre">Nombre del Producto *</label>
+                        <input type="text" id="productoNombre" placeholder="Ej: Pisco Quebranta" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productoCategoria">Categoría *</label>
+                            <select id="productoCategoria" required>
+                                <option value="">Seleccionar...</option>
+                                <option value="Licores">Licores</option>
+                                <option value="Cócteles">Cócteles</option>
+                                <option value="Cervezas">Cervezas</option>
+                                <option value="Gaseosas">Gaseosas</option>
+                                <option value="Bebidas Calientes">Bebidas Calientes</option>
+                                <option value="Botellas">Botellas</option>
+                                <option value="Insumos">Insumos</option>
+                                <option value="Vasos y Jarras">Vasos y Jarras</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="productoMarca">Marca</label>
+                            <input type="text" id="productoMarca" placeholder="Ej: Tabernero">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productoStock">Stock Inicial *</label>
+                            <input type="number" id="productoStock" min="0" placeholder="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="productoPrecio">Precio (S/.) *</label>
+                            <input type="number" id="productoPrecio" step="0.01" min="0" placeholder="0.00" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productoDescripcion">Descripción</label>
+                        <textarea id="productoDescripcion" rows="3" placeholder="Descripción del producto (opcional)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productoImagen">URL de Imagen</label>
+                        <input type="text" id="productoImagen" placeholder="https://ejemplo.com/imagen.jpg">
+                        <small>Opcional: URL de la imagen del producto</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btnGuardar">
+                        <span class="btn-icon">💾</span>
+                        Guardar Producto
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Ver Detalles -->
+    <div id="modalDetalles" class="modal">
+        <div class="modal-content modal-details">
+            <div class="modal-header">
+                <h2>📋 Detalles del Producto</h2>
+                <button class="modal-close" id="btnCerrarDetalles">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="details-grid">
+                    <div class="detail-image">
+                        <img id="detalleImagen" src="https://via.placeholder.com/300x300?text=Sin+Imagen" alt="Producto">
+                    </div>
+                    <div class="detail-info">
+                        <h3 id="detalleNombre">Nombre del Producto</h3>
+                        <div class="detail-item">
+                            <strong>ID:</strong>
+                            <span id="detalleId">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Categoría:</strong>
+                            <span id="detalleCategoria">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Marca:</strong>
+                            <span id="detalleMarca">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Stock Actual:</strong>
+                            <span id="detalleStock" class="badge">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Precio:</strong>
+                            <span id="detallePrecio" class="price">-</span>
+                        </div>
+                        <div class="detail-item">
+                            <strong>Estado:</strong>
+                            <span id="detalleEstado" class="badge">-</span>
+                        </div>
+                        <div class="detail-description">
+                            <strong>Descripción:</strong>
+                            <p id="detalleDescripcion">Sin descripción</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnCerrarDetallesFooter">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Catalogo de productos.js"></script>
+</body>
+</html>
