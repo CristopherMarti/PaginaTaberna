@@ -31,30 +31,28 @@
         </div>
 
         <!-- Alertas de Stock Bajo -->
-        <div id="alertasContainer" class="alertas-container">
-            <!-- Las alertas se cargarán aquí dinámicamente -->
-        </div>
+        <div id="alertasContainer" class="alertas-container"></div>
 
         <!-- Resumen de Stock -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">📦</div>
                 <div class="stat-info">
-                    <h3 id="totalProductos">0</h3>
+                    <h3 id="totalProductos">6</h3>
                     <p>Total Productos</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">✅</div>
                 <div class="stat-info">
-                    <h3 id="stockDisponible">0</h3>
+                    <h3 id="stockDisponible">210</h3>
                     <p>Stock Total</p>
                 </div>
             </div>
             <div class="stat-card warning">
                 <div class="stat-icon">⚠️</div>
                 <div class="stat-info">
-                    <h3 id="stockBajo">0</h3>
+                    <h3 id="stockBajo">1</h3>
                     <p>Productos Bajo Stock</p>
                 </div>
             </div>
@@ -67,40 +65,66 @@
             </div>
         </div>
 
-        <!-- Registrar Entrada de Stock -->
+        <!-- Registrar Múltiples Entradas de Stock -->
         <div class="section-card">
-            <h2 class="section-title">➕ Registrar Entrada de Stock</h2>
+            <h2 class="section-title">➕ Registrar Entradas de Stock</h2>
+            
+            <button type="button" class="btn-agregar-registro" onclick="agregarRegistro()">
+                <span>➕</span>
+                Agregar Otro Registro
+            </button>
+
             <form id="formEntrada" class="entrada-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="entradaProducto">Producto *</label>
-                        <select id="entradaProducto" required>
-                            <option value="">Seleccionar producto...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="entradaCantidad">Cantidad *</label>
-                        <input type="number" id="entradaCantidad" min="1" placeholder="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="entradaMotivo">Motivo</label>
-                        <select id="entradaMotivo">
-                            <option>Compra</option>
-                            <option>Reposición</option>
-                            <option>Devolución</option>
-                            <option>Ajuste</option>
-                            <option>Otro</option>
-                        </select>
+                <div id="registrosContainer" class="registros-container">
+                    <!-- Primer registro por defecto -->
+                    <div class="registro-item" data-registro="1">
+                        <div class="registro-header">
+                            <span class="registro-numero">📦 Registro #1</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Producto *</label>
+                                <select class="entradaProducto" required>
+                                    <option value="">Seleccionar producto...</option>
+                                    <option value="1">Pisco Quebranta - S/. 45.00</option>
+                                    <option value="2">Coca Cola - S/. 3.50</option>
+                                    <option value="3">Vaso Cervecero - S/. 8.00</option>
+                                    <option value="4">Pisco Sour - S/. 28.00</option>
+                                    <option value="5">Chicha Morada - S/. 22.00</option>
+                                    <option value="6">Cerveza Pilsen - S/. 14.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cantidad *</label>
+                                <input type="number" class="entradaCantidad" min="1" placeholder="0" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Motivo</label>
+                                <select class="entradaMotivo">
+                                    <option>Compra</option>
+                                    <option>Reposición</option>
+                                    <option>Devolución</option>
+                                    <option>Ajuste</option>
+                                    <option>Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Notas (Opcional)</label>
+                            <textarea class="entradaNotas" rows="2" placeholder="Notas adicionales..."></textarea>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="entradaNotas">Notas (Opcional)</label>
-                    <textarea id="entradaNotas" rows="2" placeholder="Notas adicionales..."></textarea>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">💾</span>
+                        Registrar Todas las Entradas
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">
+                        🔄 Limpiar Todo
+                    </button>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    <span class="btn-icon">💾</span>
-                    Registrar Entrada
-                </button>
             </form>
         </div>
 
@@ -126,7 +150,33 @@
                         </tr>
                     </thead>
                     <tbody id="stockTableBody">
-                        <!-- Los productos se cargarán aquí -->
+                        <tr>
+                            <td><strong>#001</strong></td>
+                            <td>Pisco Quebranta</td>
+                            <td>Licores</td>
+                            <td>25</td>
+                            <td class="precio">S/. 45.00</td>
+                            <td class="precio">S/. 1,125.00</td>
+                            <td><span class="badge badge-disponible">DISPONIBLE</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>#002</strong></td>
+                            <td>Coca Cola</td>
+                            <td>Gaseosas</td>
+                            <td>5</td>
+                            <td class="precio">S/. 3.50</td>
+                            <td class="precio">S/. 17.50</td>
+                            <td><span class="badge badge-bajo-stock">BAJO STOCK</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>#003</strong></td>
+                            <td>Vaso Cervecero</td>
+                            <td>Vasos y Jarras</td>
+                            <td>50</td>
+                            <td class="precio">S/. 8.00</td>
+                            <td class="precio">S/. 400.00</td>
+                            <td><span class="badge badge-disponible">DISPONIBLE</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -160,13 +210,172 @@
                         </tr>
                     </thead>
                     <tbody id="movimientosTableBody">
-                        <!-- Los movimientos se cargarán aquí -->
+                        <tr>
+                            <td>2025-10-17 14:30</td>
+                            <td>Pisco Quebranta</td>
+                            <td><span class="badge badge-entrada">ENTRADA</span></td>
+                            <td>10</td>
+                            <td>15</td>
+                            <td>25</td>
+                            <td>Compra</td>
+                            <td>Reposición mensual</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <script src="Inventario.js"></script>
+    <script>
+        let contadorRegistros = 1;
+
+        function agregarRegistro() {
+            contadorRegistros++;
+            const container = document.getElementById('registrosContainer');
+            
+            const nuevoRegistro = document.createElement('div');
+            nuevoRegistro.className = 'registro-item';
+            nuevoRegistro.setAttribute('data-registro', contadorRegistros);
+            
+            nuevoRegistro.innerHTML = `
+                <div class="registro-header">
+                    <span class="registro-numero">📦 Registro #${contadorRegistros}</span>
+                    <button type="button" class="btn-eliminar-registro" onclick="eliminarRegistro(this)">
+                        🗑️ Eliminar
+                    </button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Producto *</label>
+                        <select class="entradaProducto" required>
+                            <option value="">Seleccionar producto...</option>
+                            <option value="1">Pisco Quebranta - S/. 45.00</option>
+                            <option value="2">Coca Cola - S/. 3.50</option>
+                            <option value="3">Vaso Cervecero - S/. 8.00</option>
+                            <option value="4">Pisco Sour - S/. 28.00</option>
+                            <option value="5">Chicha Morada - S/. 22.00</option>
+                            <option value="6">Cerveza Pilsen - S/. 14.00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad *</label>
+                        <input type="number" class="entradaCantidad" min="1" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Motivo</label>
+                        <select class="entradaMotivo">
+                            <option>Compra</option>
+                            <option>Reposición</option>
+                            <option>Devolución</option>
+                            <option>Ajuste</option>
+                            <option>Otro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Notas (Opcional)</label>
+                    <textarea class="entradaNotas" rows="2" placeholder="Notas adicionales..."></textarea>
+                </div>
+            `;
+            
+            container.appendChild(nuevoRegistro);
+        }
+
+        function eliminarRegistro(btn) {
+            const registros = document.querySelectorAll('.registro-item');
+            if (registros.length > 1) {
+                btn.closest('.registro-item').remove();
+                actualizarNumerosRegistros();
+            } else {
+                alert('⚠️ Debe haber al menos un registro');
+            }
+        }
+
+        function actualizarNumerosRegistros() {
+            const registros = document.querySelectorAll('.registro-item');
+            registros.forEach((registro, index) => {
+                const numeroSpan = registro.querySelector('.registro-numero');
+                numeroSpan.textContent = `📦 Registro #${index + 1}`;
+            });
+        }
+
+        function limpiarFormulario() {
+            const container = document.getElementById('registrosContainer');
+            container.innerHTML = `
+                <div class="registro-item" data-registro="1">
+                    <div class="registro-header">
+                        <span class="registro-numero">📦 Registro #1</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Producto *</label>
+                            <select class="entradaProducto" required>
+                                <option value="">Seleccionar producto...</option>
+                                <option value="1">Pisco Quebranta - S/. 45.00</option>
+                                <option value="2">Coca Cola - S/. 3.50</option>
+                                <option value="3">Vaso Cervecero - S/. 8.00</option>
+                                <option value="4">Pisco Sour - S/. 28.00</option>
+                                <option value="5">Chicha Morada - S/. 22.00</option>
+                                <option value="6">Cerveza Pilsen - S/. 14.00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Cantidad *</label>
+                            <input type="number" class="entradaCantidad" min="1" placeholder="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Motivo</label>
+                            <select class="entradaMotivo">
+                                <option>Compra</option>
+                                <option>Reposición</option>
+                                <option>Devolución</option>
+                                <option>Ajuste</option>
+                                <option>Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Notas (Opcional)</label>
+                        <textarea class="entradaNotas" rows="2" placeholder="Notas adicionales..."></textarea>
+                    </div>
+                </div>
+            `;
+            contadorRegistros = 1;
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('formEntrada').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const registros = document.querySelectorAll('.registro-item');
+            const entradas = [];
+            
+            registros.forEach((registro, index) => {
+                const producto = registro.querySelector('.entradaProducto').value;
+                const cantidad = registro.querySelector('.entradaCantidad').value;
+                const motivo = registro.querySelector('.entradaMotivo').value;
+                const notas = registro.querySelector('.entradaNotas').value;
+                
+                if (producto && cantidad) {
+                    entradas.push({
+                        registro: index + 1,
+                        producto,
+                        cantidad,
+                        motivo,
+                        notas
+                    });
+                }
+            });
+            
+            if (entradas.length > 0) {
+                alert(`✅ Se registraron ${entradas.length} entrada(s) de stock correctamente`);
+                limpiarFormulario();
+            } else {
+                alert('⚠️ Complete al menos un registro válido');
+            }
+        });
+
+        console.log('✅ Sistema de Inventario con múltiples registros cargado');
+    </script>
 </body>
 </html>

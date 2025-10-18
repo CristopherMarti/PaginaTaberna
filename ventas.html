@@ -35,85 +35,96 @@
             <div class="stat-card">
                 <div class="stat-icon">💵</div>
                 <div class="stat-info">
-                    <h3 id="ventasHoy">S/. 0.00</h3>
+                    <h3 id="ventasHoy">S/. 126.00</h3>
                     <p>Ventas de Hoy</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">📊</div>
                 <div class="stat-info">
-                    <h3 id="numVentas">0</h3>
+                    <h3 id="numVentas">3</h3>
                     <p>Transacciones</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">📈</div>
                 <div class="stat-info">
-                    <h3 id="promedioVenta">S/. 0.00</h3>
+                    <h3 id="promedioVenta">S/. 42.00</h3>
                     <p>Promedio por Venta</p>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon">🏆</div>
                 <div class="stat-info">
-                    <h3 id="productoTop">-</h3>
+                    <h3 id="productoTop">Pisco Sour</h3>
                     <p>Más Vendido</p>
                 </div>
             </div>
         </div>
 
-        <!-- Registrar Nueva Venta -->
+        <!-- Registrar Múltiples Ventas -->
         <div class="section-card">
-            <h2 class="section-title">➕ Registrar Nueva Venta</h2>
+            <h2 class="section-title">➕ Registrar Ventas</h2>
+            
+            <button type="button" class="btn-agregar-registro" onclick="agregarVenta()">
+                <span>➕</span>
+                Agregar Otra Venta
+            </button>
+
             <form id="formVenta" class="venta-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="ventaProducto">Producto *</label>
-                        <select id="ventaProducto" required>
-                            <option value="">Seleccionar producto...</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="ventaCantidad">Cantidad *</label>
-                        <input type="number" id="ventaCantidad" min="1" value="1" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="ventaPago">Método de Pago *</label>
-                        <select id="ventaPago" required>
-                            <option>Efectivo</option>
-                            <option>Tarjeta</option>
-                            <option>Yape</option>
-                            <option>Plin</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <!-- Resumen de venta -->
-                <div class="venta-resumen" id="ventaResumen" style="display: none;">
-                    <div class="resumen-item">
-                        <span>Producto:</span>
-                        <strong id="resumenProducto">-</strong>
-                    </div>
-                    <div class="resumen-item">
-                        <span>Cantidad:</span>
-                        <strong id="resumenCantidad">-</strong>
-                    </div>
-                    <div class="resumen-item">
-                        <span>Precio Unitario:</span>
-                        <strong id="resumenPrecio">-</strong>
-                    </div>
-                    <div class="resumen-item total">
-                        <span>TOTAL:</span>
-                        <strong id="resumenTotal">S/. 0.00</strong>
+                <div id="ventasContainer" class="registros-container">
+                    <!-- Primera venta por defecto -->
+                    <div class="registro-item" data-venta="1">
+                        <div class="registro-header">
+                            <span class="registro-numero">💰 Venta #1</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Producto *</label>
+                                <select class="ventaProducto" required onchange="calcularTotal(this)">
+                                    <option value="">Seleccionar producto...</option>
+                                    <option value="1" data-precio="45.00">Pisco Quebranta - S/. 45.00</option>
+                                    <option value="2" data-precio="3.50">Coca Cola - S/. 3.50</option>
+                                    <option value="3" data-precio="8.00">Vaso Cervecero - S/. 8.00</option>
+                                    <option value="4" data-precio="28.00">Pisco Sour - S/. 28.00</option>
+                                    <option value="5" data-precio="22.00">Chicha Morada - S/. 22.00</option>
+                                    <option value="6" data-precio="14.00">Cerveza Pilsen - S/. 14.00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cantidad *</label>
+                                <input type="number" class="ventaCantidad" min="1" value="1" required onchange="calcularTotal(this)">
+                            </div>
+                            <div class="form-group">
+                                <label>Método de Pago *</label>
+                                <select class="ventaPago" required>
+                                    <option>Efectivo</option>
+                                    <option>Tarjeta</option>
+                                    <option>Yape</option>
+                                    <option>Plin</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="registro-resumen" style="display:none;">
+                            <div class="resumen-mini">
+                                <span>Total:</span>
+                                <strong class="totalVenta">S/. 0.00</strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <span class="btn-icon">💾</span>
-                    Registrar Venta
-                </button>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">💾</span>
+                        Registrar Todas las Ventas
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="limpiarFormulario()">
+                        🔄 Limpiar Todo
+                    </button>
+                </div>
             </form>
-        </div> 
+        </div>
 
         <!-- Filtros y Búsqueda -->
         <div class="section-card">
@@ -145,62 +156,230 @@
                             <th>Total</th>
                             <th>Método Pago</th>
                             <th>Estado</th>
-                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="ventasTableBody">
-                        <!-- Las ventas se cargarán aquí -->
+                        <tr>
+                            <td><strong>V001</strong></td>
+                            <td>2025-10-17 18:30</td>
+                            <td>Pisco Sour</td>
+                            <td>3</td>
+                            <td>S/. 28.00</td>
+                            <td class="precio">S/. 84.00</td>
+                            <td>Efectivo</td>
+                            <td><span class="badge badge-completado">COMPLETADO</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>V002</strong></td>
+                            <td>2025-10-17 18:45</td>
+                            <td>Cerveza Pilsen</td>
+                            <td>1</td>
+                            <td>S/. 14.00</td>
+                            <td class="precio">S/. 14.00</td>
+                            <td>Tarjeta</td>
+                            <td><span class="badge badge-completado">COMPLETADO</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>V003</strong></td>
+                            <td>2025-10-17 19:15</td>
+                            <td>Pisco Sour</td>
+                            <td>1</td>
+                            <td>S/. 28.00</td>
+                            <td class="precio">S/. 28.00</td>
+                            <td>Efectivo</td>
+                            <td><span class="badge badge-completado">COMPLETADO</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Detalles de Venta -->
-    <div id="modalDetalles" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>🧾 Detalles de la Venta</h2>
-                <button class="modal-close" id="btnCerrarModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="detalle-grid">
-                    <div class="detalle-item">
-                        <strong>ID Venta:</strong>
-                        <span id="detalleId">-</span>
+    <script>
+        let contadorVentas = 1;
+
+        function agregarVenta() {
+            contadorVentas++;
+            const container = document.getElementById('ventasContainer');
+            
+            const nuevaVenta = document.createElement('div');
+            nuevaVenta.className = 'registro-item';
+            nuevaVenta.setAttribute('data-venta', contadorVentas);
+            
+            nuevaVenta.innerHTML = `
+                <div class="registro-header">
+                    <span class="registro-numero">💰 Venta #${contadorVentas}</span>
+                    <button type="button" class="btn-eliminar-registro" onclick="eliminarVenta(this)">
+                        🗑️ Eliminar
+                    </button>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Producto *</label>
+                        <select class="ventaProducto" required onchange="calcularTotal(this)">
+                            <option value="">Seleccionar producto...</option>
+                            <option value="1" data-precio="45.00">Pisco Quebranta - S/. 45.00</option>
+                            <option value="2" data-precio="3.50">Coca Cola - S/. 3.50</option>
+                            <option value="3" data-precio="8.00">Vaso Cervecero - S/. 8.00</option>
+                            <option value="4" data-precio="28.00">Pisco Sour - S/. 28.00</option>
+                            <option value="5" data-precio="22.00">Chicha Morada - S/. 22.00</option>
+                            <option value="6" data-precio="14.00">Cerveza Pilsen - S/. 14.00</option>
+                        </select>
                     </div>
-                    <div class="detalle-item">
-                        <strong>Fecha/Hora:</strong>
-                        <span id="detalleFecha">-</span>
+                    <div class="form-group">
+                        <label>Cantidad *</label>
+                        <input type="number" class="ventaCantidad" min="1" value="1" required onchange="calcularTotal(this)">
                     </div>
-                    <div class="detalle-item">
-                        <strong>Producto:</strong>
-                        <span id="detalleProducto">-</span>
-                    </div>
-                    <div class="detalle-item">
-                        <strong>Cantidad:</strong>
-                        <span id="detalleCantidad">-</span>
-                    </div>
-                    <div class="detalle-item">
-                        <strong>Precio Unitario:</strong>
-                        <span id="detallePrecioUnit">-</span>
-                    </div>
-                    <div class="detalle-item">
-                        <strong>Método de Pago:</strong>
-                        <span id="detalleMetodo">-</span>
-                    </div>
-                    <div class="detalle-item total">
-                        <strong>TOTAL:</strong>
-                        <span id="detalleTotal" class="precio-grande">-</span>
+                    <div class="form-group">
+                        <label>Método de Pago *</label>
+                        <select class="ventaPago" required>
+                            <option>Efectivo</option>
+                            <option>Tarjeta</option>
+                            <option>Yape</option>
+                            <option>Plin</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="btnCerrarFooter">Cerrar</button>
-            </div>
-        </div>
-    </div>
+                <div class="registro-resumen" style="display:none;">
+                    <div class="resumen-mini">
+                        <span>Total:</span>
+                        <strong class="totalVenta">S/. 0.00</strong>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(nuevaVenta);
+        }
 
-    <script src="ventas.js"></script>
+        function eliminarVenta(btn) {
+            const ventas = document.querySelectorAll('.registro-item');
+            if (ventas.length > 1) {
+                btn.closest('.registro-item').remove();
+                actualizarNumerosVentas();
+            } else {
+                alert('⚠️ Debe haber al menos una venta');
+            }
+        }
+
+        function actualizarNumerosVentas() {
+            const ventas = document.querySelectorAll('.registro-item');
+            ventas.forEach((venta, index) => {
+                const numeroSpan = venta.querySelector('.registro-numero');
+                numeroSpan.textContent = `💰 Venta #${index + 1}`;
+            });
+        }
+
+        function calcularTotal(elemento) {
+            const registroItem = elemento.closest('.registro-item');
+            const selectProducto = registroItem.querySelector('.ventaProducto');
+            const inputCantidad = registroItem.querySelector('.ventaCantidad');
+            const resumenDiv = registroItem.querySelector('.registro-resumen');
+            const totalSpan = registroItem.querySelector('.totalVenta');
+            
+            const selectedOption = selectProducto.options[selectProducto.selectedIndex];
+            const precio = parseFloat(selectedOption.getAttribute('data-precio') || 0);
+            const cantidad = parseInt(inputCantidad.value) || 0;
+            
+            if (precio > 0 && cantidad > 0) {
+                const total = precio * cantidad;
+                totalSpan.textContent = `S/. ${total.toFixed(2)}`;
+                resumenDiv.style.display = 'block';
+            } else {
+                resumenDiv.style.display = 'none';
+            }
+        }
+
+        function limpiarFormulario() {
+            const container = document.getElementById('ventasContainer');
+            container.innerHTML = `
+                <div class="registro-item" data-venta="1">
+                    <div class="registro-header">
+                        <span class="registro-numero">💰 Venta #1</span>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Producto *</label>
+                            <select class="ventaProducto" required onchange="calcularTotal(this)">
+                                <option value="">Seleccionar producto...</option>
+                                <option value="1" data-precio="45.00">Pisco Quebranta - S/. 45.00</option>
+                                <option value="2" data-precio="3.50">Coca Cola - S/. 3.50</option>
+                                <option value="3" data-precio="8.00">Vaso Cervecero - S/. 8.00</option>
+                                <option value="4" data-precio="28.00">Pisco Sour - S/. 28.00</option>
+                                <option value="5" data-precio="22.00">Chicha Morada - S/. 22.00</option>
+                                <option value="6" data-precio="14.00">Cerveza Pilsen - S/. 14.00</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Cantidad *</label>
+                            <input type="number" class="ventaCantidad" min="1" value="1" required onchange="calcularTotal(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>Método de Pago *</label>
+                            <select class="ventaPago" required>
+                                <option>Efectivo</option>
+                                <option>Tarjeta</option>
+                                <option>Yape</option>
+                                <option>Plin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="registro-resumen" style="display:none;">
+                        <div class="resumen-mini">
+                            <span>Total:</span>
+                            <strong class="totalVenta">S/. 0.00</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contadorVentas = 1;
+        }
+
+        // Manejar envío del formulario
+        document.getElementById('formVenta').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const ventas = document.querySelectorAll('.registro-item');
+            const registros = [];
+            let totalGeneral = 0;
+            
+            ventas.forEach((venta, index) => {
+                const producto = venta.querySelector('.ventaProducto');
+                const cantidad = venta.querySelector('.ventaCantidad').value;
+                const metodo = venta.querySelector('.ventaPago').value;
+                
+                if (producto.value && cantidad) {
+                    const selectedOption = producto.options[producto.selectedIndex];
+                    const precio = parseFloat(selectedOption.getAttribute('data-precio'));
+                    const total = precio * parseInt(cantidad);
+                    totalGeneral += total;
+                    
+                    registros.push({
+                        venta: index + 1,
+                        producto: selectedOption.text.split(' - ')[0],
+                        cantidad: parseInt(cantidad),
+                        precio: precio,
+                        total: total,
+                        metodo: metodo
+                    });
+                }
+            });
+            
+            if (registros.length > 0) {
+                let mensaje = `✅ Se registraron ${registros.length} venta(s) correctamente\n\n`;
+                mensaje += `💰 Total General: S/. ${totalGeneral.toFixed(2)}\n\n`;
+                mensaje += 'Detalle:\n';
+                registros.forEach(r => {
+                    mensaje += `• ${r.producto} x${r.cantidad} = S/. ${r.total.toFixed(2)} (${r.metodo})\n`;
+                });
+                
+                alert(mensaje);
+                limpiarFormulario();
+            } else {
+                alert('⚠️ Complete al menos una venta válida');
+            }
+        });
+
+        console.log('✅ Sistema de Ventas con múltiples registros cargado');
+    </script>
 </body>
 </html>

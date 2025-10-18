@@ -359,6 +359,98 @@ body {
 }
 
 /* ============================================
+   Registro
+   ============================================ */
+
+.registros-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .registro-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            position: relative;
+        }
+
+        .registro-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .registro-numero {
+            font-weight: 700;
+            color: #720008;
+            font-size: 1.1rem;
+        }
+
+        .btn-eliminar-registro {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-eliminar-registro:hover {
+            background: #c82333;
+        }
+
+        .btn-agregar-registro {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .btn-agregar-registro:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .resumen-entradas {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .resumen-entradas h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .resumen-entradas .total-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .resumen-entradas .total-items {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+/* ============================================
    TABLAS
    ============================================ */
 .table-container {
