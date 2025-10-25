@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Categorías - Taberna del Monkey</title>
+    <link rel="stylesheet" href="Tipo de producto.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="main.html" class="logo">
+                <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
+            </a>
+            <ul class="nav-links">
+                <li><a href="Catalogo de productos.html">Catálogo de Productos</a></li>
+                <li><a href="inventario.html">Inventario</a></li>
+                <li><a href="ventas.html">Registro de Ventas</a></li>
+                <li><a href="gestion-categorias.html" class="active">Gestión de Categorías</a></li>
+                <li><a href="main.html" class="logout">Cerrar Sesión</a></li>
+            </ul>
+            <button class="mobile-menu" id="mobileMenu">☰</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📋 Gestión de Categorías</h1>
+            <p class="subtitle">CRUD Completo - Crear, Leer, Actualizar, Eliminar</p>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📂</div>
+                <div class="stat-info">
+                    <h3 id="totalCategorias">5</h3>
+                    <p>Total Categorías</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                    <h3 id="totalProductos">6</h3>
+                    <p>Productos Asociados</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 id="categoriasActivas">5</h3>
+                    <p>Categorías Activas</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-info">
+                    <h3 id="categoriaPopular">Licores</h3>
+                    <p>Más Popular</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón para Agregar -->
+        <div class="action-bar">
+            <button id="btnNuevaCategoria" class="btn btn-primary">
+                <span class="btn-icon">➕</span>
+                Nueva Categoría
+            </button>
+            <button id="btnToggleOcultas" class="btn btn-secondary" onclick="toggleMostrarOcultas()">
+                <span class="btn-icon">👁️</span>
+                Ver Ocultas
+            </button>
+        </div>
+
+        <!-- Formulario (Oculto por defecto) -->
+        <div id="formSection" class="form-section" style="display: none;">
+            <div class="form-card">
+                <div class="form-header">
+                    <h2 id="formTitle">➕ Nueva Categoría</h2>
+                    <button id="btnCerrarForm" class="btn-close">&times;</button>
+                </div>
+
+                <form id="formCategoria">
+                    <div class="form-group">
+                        <label for="categoriaNombre">Nombre de la Categoría *</label>
+                        <input 
+                            type="text" 
+                            id="categoriaNombre" 
+                            placeholder="Ej: Licores, Cocteles, Cervezas" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoriaDescripcion">Descripción</label>
+                        <textarea 
+                            id="categoriaDescripcion" 
+                            rows="3" 
+                            placeholder="Descripción de la categoría..."
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="categoriaImagen">URL de Imagen</label>
+                        <input 
+                            type="text" 
+                            id="categoriaImagen" 
+                            placeholder="https://ejemplo.com/imagen.jpg"
+                        >
+                        <small>Deja vacío para usar imagen por defecto</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-success">
+                            <span class="btn-icon">💾</span>
+                            <span id="btnGuardarTexto">Guardar</span>
+                        </button>
+                        <button type="button" id="btnCancelar" class="btn btn-secondary">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de Categorías -->
+        <div class="section-card">
+            <div class="section-header">
+                <h2 class="section-title">📋 Lista de Categorías</h2>
+                <div class="search-box">
+                    <input type="text" id="searchCategoria" placeholder="🔍 Buscar categoría...">
+                </div>
+            </div>
+
+            <!-- Tabla de Categorías -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Productos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categoriasTableBody">
+                        <!-- Las categorías se cargarán aquí dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Mensaje cuando no hay categorías -->
+            <div id="emptyMessage" class="empty-message" style="display: none;">
+                <div class="empty-icon">📂</div>
+                <p>No hay categorías registradas</p>
+                <p class="empty-subtitle">Haz clic en "Nueva Categoría" para comenzar</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="Tipo de producto.js"></script>
+</body>
+</html>
