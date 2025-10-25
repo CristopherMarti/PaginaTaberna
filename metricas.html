@@ -14,9 +14,10 @@
                 <img src="LogosTabernas/Logo-color-rojo.png" alt="Logo Taberna del Monkey">
             </a>
             <ul class="nav-links">
-                <li><a href="Catalogo de productos.html">Catálogo de Productos</a></li>
+                <li><a href="Catalogo de productos.html">Productos</a></li>
                 <li><a href="inventario.html">Inventario</a></li>
                 <li><a href="ventas.html">Registro de Ventas</a></li>
+                <li><a href="Tipo de producto.html">tipos de producto</a></li>
                 <li><a href="metricas.html" class="active">Métricas</a></li>
                 <li><a href="main.html" class="logout">Cerrar Sesión</a></li>
             </ul>
@@ -28,26 +29,26 @@
         <!-- Header -->
         <div class="header">
             <h1>📈 Reportes y Estadísticas</h1>
-            <p class="subtitle">Análisis mensual comparativo del negocio</p>
+            <p class="subtitle">Análisis de ventas y métricas del negocio</p>
         </div>
 
         <!-- Métricas del Día -->
         <div class="metrics-section">
-            <h2 class="section-title">📊 Métricas del Día</h2>
+            <h2 class="section-title">📊 Métricas Generales</h2>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon">💰</div>
                     <div class="stat-info">
-                        <p>Ventas de Hoy</p>
-                        <h3 id="metricVentasHoy">S/. 126.00</h3>
-                        <span class="stat-detail" id="metricTransacciones">3 transacciones</span>
+                        <p>Ventas Totales</p>
+                        <h3 id="metricVentasHoy">S/. 0.00</h3>
+                        <span class="stat-detail" id="metricTransacciones">0 transacciones</span>
                     </div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">📈</div>
                     <div class="stat-info">
                         <p>Promedio por Venta</p>
-                        <h3 id="metricPromedio">S/. 42.00</h3>
+                        <h3 id="metricPromedio">S/. 0.00</h3>
                         <span class="stat-detail">Calculado en tiempo real</span>
                     </div>
                 </div>
@@ -55,59 +56,51 @@
                     <div class="stat-icon">🏆</div>
                     <div class="stat-info">
                         <p>Producto más Vendido</p>
-                        <h3 id="metricProductoTop">Pisco Sour</h3>
-                        <span class="stat-detail" id="metricProductoTopUnidades">4 unidades</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📦</div>
-                    <div class="stat-info">
-                        <p>Stock Total</p>
-                        <h3 id="metricStockTotal">210</h3>
-                        <span class="stat-detail">Unidades en inventario</span>
+                        <h3 id="metricProductoTop">-</h3>
+                        <span class="stat-detail" id="metricProductoTopUnidades">0 unidades</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Gráficas Comparativas -->
+        <!-- Gráficas Principales -->
         <div class="charts-section">
-            <h2 class="section-title">📊 Análisis Mensual Comparativo</h2>
+            <h2 class="section-title">📊 Análisis de Ventas</h2>
             
             <div class="charts-grid">
                 <!-- Gráfica 1: Ingresos Mensuales -->
                 <div class="chart-card">
-                    <h3>💰 Ingresos Mensuales: 2025 vs 2024</h3>
-                    <p class="chart-description">Comparación de ingresos por mes entre el año actual y anterior</p>
+                    <h3>💰 Ingresos Mensuales 2025</h3>
+                    <p class="chart-description">Total de ingresos por mes en soles (S/.)</p>
                     <div class="chart-wrapper">
-                        <canvas id="ingresosChart"></canvas>
+                        <canvas id="ventasMensuales"></canvas>
                     </div>
                 </div>
 
-                <!-- Gráfica 2: Cantidad de Transacciones -->
+                <!-- Gráfica 2: Número de Transacciones -->
                 <div class="chart-card">
-                    <h3>📊 Número de Transacciones: 2025 vs 2024</h3>
-                    <p class="chart-description">Cantidad de ventas realizadas por mes</p>
+                    <h3>📊 Número de Transacciones por Mes</h3>
+                    <p class="chart-description">Cantidad de ventas realizadas cada mes</p>
                     <div class="chart-wrapper">
-                        <canvas id="transaccionesChart"></canvas>
+                        <canvas id="transaccionesMensuales"></canvas>
                     </div>
                 </div>
 
-                <!-- Gráfica 3: Productos Más Vendidos -->
+                <!-- Gráfica 3: Ventas por Categoría -->
                 <div class="chart-card">
-                    <h3>🏆 Top 5 Productos Más Vendidos: 2025 vs 2024</h3>
-                    <p class="chart-description">Comparación de productos más populares por año</p>
+                    <h3>🏷️ Ventas por Categoría (Cantidad)</h3>
+                    <p class="chart-description">Unidades vendidas por categoría a lo largo de los meses</p>
                     <div class="chart-wrapper">
-                        <canvas id="productosChart"></canvas>
+                        <canvas id="ventasPorCategoria"></canvas>
                     </div>
                 </div>
 
-                <!-- Gráfica 4: Métodos de Pago -->
+                <!-- Gráfica 4: Top Productos por Mes -->
                 <div class="chart-card">
-                    <h3>💳 Métodos de Pago: 2025 vs 2024</h3>
-                    <p class="chart-description">Preferencias de pago de los clientes por año</p>
+                    <h3>🏆 Top 5 Productos Más Vendidos por Mes</h3>
+                    <p class="chart-description">Productos más populares distribuidos mensualmente</p>
                     <div class="chart-wrapper">
-                        <canvas id="pagosChart"></canvas>
+                        <canvas id="productosPorMes"></canvas>
                     </div>
                 </div>
             </div>
@@ -115,224 +108,24 @@
 
         <!-- Tabla Resumen -->
         <div class="summary-section">
-            <h2 class="section-title">📋 Resumen Anual</h2>
+            <h2 class="section-title">📋 Resumen General</h2>
             <div class="summary-grid">
                 <div class="summary-card">
                     <h4>💵 Ingresos Totales 2025</h4>
-                    <div class="summary-value" id="ingresosTotales">S/. 59,150.00</div>
+                    <div class="summary-value" id="ingresosTotales">S/. 0.00</div>
                 </div>
                 <div class="summary-card">
                     <h4>📊 Total de Ventas 2025</h4>
-                    <div class="summary-value" id="totalVentas">1,845</div>
+                    <div class="summary-value" id="totalVentas">0</div>
                 </div>
                 <div class="summary-card">
                     <h4>📦 Productos Activos</h4>
-                    <div class="summary-value" id="productosActivos">6</div>
-                </div>
-                <div class="summary-card">
-                    <h4>⚠️ Productos Bajo Stock</h4>
-                    <div class="summary-value warning" id="productosBajoStock">1</div>
+                    <div class="summary-value" id="productosActivos">0</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Colores del diseño
-        const colors = {
-            primary: '#720008',
-            secondary: '#444444',
-            primaryLight: '#8b0010',
-            success: '#28a745',
-            warning: '#ffc107',
-            info: '#17a2b8'
-        };
-
-        // Meses del año
-        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                       'Julio', 'Agosto', 'Sept', 'Octubre', 'Nov', 'Dic'];
-
-        // GRÁFICA 1: Ingresos Mensuales (12 meses)
-        const ctxIngresos = document.getElementById('ingresosChart');
-        new Chart(ctxIngresos, {
-            type: 'bar',
-            data: {
-                labels: meses,
-                datasets: [
-                    {
-                        label: '2025 (Año Actual)',
-                        data: [4800, 5200, 5500, 5100, 5600, 4900, 5300, 5800, 5400, 5900, 0, 0],
-                        backgroundColor: colors.primary,
-                        borderColor: colors.primary,
-                        borderWidth: 2
-                    },
-                    {
-                        label: '2024 (Año Anterior)',
-                        data: [4200, 4500, 4800, 4600, 5000, 4400, 4700, 5100, 4900, 5200, 4800, 5000],
-                        backgroundColor: colors.secondary,
-                        borderColor: colors.secondary,
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return 'S/. ' + value;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // GRÁFICA 2: Cantidad de Transacciones (12 meses)
-        const ctxTransacciones = document.getElementById('transaccionesChart');
-        new Chart(ctxTransacciones, {
-            type: 'bar',
-            data: {
-                labels: meses,
-                datasets: [
-                    {
-                        label: '2025 (Año Actual)',
-                        data: [165, 180, 195, 175, 200, 170, 185, 210, 190, 205, 0, 0],
-                        backgroundColor: colors.success,
-                        borderColor: colors.success,
-                        borderWidth: 2
-                    },
-                    {
-                        label: '2024 (Año Anterior)',
-                        data: [150, 160, 175, 165, 180, 155, 170, 190, 175, 185, 170, 180],
-                        backgroundColor: colors.info,
-                        borderColor: colors.info,
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value + ' ventas';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // GRÁFICA 3: Top 5 Productos Más Vendidos
-        const ctxProductos = document.getElementById('productosChart');
-        new Chart(ctxProductos, {
-            type: 'bar',
-            data: {
-                labels: ['Pisco Sour', 'Cerveza Pilsen', 'Chicha Morada', 'Pisco Quebranta', 'Coca Cola'],
-                datasets: [
-                    {
-                        label: 'Unidades Vendidas 2025',
-                        data: [850, 720, 580, 450, 380],
-                        backgroundColor: colors.primary,
-                        borderColor: colors.primary,
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Unidades Vendidas 2024',
-                        data: [780, 650, 520, 400, 350],
-                        backgroundColor: colors.warning,
-                        borderColor: colors.warning,
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value + ' unidades';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        // GRÁFICA 4: Métodos de Pago
-        const ctxPagos = document.getElementById('pagosChart');
-        new Chart(ctxPagos, {
-            type: 'bar',
-            data: {
-                labels: ['Efectivo', 'Tarjeta', 'Yape', 'Plin'],
-                datasets: [
-                    {
-                        label: 'Transacciones 2025',
-                        data: [850, 520, 380, 95],
-                        backgroundColor: colors.primary,
-                        borderColor: colors.primary,
-                        borderWidth: 2
-                    },
-                    {
-                        label: 'Transacciones 2024',
-                        data: [920, 450, 280, 50],
-                        backgroundColor: colors.secondary,
-                        borderColor: colors.secondary,
-                        borderWidth: 2
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value + ' pagos';
-                            }
-                        }
-                    }
-                }
-            }
-        });
-
-        console.log('✅ Métricas mensuales comparativas cargadas correctamente');
-    </script>
+    <script src="metricas.js"></script>
 </body>
 </html>
