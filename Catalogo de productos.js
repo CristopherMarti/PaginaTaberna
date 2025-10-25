@@ -3,12 +3,12 @@
 // ============================================
 const AppState = {
     productos: [
-        { id: 1, nombre: 'Pisco Quebranta', categoria: 'Licores', marca: 'Tabernero', stock: 25, precio: 45.00, descripcion: 'Pisco puro de uva Quebranta', imagen: 'https://via.placeholder.com/300x300?text=Pisco+Quebranta' },
-        { id: 2, nombre: 'Coca Cola', categoria: 'Gaseosas', marca: 'Coca Cola', stock: 5, precio: 3.50, descripcion: 'Gaseosa cola 500ml', imagen: 'https://via.placeholder.com/300x300?text=Coca+Cola' },
-        { id: 3, nombre: 'Vaso Cervecero', categoria: 'Vasos y Jarras', marca: 'Generic', stock: 50, precio: 8.00, descripcion: 'Vaso para cerveza de 500ml', imagen: 'https://via.placeholder.com/300x300?text=Vaso' },
-        { id: 4, nombre: 'Pisco Sour', categoria: 'Cócteles', marca: 'Casa', stock: 30, precio: 28.00, descripcion: 'Cóctel tradicional peruano', imagen: 'https://via.placeholder.com/300x300?text=Pisco+Sour' },
-        { id: 5, nombre: 'Chicha Morada', categoria: 'Bebidas Calientes', marca: 'Casa', stock: 20, precio: 22.00, descripcion: 'Bebida tradicional de maíz morado', imagen: 'https://via.placeholder.com/300x300?text=Chicha' },
-        { id: 6, nombre: 'Cerveza Pilsen', categoria: 'Cervezas', marca: 'Pilsen', stock: 40, precio: 14.00, descripcion: 'Cerveza premium 330ml', imagen: 'https://via.placeholder.com/300x300?text=Cerveza' }
+        { id: 1, nombre: 'Pisco Quebranta', categoria: 'Licores', marca: 'Tabernero', precio: 45.00, descripcion: 'Pisco puro de uva Quebranta', imagen: 'https://via.placeholder.com/300x300?text=Pisco+Quebranta' },
+        { id: 2, nombre: 'Coca Cola', categoria: 'Gaseosas', marca: 'Coca Cola', precio: 3.50, descripcion: 'Gaseosa cola 500ml', imagen: 'https://via.placeholder.com/300x300?text=Coca+Cola' },
+        { id: 3, nombre: 'Vaso Cervecero', categoria: 'Vasos y Jarras', marca: 'Generic', precio: 8.00, descripcion: 'Vaso para cerveza de 500ml', imagen: 'https://via.placeholder.com/300x300?text=Vaso' },
+        { id: 4, nombre: 'Pisco Sour', categoria: 'Cócteles', marca: 'Casa', precio: 28.00, descripcion: 'Cóctel tradicional peruano', imagen: 'https://via.placeholder.com/300x300?text=Pisco+Sour' },
+        { id: 5, nombre: 'Chicha Morada', categoria: 'Bebidas Calientes', marca: 'Casa', precio: 22.00, descripcion: 'Bebida tradicional de maíz morado', imagen: 'https://via.placeholder.com/300x300?text=Chicha' },
+        { id: 6, nombre: 'Cerveza Pilsen', categoria: 'Cervezas', marca: 'Pilsen', precio: 14.00, descripcion: 'Cerveza premium 330ml', imagen: 'https://via.placeholder.com/300x300?text=Cerveza' }
     ],
     productoEditar: null
 };
@@ -19,13 +19,7 @@ const AppState = {
 const Utils = {
     formatId: (id) => String(id).padStart(3, '0'),
     formatPrice: (price) => `S/. ${price.toFixed(2)}`,
-    getNextId: () => Math.max(0, ...AppState.productos.map(p => p.id)) + 1,
-    
-    getEstado: (stock) => {
-        if (stock === 0) return { texto: 'Agotado', clase: 'badge-agotado' };
-        if (stock <= 10) return { texto: 'Bajo Stock', clase: 'badge-bajo-stock' };
-        return { texto: 'Disponible', clase: 'badge-disponible' };
-    }
+    getNextId: () => Math.max(0, ...AppState.productos.map(p => p.id)) + 1
 };
 
 // ============================================
@@ -39,7 +33,6 @@ const ProductManager = {
 
         tbody.innerHTML = AppState.productos
             .map(producto => {
-                const estado = Utils.getEstado(producto.stock);
                 return `
                     <tr>
                         <td><strong>#${Utils.formatId(producto.id)}</strong></td>
@@ -50,9 +43,7 @@ const ProductManager = {
                         </td>
                         <td><strong>${producto.nombre}</strong></td>
                         <td>${producto.categoria}</td>
-                        <td>${producto.stock}</td>
                         <td class="price">${Utils.formatPrice(producto.precio)}</td>
-                        <td><span class="badge ${estado.clase}">${estado.texto}</span></td>
                         <td>
                             <div class="actions-cell">
                                 <button class="btn btn-view btn-small" data-action="ver" data-id="${producto.id}">
@@ -77,13 +68,9 @@ const ProductManager = {
     // Actualizar estadísticas
     updateStats() {
         const total = AppState.productos.length;
-        const disponibles = AppState.productos.filter(p => p.stock > 10).length;
-        const bajoStock = AppState.productos.filter(p => p.stock > 0 && p.stock <= 10).length;
         const categorias = [...new Set(AppState.productos.map(p => p.categoria))].length;
 
-        document.getElementById('totalProductos').textContent = total;
-        document.getElementById('productosDisponibles').textContent = disponibles;
-        document.getElementById('productosBajoStock').textContent = bajoStock;
+        document.getElementById('totalProductos').textContent = total; 
         document.getElementById('categorias').textContent = categorias;
     },
 
@@ -137,7 +124,6 @@ const ProductManager = {
 
         tbody.innerHTML = filtrados
             .map(producto => {
-                const estado = Utils.getEstado(producto.stock);
                 return `
                     <tr>
                         <td><strong>#${Utils.formatId(producto.id)}</strong></td>
@@ -148,9 +134,7 @@ const ProductManager = {
                         </td>
                         <td><strong>${producto.nombre}</strong></td>
                         <td>${producto.categoria}</td>
-                        <td>${producto.stock}</td>
                         <td class="price">${Utils.formatPrice(producto.precio)}</td>
-                        <td><span class="badge ${estado.clase}">${estado.texto}</span></td>
                         <td>
                             <div class="actions-cell">
                                 <button class="btn btn-view btn-small" data-action="ver" data-id="${producto.id}">
@@ -203,7 +187,6 @@ const ModalManager = {
         document.getElementById('productoNombre').value = producto.nombre;
         document.getElementById('productoCategoria').value = producto.categoria;
         document.getElementById('productoMarca').value = producto.marca || '';
-        document.getElementById('productoStock').value = producto.stock;
         document.getElementById('productoPrecio').value = producto.precio;
         document.getElementById('productoDescripcion').value = producto.descripcion || '';
         document.getElementById('productoImagen').value = producto.imagen || '';
@@ -224,18 +207,12 @@ const ModalManager = {
         const producto = ProductManager.find(id);
         if (!producto) return;
 
-        const estado = Utils.getEstado(producto.stock);
-
         document.getElementById('detalleImagen').src = producto.imagen || 'https://via.placeholder.com/300x300?text=Sin+Imagen';
         document.getElementById('detalleNombre').textContent = producto.nombre;
         document.getElementById('detalleId').textContent = `#${Utils.formatId(producto.id)}`;
         document.getElementById('detalleCategoria').textContent = producto.categoria;
         document.getElementById('detalleMarca').textContent = producto.marca || 'Sin marca';
-        document.getElementById('detalleStock').textContent = producto.stock;
-        document.getElementById('detalleStock').className = `badge ${estado.clase}`;
         document.getElementById('detallePrecio').textContent = Utils.formatPrice(producto.precio);
-        document.getElementById('detalleEstado').textContent = estado.texto;
-        document.getElementById('detalleEstado').className = `badge ${estado.clase}`;
         document.getElementById('detalleDescripcion').textContent = producto.descripcion || 'Sin descripción disponible';
 
         document.getElementById('modalDetalles').classList.add('active');
@@ -259,7 +236,6 @@ const FormManager = {
             nombre: document.getElementById('productoNombre').value.trim(),
             categoria: document.getElementById('productoCategoria').value,
             marca: document.getElementById('productoMarca').value.trim(),
-            stock: parseInt(document.getElementById('productoStock').value),
             precio: parseFloat(document.getElementById('productoPrecio').value),
             descripcion: document.getElementById('productoDescripcion').value.trim(),
             imagen: document.getElementById('productoImagen').value.trim()
@@ -271,8 +247,8 @@ const FormManager = {
             return;
         }
 
-        if (formData.stock < 0 || formData.precio <= 0) {
-            alert('⚠️ El stock y precio deben ser valores válidos');
+        if (formData.precio <= 0) {
+            alert('⚠️ El precio debe ser un valor válido');
             return;
         }
 
@@ -302,7 +278,7 @@ const FormManager = {
             `¿Estás seguro de eliminar el producto?\n\n` +
             `Nombre: ${producto.nombre}\n` +
             `Categoría: ${producto.categoria}\n` +
-            `Stock: ${producto.stock}\n\n` +
+            `Precio: ${Utils.formatPrice(producto.precio)}\n\n` +
             `Esta acción no se puede deshacer.`
         );
 
