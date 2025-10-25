@@ -6,15 +6,12 @@ const AppState = {
         { id: 1, nombre: 'Pisco Quebranta', categoria: 'Licores', stock: 25, precio: 45.00 },
         { id: 2, nombre: 'Coca Cola', categoria: 'Gaseosas', stock: 5, precio: 3.50 },
         { id: 3, nombre: 'Vaso Cervecero', categoria: 'Vasos y Jarras', stock: 50, precio: 8.00 },
-        { id: 4, nombre: 'Pisco Sour', categoria: 'Licores', stock: 30, precio: 28.00 },
-        { id: 5, nombre: 'Chicha Morada', categoria: 'Bebidas', stock: 0, precio: 22.00 },
-        { id: 6, nombre: 'Cerveza Pilsen', categoria: 'Licores', stock: 3, precio: 14.00 }
+        { id: 4, nombre: 'Pisco Sour', categoria: 'Cócteles', stock: 30, precio: 28.00 },
+        { id: 5, nombre: 'Chicha Morada', categoria: 'Bebidas Calientes', stock: 0, precio: 22.00 },
+        { id: 6, nombre: 'Cerveza Pilsen', categoria: 'Cervezas', stock: 3, precio: 14.00 }
     ],
-    movimientos: [
-        { id: 1, fecha: '2025-10-17 10:30', productoId: 1, productoNombre: 'Pisco Quebranta', tipo: 'Entrada', cantidad: 20, stockAnterior: 5, stockNuevo: 25, motivo: 'Compra', notas: 'Proveedor ABC' },
-        { id: 2, fecha: '2025-10-17 14:15', productoId: 4, productoNombre: 'Pisco Sour', tipo: 'Salida', cantidad: 3, stockAnterior: 33, stockNuevo: 30, motivo: 'Venta', notas: 'Venta regular' },
-        { id: 3, fecha: '2025-10-17 16:45', productoId: 2, productoNombre: 'Coca Cola', tipo: 'Entrada', cantidad: 10, stockAnterior: 0, stockNuevo: 10, motivo: 'Reposición', notas: 'Stock agotado' }
-    ]
+    movimientos: [],
+    productoEditando: null
 };
 
 // ============================================
@@ -90,6 +87,17 @@ const InventoryManager = {
         const tbody = document.getElementById('stockTableBody');
         if (!tbody) return;
 
+        if (AppState.productos.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 2rem;">
+                        <p style="color: #666;">No hay productos en el inventario</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
         tbody.innerHTML = AppState.productos.map(p => {
             const estado = Utils.getEstado(p.stock);
             const valorTotal = p.stock * p.precio;
@@ -103,32 +111,86 @@ const InventoryManager = {
                     <td>${Utils.formatPrice(p.precio)}</td>
                     <td class="precio">${Utils.formatPrice(valorTotal)}</td>
                     <td><span class="badge ${estado.clase}">${estado.texto}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-ver" onclick="verDetalles(${p.id})">
+                                👁️ Ver
+                            </button>
+                            <button class="btn-action btn-editar" onclick="editarStock(${p.id})">
+                                ✏️ Editar
+                            </button>
+                            <button class="btn-action btn-eliminar" onclick="eliminarProducto(${p.id})">
+                                🗑️ Eliminar
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             `;
         }).join('');
     },
 
-    // Actualizar select de productos
-    updateProductSelect() {
-        const select = document.getElementById('entradaProducto');
-        if (!select) return;
-
-        select.innerHTML = '<option value="">Seleccionar producto...</option>' +
+    // Cargar productos en los selects de los registros
+    cargarProductosEnSelect(selectElement) {
+        if (!selectElement) return;
+        
+        selectElement.innerHTML = '<option value="">Seleccionar producto...</option>' +
             AppState.productos.map(p => 
-                `<option value="${p.id}">${p.nombre} (Stock actual: ${p.stock})</option>`
+                `<option value="${p.id}">${p.nombre} (Stock: ${p.stock}) - ${Utils.formatPrice(p.precio)}</option>`
             ).join('');
     },
 
-    // Registrar entrada de stock
-    registrarEntrada(data) {
-        const producto = AppState.productos.find(p => p.id === data.productoId);
+    // Cargar productos en todos los selects
+    cargarTodosLosSelects() {
+        const selects = document.querySelectorAll('.entradaProducto');
+        selects.forEach(select => this.cargarProductosEnSelect(select));
+    },
+
+    // Registrar múltiples entradas de stock
+    registrarEntradas(entradas) {
+        entradas.forEach(entrada => {
+            const producto = AppState.productos.find(p => p.id === entrada.productoId);
+            if (!producto) return;
+
+            const stockAnterior = producto.stock;
+            const stockNuevo = stockAnterior + entrada.cantidad;
+
+            // Actualizar stock
+            producto.stock = stockNuevo;
+
+            // Registrar movimiento
+            const movimiento = {
+                id: Utils.getNextId(AppState.movimientos),
+                fecha: Utils.formatDateTime(),
+                productoId: producto.id,
+                productoNombre: producto.nombre,
+                tipo: 'Entrada',
+                cantidad: entrada.cantidad,
+                stockAnterior,
+                stockNuevo,
+                motivo: entrada.motivo,
+                notas: entrada.notas || '-'
+            };
+
+            AppState.movimientos.unshift(movimiento);
+        });
+
+        this.renderStock();
+        this.renderAlertas();
+        this.updateStats();
+        this.cargarTodosLosSelects();
+    },
+
+    // Actualizar stock de un producto
+    actualizarStock(id, nuevoStock, motivo, notas) {
+        const producto = AppState.productos.find(p => p.id === id);
         if (!producto) throw new Error('Producto no encontrado');
 
         const stockAnterior = producto.stock;
-        const stockNuevo = stockAnterior + data.cantidad;
+        const diferencia = nuevoStock - stockAnterior;
+        const tipo = diferencia > 0 ? 'Entrada' : 'Salida';
 
-        // Actualizar stock del producto
-        producto.stock = stockNuevo;
+        // Actualizar stock
+        producto.stock = nuevoStock;
 
         // Registrar movimiento
         const movimiento = {
@@ -136,12 +198,12 @@ const InventoryManager = {
             fecha: Utils.formatDateTime(),
             productoId: producto.id,
             productoNombre: producto.nombre,
-            tipo: 'Entrada',
-            cantidad: data.cantidad,
+            tipo,
+            cantidad: Math.abs(diferencia),
             stockAnterior,
-            stockNuevo,
-            motivo: data.motivo,
-            notas: data.notas || '-'
+            stockNuevo: nuevoStock,
+            motivo,
+            notas: notas || '-'
         };
 
         AppState.movimientos.unshift(movimiento);
@@ -149,9 +211,19 @@ const InventoryManager = {
         this.renderStock();
         this.renderAlertas();
         this.updateStats();
-        MovimientosManager.render();
+        this.cargarTodosLosSelects();
+    },
 
-        return movimiento;
+    // Eliminar producto
+    eliminarProducto(id) {
+        const index = AppState.productos.findIndex(p => p.id === id);
+        if (index !== -1) {
+            AppState.productos.splice(index, 1);
+            this.renderStock();
+            this.renderAlertas();
+            this.updateStats();
+            this.cargarTodosLosSelects();
+        }
     },
 
     // Buscar productos en stock
@@ -163,6 +235,17 @@ const InventoryManager = {
             p.nombre.toLowerCase().includes(searchTerm) ||
             p.categoria.toLowerCase().includes(searchTerm)
         );
+
+        if (filtrados.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 2rem;">
+                        <p style="color: #666;">No se encontraron productos</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
 
         tbody.innerHTML = filtrados.map(p => {
             const estado = Utils.getEstado(p.stock);
@@ -177,6 +260,19 @@ const InventoryManager = {
                     <td>${Utils.formatPrice(p.precio)}</td>
                     <td class="precio">${Utils.formatPrice(valorTotal)}</td>
                     <td><span class="badge ${estado.clase}">${estado.texto}</span></td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-action btn-ver" onclick="verDetalles(${p.id})">
+                                👁️ Ver
+                            </button>
+                            <button class="btn-action btn-editar" onclick="editarStock(${p.id})">
+                                ✏️ Editar
+                            </button>
+                            <button class="btn-action btn-eliminar" onclick="eliminarProducto(${p.id})">
+                                🗑️ Eliminar
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             `;
         }).join('');
@@ -184,36 +280,45 @@ const InventoryManager = {
 };
 
 // ============================================
-// GESTIÓN DE MOVIMIENTOS
+// GESTIÓN DE MODALES
 // ============================================
-const MovimientosManager = {
-    render(filtros = {}) {
-        const tbody = document.getElementById('movimientosTableBody');
-        if (!tbody) return;
+const ModalManager = {
+    // Ver detalles del producto
+    verDetalles(id) {
+        const producto = AppState.productos.find(p => p.id === id);
+        if (!producto) return;
 
-        let movimientos = [...AppState.movimientos];
+        const estado = Utils.getEstado(producto.stock);
+        const valorTotal = producto.stock * producto.precio;
 
-        // Aplicar filtros
-        if (filtros.tipo) {
-            movimientos = movimientos.filter(m => m.tipo === filtros.tipo);
-        }
+        document.getElementById('detalleId').textContent = `#${Utils.formatId(producto.id)}`;
+        document.getElementById('detalleNombre').textContent = producto.nombre;
+        document.getElementById('detalleCategoria').textContent = producto.categoria;
+        document.getElementById('detalleStock').textContent = producto.stock;
+        document.getElementById('detallePrecio').textContent = Utils.formatPrice(producto.precio);
+        document.getElementById('detalleValorTotal').textContent = Utils.formatPrice(valorTotal);
+        
+        const estadoSpan = document.getElementById('detalleEstado');
+        estadoSpan.textContent = estado.texto;
+        estadoSpan.className = `badge ${estado.clase}`;
 
-        if (filtros.fecha) {
-            movimientos = movimientos.filter(m => m.fecha.startsWith(filtros.fecha));
-        }
+        document.getElementById('modalDetalles').classList.add('active');
+    },
 
-        tbody.innerHTML = movimientos.map(m => `
-            <tr>
-                <td>${m.fecha}</td>
-                <td>${m.productoNombre}</td>
-                <td><span class="badge badge-${m.tipo.toLowerCase()}">${m.tipo}</span></td>
-                <td><strong>${m.tipo === 'Entrada' ? '+' : '-'}${m.cantidad}</strong></td>
-                <td>${m.stockAnterior}</td>
-                <td><strong>${m.stockNuevo}</strong></td>
-                <td>${m.motivo}</td>
-                <td>${m.notas}</td>
-            </tr>
-        `).join('');
+    // Editar stock del producto
+    editarStock(id) {
+        const producto = AppState.productos.find(p => p.id === id);
+        if (!producto) return;
+
+        AppState.productoEditando = producto.id;
+
+        document.getElementById('editarNombre').value = producto.nombre;
+        document.getElementById('editarStockActual').value = producto.stock;
+        document.getElementById('editarNuevoStock').value = producto.stock;
+        document.getElementById('editarMotivo').value = '';
+        document.getElementById('editarNotas').value = '';
+
+        document.getElementById('modalEditar').classList.add('active');
     }
 };
 
@@ -221,30 +326,75 @@ const MovimientosManager = {
 // GESTIÓN DE FORMULARIOS
 // ============================================
 const FormManager = {
-    handleEntrada(e) {
+    // Manejar envío del formulario de múltiples entradas
+    handleEntradas(e) {
         e.preventDefault();
-
-        const formData = {
-            productoId: parseInt(document.getElementById('entradaProducto').value),
-            cantidad: parseInt(document.getElementById('entradaCantidad').value),
-            motivo: document.getElementById('entradaMotivo').value,
-            notas: document.getElementById('entradaNotas').value.trim()
-        };
-
-        if (!formData.productoId) {
-            alert('⚠️ Debe seleccionar un producto');
-            return;
-        }
-
-        if (formData.cantidad <= 0) {
-            alert('⚠️ La cantidad debe ser mayor a 0');
+        
+        const registros = document.querySelectorAll('.registro-item');
+        const entradas = [];
+        
+        registros.forEach((registro) => {
+            const productoId = parseInt(registro.querySelector('.entradaProducto').value);
+            const cantidad = parseInt(registro.querySelector('.entradaCantidad').value);
+            const motivo = registro.querySelector('.entradaMotivo').value;
+            const notas = registro.querySelector('.entradaNotas').value.trim();
+            
+            if (productoId && cantidad > 0) {
+                entradas.push({
+                    productoId,
+                    cantidad,
+                    motivo,
+                    notas
+                });
+            }
+        });
+        
+        if (entradas.length === 0) {
+            alert('⚠️ Complete al menos un registro válido');
             return;
         }
 
         try {
-            InventoryManager.registrarEntrada(formData);
-            e.target.reset();
-            alert(`✅ Entrada registrada correctamente\n\nSe agregaron ${formData.cantidad} unidades al inventario`);
+            InventoryManager.registrarEntradas(entradas);
+            alert(`✅ Se registraron ${entradas.length} entrada(s) de stock correctamente`);
+            
+            // Limpiar formulario
+            if (window.limpiarFormulario) {
+                window.limpiarFormulario();
+            }
+        } catch (error) {
+            alert('❌ Error: ' + error.message);
+        }
+    },
+
+    // Manejar envío del formulario de edición
+    handleEditar(e) {
+        e.preventDefault();
+
+        const nuevoStock = parseInt(document.getElementById('editarNuevoStock').value);
+        const motivo = document.getElementById('editarMotivo').value;
+        const notas = document.getElementById('editarNotas').value.trim();
+
+        if (!motivo) {
+            alert('⚠️ Debe seleccionar un motivo del ajuste');
+            return;
+        }
+
+        if (nuevoStock < 0) {
+            alert('⚠️ El stock no puede ser negativo');
+            return;
+        }
+
+        try {
+            InventoryManager.actualizarStock(
+                AppState.productoEditando,
+                nuevoStock,
+                motivo,
+                notas
+            );
+
+            document.getElementById('modalEditar').classList.remove('active');
+            alert('✅ Stock actualizado correctamente');
         } catch (error) {
             alert('❌ Error: ' + error.message);
         }
@@ -252,14 +402,58 @@ const FormManager = {
 };
 
 // ============================================
+// FUNCIONES GLOBALES (llamadas desde HTML)
+// ============================================
+function verDetalles(id) {
+    ModalManager.verDetalles(id);
+}
+
+function editarStock(id) {
+    ModalManager.editarStock(id);
+}
+
+function eliminarProducto(id) {
+    const producto = AppState.productos.find(p => p.id === id);
+    if (!producto) return;
+
+    const confirmar = confirm(
+        `¿Estás seguro de eliminar este producto del inventario?\n\n` +
+        `Producto: ${producto.nombre}\n` +
+        `Stock actual: ${producto.stock}\n` +
+        `Categoría: ${producto.categoria}\n\n` +
+        `Esta acción no se puede deshacer.`
+    );
+
+    if (confirmar) {
+        InventoryManager.eliminarProducto(id);
+        alert('✅ Producto eliminado correctamente');
+    }
+}
+
+function cerrarModalDetalles() {
+    document.getElementById('modalDetalles').classList.remove('active');
+}
+
+function cerrarModalEditar() {
+    document.getElementById('modalEditar').classList.remove('active');
+    AppState.productoEditando = null;
+}
+
+// ============================================
 // GESTIÓN DE EVENTOS
 // ============================================
 const EventHandler = {
     init() {
-        // Formulario de entrada
+        // Formulario de múltiples entradas
         const formEntrada = document.getElementById('formEntrada');
         if (formEntrada) {
-            formEntrada.addEventListener('submit', (e) => FormManager.handleEntrada(e));
+            formEntrada.addEventListener('submit', (e) => FormManager.handleEntradas(e));
+        }
+
+        // Formulario de edición
+        const formEditar = document.getElementById('formEditar');
+        if (formEditar) {
+            formEditar.addEventListener('submit', (e) => FormManager.handleEditar(e));
         }
 
         // Búsqueda de stock
@@ -275,27 +469,12 @@ const EventHandler = {
             });
         }
 
-        // Filtros de movimientos
-        const filterTipo = document.getElementById('filterTipo');
-        const filterFecha = document.getElementById('filterFecha');
-
-        if (filterTipo) {
-            filterTipo.addEventListener('change', () => {
-                MovimientosManager.render({
-                    tipo: filterTipo.value,
-                    fecha: filterFecha?.value || ''
-                });
-            });
-        }
-
-        if (filterFecha) {
-            filterFecha.addEventListener('change', () => {
-                MovimientosManager.render({
-                    tipo: filterTipo?.value || '',
-                    fecha: filterFecha.value
-                });
-            });
-        }
+        // Cerrar modales al hacer clic fuera
+        window.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
     }
 };
 
@@ -306,9 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
     InventoryManager.renderAlertas();
     InventoryManager.updateStats();
     InventoryManager.renderStock();
-    InventoryManager.updateProductSelect();
-    MovimientosManager.render();
+    InventoryManager.cargarTodosLosSelects();
     EventHandler.init();
 
-    console.log('✅ Sistema de Inventario cargado correctamente');
+    console.log('✅ Sistema de Inventario con CRUD cargado correctamente');
+    console.log(`📦 Total de productos: ${AppState.productos.length}`);
 });
